@@ -1,10 +1,12 @@
 package com.kdt.mcgui;
 
-import android.content.*;
-import android.util.*;
-import android.graphics.*;
-import android.widget.EditText;
+import android.content.Context;
+import android.graphics.Color;
+import android.util.AttributeSet;
 
+/**
+ * Edit text used in the app
+ */
 public class MineEditText extends androidx.appcompat.widget.AppCompatEditText {
 	public MineEditText(Context ctx) {
 		super(ctx);

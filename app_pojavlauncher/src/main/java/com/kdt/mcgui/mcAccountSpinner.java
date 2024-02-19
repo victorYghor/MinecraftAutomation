@@ -22,15 +22,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
 
-
 import net.kdt.pojavlaunch.PojavProfile;
 import net.kdt.pojavlaunch.R;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.authenticator.listener.DoneListener;
 import net.kdt.pojavlaunch.authenticator.listener.ErrorListener;
 import net.kdt.pojavlaunch.authenticator.listener.ProgressListener;
-import net.kdt.pojavlaunch.authenticator.microsoft.PresentedException;
 import net.kdt.pojavlaunch.authenticator.microsoft.MicrosoftBackgroundLogin;
+import net.kdt.pojavlaunch.authenticator.microsoft.PresentedException;
 import net.kdt.pojavlaunch.extra.ExtraConstants;
 import net.kdt.pojavlaunch.extra.ExtraCore;
 import net.kdt.pojavlaunch.extra.ExtraListener;
@@ -43,6 +42,9 @@ import java.util.List;
 
 import fr.spse.extended_view.ExtendedTextView;
 
+/**
+ *
+ */
 public class mcAccountSpinner extends AppCompatSpinner implements AdapterView.OnItemSelectedListener {
     public mcAccountSpinner(@NonNull Context context) {
         this(context, null);
@@ -55,24 +57,25 @@ public class mcAccountSpinner extends AppCompatSpinner implements AdapterView.On
     private final List<String> mAccountList = new ArrayList<>(2);
     private MinecraftAccount mSelectecAccount = null;
 
-    /* Display the head of the current profile, here just to allow bitmap recycling */
+    /** Display the head of the current profile, here just to allow bitmap recycling */
     private BitmapDrawable mHeadDrawable;
 
-    /* Current animator to for the login bar, is swapped when changing step */
+    /** Current animator to for the login bar, is swapped when changing step */
     private ObjectAnimator mLoginBarAnimator;
     private float mLoginBarWidth = -1;
 
-    /* Paint used to display the bottom bar, to show the login progress. */
+    /** Paint used to display the bottom bar in green, to show the login progress. **/
     private final Paint mLoginBarPaint = new Paint();
 
-    /* When a login is performed in the background, we need to know where we are */
+    /** When a login is performed in the background, we need to know where we are */
     private final static int MAX_LOGIN_STEP = 5;
     private int mLoginStep = 0;
 
-    /* Login listeners */
+    /** Login listeners */
     private final ProgressListener mProgressListener = step -> {
         // Animate the login bar, cosmetic purposes only
         mLoginStep = step;
+        // reuse the mLoginBarAnimator
         if(mLoginBarAnimator != null){
             mLoginBarAnimator.cancel();
             mLoginBarAnimator.setFloatValues( mLoginBarWidth, (getWidth()/MAX_LOGIN_STEP * mLoginStep));
@@ -99,15 +102,9 @@ public class mcAccountSpinner extends AppCompatSpinner implements AdapterView.On
 
     private final ErrorListener mErrorListener = errorMessage -> {
         mLoginBarPaint.setColor(Color.RED);
-        Context context = getContext();
         if(errorMessage instanceof PresentedException) {
             PresentedException exception = (PresentedException) errorMessage;
-            Throwable cause = exception.getCause();
-            if(cause == null) {
-                Tools.dialog(context, context.getString(R.string.global_error), exception.toString(context));
-            }else {
-                Tools.showError(context, exception.toString(context), exception.getCause());
-            }
+            Tools.showError(getContext(), exception.toString(getContext()), exception.getCause());
         }else {
             Tools.showError(getContext(), errorMessage);
         }

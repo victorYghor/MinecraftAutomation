@@ -1,16 +1,24 @@
 package com.kdt.pickafile;
 
-import androidx.appcompat.app.*;
-import android.content.*;
-import android.util.*;
-import android.widget.*;
+import android.content.Context;
+import android.os.Environment;
+import android.util.AttributeSet;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
 
-import com.ipaulpro.afilechooser.*;
-import java.io.*;
-import java.util.*;
-import net.kdt.pojavlaunch.*;
-import android.os.*;
+import androidx.appcompat.app.AlertDialog;
 
+import com.ipaulpro.afilechooser.FileListAdapter;
+
+import net.kdt.pojavlaunch.Tools;
+
+import java.io.File;
+import java.util.Arrays;
+
+/**
+ * handler and access the files and directories
+ */
 public class FileListView extends LinearLayout
 {
     //For list view:
@@ -24,6 +32,9 @@ public class FileListView extends LinearLayout
     private File lockPath = new File("/");
 
     //For filtering by file types:
+    /**
+     * Constructors initialize for get the files with this suffix
+     */
     private final String[] fileSuffixes;
     private boolean showFiles = true;
     private boolean showFolders = true;
@@ -48,6 +59,7 @@ public class FileListView extends LinearLayout
     }
 
     public FileListView(Context context, AttributeSet attrs){
+        // new String[0] is a empty string array
         this(context, attrs, new String[0]);
     }
 
@@ -75,6 +87,7 @@ public class FileListView extends LinearLayout
 
         mainLv = new ListView(context);
 
+        // todo what this does ? personalize the controls when click in select
         mainLv.setOnItemClickListener((p1, p2, p3, p4) -> {
             // TODO: Implement this method
             File mainFile = new File(p1.getItemAtPosition(p3).toString());
@@ -113,7 +126,7 @@ public class FileListView extends LinearLayout
             if(path.exists()){
                 if(path.isDirectory()){
                     fullPath = path;
-
+                    // get the files in the current path
                     File[] listFile = path.listFiles();
                     FileListAdapter fileAdapter = new FileListAdapter(context);
                     if(!path.equals(lockPath)){
@@ -121,10 +134,13 @@ public class FileListView extends LinearLayout
                     }
 
                     if(listFile != null && listFile.length != 0){
+                        // sort the files lexicographically
                         Arrays.sort(listFile, new SortFileName());
 
                         for(File file : listFile){
                             if(file.isDirectory()){
+                                /* add the files that don't start with "." or start with .minecraft,
+                                 and only when showFolders is turn on */
                                 if(showFolders && ((!file.getName().startsWith(".")) || file.getName().equals(".minecraft")))
                                     fileAdapter.add(file);
                                 continue;
@@ -166,6 +182,9 @@ public class FileListView extends LinearLayout
         listFileAt(getFullPath());
     }
 
+    /**
+     * If the parent dir exist, go to there
+     */
     public void parentDir() {
         if(!fullPath.getAbsolutePath().equals("/")){
             listFileAt(fullPath.getParentFile());

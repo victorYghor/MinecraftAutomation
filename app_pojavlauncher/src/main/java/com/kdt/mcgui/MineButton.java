@@ -1,15 +1,17 @@
 package com.kdt.mcgui;
 
-import android.content.*;
-import android.graphics.*;
-import android.util.*;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.util.TypedValue;
 
 import androidx.core.content.res.ResourcesCompat;
 
 import net.kdt.pojavlaunch.R;
 
+/**Green button used in the app**/
 public class MineButton extends androidx.appcompat.widget.AppCompatButton {
-	
+
+	// archive default parameters with method overloading
 	public MineButton(Context ctx) {
 		this(ctx, null);
 	}

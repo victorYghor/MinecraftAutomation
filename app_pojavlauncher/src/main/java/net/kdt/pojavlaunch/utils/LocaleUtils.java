@@ -18,12 +18,13 @@ public class LocaleUtils extends ContextWrapper {
         super(base);
     }
 
-    public static ContextWrapper setLocale(Context context) {
+    public static Context setLocale(Context context) {
         if (DEFAULT_PREF == null) {
             DEFAULT_PREF = PreferenceManager.getDefaultSharedPreferences(context);
             LauncherPreferences.loadPreferences(context);
         }
 
+        // ele precisa que o celular esteja em ingles.
         if(DEFAULT_PREF.getBoolean("force_english", false)){
             Resources resources = context.getResources();
             Configuration configuration = resources.getConfiguration();
@@ -42,6 +43,6 @@ public class LocaleUtils extends ContextWrapper {
             }
         }
 
-        return new LocaleUtils(context);
+        return context;
     }
 }

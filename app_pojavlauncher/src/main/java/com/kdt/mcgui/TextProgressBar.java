@@ -1,12 +1,9 @@
 package com.kdt.mcgui;
 
 import android.content.Context;
-import android.graphics.BlendMode;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
 
@@ -15,6 +12,8 @@ import androidx.core.content.res.ResourcesCompat;
 
 import net.kdt.pojavlaunch.R;
 
+/**the text insider the progress bar
+*/
 public class TextProgressBar extends ProgressBar {
 
     private int mTextPadding = 0;
@@ -42,6 +41,11 @@ public class TextProgressBar extends ProgressBar {
         mTextPaint.setAntiAlias(true);
     }
 
+
+    /**
+     * updates the progress bar
+     * @param canvas the canvas on which the background will be drawn
+     */
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         super.onDraw(canvas);

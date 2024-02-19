@@ -2,22 +2,21 @@ package com.kdt.mcgui;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 
 
 import net.kdt.pojavlaunch.R;
 
 import fr.spse.extended_view.ExtendedButton;
 
+/**
+ * set the ui and the style of the buttons on the first screen
+ */
 public class LauncherMenuButton extends ExtendedButton {
 
     public LauncherMenuButton(@NonNull Context context) {
@@ -30,7 +29,7 @@ public class LauncherMenuButton extends ExtendedButton {
     }
 
 
-    /** Set style stuff */
+    /** Set style stuff and apply padding */
     private void setSettings(){
         Resources resources = getContext().getResources();
 

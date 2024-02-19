@@ -52,12 +52,13 @@ public class mcVersionSpinner extends ExtendedTextView {
         init();
     }
 
-    /* The class is in charge of displaying its own list with adapter content being known in advance */
+    /** The class is in charge of displaying its own list with adapter content being known in advance */
     private ListView mListView = null;
     private PopupWindow mPopupWindow = null;
     private Object mPopupAnimation;
     private int mSelectedIndex;
 
+    // todo where this profile adapter is used ?
     private final ProfileAdapter mProfileAdapter = new ProfileAdapter(new ProfileAdapterExtra[]{
             new ProfileAdapterExtra(VERSION_SPINNER_PROFILE_CREATE,
                     R.string.create_profile,
@@ -105,6 +106,7 @@ public class mcVersionSpinner extends ExtendedTextView {
         setCompoundDrawablePadding(startPadding);
 
         int profileIndex;
+
         String extra_value = (String) ExtraCore.consumeValue(ExtraConstants.REFRESH_VERSION_SPINNER);
         if(extra_value != null){
             profileIndex = extra_value.equals(DELETED_PROFILE) ? 0
@@ -114,8 +116,9 @@ public class mcVersionSpinner extends ExtendedTextView {
                     LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE,""));
 
         setProfileSelection(Math.max(0,profileIndex));
-
-        // Popup window behavior
+        /** set the comportment of view pop up
+         *
+         */
         setOnClickListener(new OnClickListener() {
             final int offset = -getContext().getResources().getDimensionPixelOffset(R.dimen._4sdp);
             @Override
@@ -127,8 +130,6 @@ public class mcVersionSpinner extends ExtendedTextView {
                     return;
                 }
                 mPopupWindow.showAsDropDown(mcVersionSpinner.this, 0, offset);
-                // Post() is required for the layout inflation phase
-                post(() -> mListView.setSelection(mSelectedIndex));
             }
         });
     }
@@ -182,6 +183,11 @@ public class mcVersionSpinner extends ExtendedTextView {
         }
     }
 
+    /**
+     * hide the popup and handler the animation of the view
+     * @param animate use the animation function on some devices
+     *
+     */
     private void hidePopup(boolean animate) {
         if(mPopupWindow == null) return;
         if(!animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -195,6 +201,7 @@ public class mcVersionSpinner extends ExtendedTextView {
         }
     }
 
+    // todo what this does?
     public ProfileAdapter getProfileAdapter() {
         return mProfileAdapter;
     }
