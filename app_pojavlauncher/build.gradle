@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application' version '7.6.1' apply true
+    id 'com.android.application' version '7.4.2' apply true
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android'
 }
