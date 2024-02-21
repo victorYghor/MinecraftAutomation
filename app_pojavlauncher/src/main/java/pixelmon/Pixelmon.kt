@@ -9,8 +9,6 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
     private val forgerInstaller = ForgerInstaller(context, popStack = popStack)
     fun start() {
 //        jreInstaller.installRequiredJRE()
-        runBlocking {
-            forgerInstaller.install()
-        }
+        forgerInstaller.install()
     }
 }

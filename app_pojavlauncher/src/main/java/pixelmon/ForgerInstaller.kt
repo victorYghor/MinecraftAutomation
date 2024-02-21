@@ -15,12 +15,13 @@ import net.kdt.pojavlaunch.modloaders.ModloaderListenerProxy
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
 import java.io.File
 
-class ForgerInstaller(private val context: Context, val popStack: () -> Boolean): ModloaderDownloadListener {
+class ForgerInstaller(private val context: Context, val popStack: () -> Boolean) :
+    ModloaderDownloadListener {
     private val TAG = "ForgerInstaller.kt"
     private var proxy: ModloaderListenerProxy? = ModloaderListenerProxy()
     private val version = "1.12.2-14.23.5.2860"
-    suspend fun install() {
-        if(ProgressKeeper.hasOngoingTasks()) {
+    fun install() {
+        if (ProgressKeeper.hasOngoingTasks()) {
             Toast.makeText(context, R.string.tasks_ongoing, Toast.LENGTH_LONG).show()
         }
         val taskProxy = ModloaderListenerProxy()
@@ -29,9 +30,7 @@ class ForgerInstaller(private val context: Context, val popStack: () -> Boolean)
         taskProxy.attachListener(this)
         // todo use coroutines here
         Log.i(TAG, "Starting the download")
-        coroutineScope {
-            downloadTask
-        }.run()
+        Thread(downloadTask).start()
         Log.i(TAG, "Download finished")
     }
 
@@ -54,9 +53,11 @@ class ForgerInstaller(private val context: Context, val popStack: () -> Boolean)
         Tools.runOnUiThread {
             proxy?.detachListener()
             proxy = null
-            Tools.dialog(context,
+            Tools.dialog(
+                context,
                 context.getString(R.string.global_error),
-                context.getString(R.string.forge_dl_no_installer))
+                context.getString(R.string.forge_dl_no_installer)
+            )
         }
     }
 
