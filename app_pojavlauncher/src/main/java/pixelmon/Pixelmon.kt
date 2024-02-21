@@ -16,20 +16,16 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
         @JvmStatic
         private val TAG = "Pixelmon.kt"
     }
+
     private val forgerInstaller = ForgerInstaller(context, popStack = popStack)
     fun start() {
-//        jreInstaller.installRequiredJRE()
-        Thread {
-            forgerInstaller.install()
-            Log.i(TAG, "starting the download")
-            Thread.sleep(12000)
-            Log.i(TAG, "select the correct profile")
-            LauncherPreferences.DEFAULT_PREF.edit()
-                .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "0")
-                .apply()
-            Thread.sleep(1000)
-            Log.i(TAG, "launch the game")
-            ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
-        }.start()
+        Log.i(TAG, "start forge installation")
+        forgerInstaller.install()
+        Log.i(TAG, "select the correct option")
+        LauncherPreferences.DEFAULT_PREF.edit()
+            .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "0")
+            .apply()
+        Log.i(TAG, "Start the game")
+        ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
     }
 }
