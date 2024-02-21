@@ -57,8 +57,8 @@ public class MainMenuFragment extends Fragment {
         mShareLogsButton.setOnClickListener((v) -> shareLog(requireContext()));
 
         Pixelmon pixelmon = new Pixelmon(requireContext(), () -> getParentFragmentManager().popBackStackImmediate());
-//            mTestButton.setOnClickListener((v) ->
-//                    pixelmon.start());
+            mTestButton.setOnClickListener((v) ->
+                    pixelmon.start());
 
         mNewsButton.setOnLongClickListener((v) -> {
             Tools.swapFragment(requireActivity(), SearchModFragment.class, SearchModFragment.TAG, true, null);

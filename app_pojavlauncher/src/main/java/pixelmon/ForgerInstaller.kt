@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import kotlinx.coroutines.coroutineScope
 import net.kdt.pojavlaunch.JavaGUILauncherActivity
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
@@ -18,7 +19,7 @@ class ForgerInstaller(private val context: Context, val popStack: () -> Boolean)
     private val TAG = "ForgerInstaller.kt"
     private var proxy: ModloaderListenerProxy? = ModloaderListenerProxy()
     private val version = "1.12.2-14.23.5.2860"
-    fun install() {
+    suspend fun install() {
         if(ProgressKeeper.hasOngoingTasks()) {
             Toast.makeText(context, R.string.tasks_ongoing, Toast.LENGTH_LONG).show()
         }
@@ -28,7 +29,9 @@ class ForgerInstaller(private val context: Context, val popStack: () -> Boolean)
         taskProxy.attachListener(this)
         // todo use coroutines here
         Log.i(TAG, "Starting the download")
-        Thread(downloadTask).start()
+        coroutineScope {
+            downloadTask
+        }.run()
         Log.i(TAG, "Download finished")
     }
 
