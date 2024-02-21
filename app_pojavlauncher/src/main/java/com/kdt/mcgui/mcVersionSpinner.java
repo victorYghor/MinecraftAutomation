@@ -9,6 +9,7 @@ import android.os.Build;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -57,6 +58,7 @@ public class mcVersionSpinner extends ExtendedTextView {
     private PopupWindow mPopupWindow = null;
     private Object mPopupAnimation;
     private int mSelectedIndex;
+    private static String TAG = "mcVersionSpinner.java";
 
     // todo where this profile adapter is used ?
     private final ProfileAdapter mProfileAdapter = new ProfileAdapter(new ProfileAdapterExtra[]{
@@ -73,6 +75,7 @@ public class mcVersionSpinner extends ExtendedTextView {
                 .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE,
                         mProfileAdapter.getItem(position).toString())
                 .apply();
+        Log.i(TAG, "Change the current profile the new position is " + position);
     }
 
     public void setSelection(int position){
