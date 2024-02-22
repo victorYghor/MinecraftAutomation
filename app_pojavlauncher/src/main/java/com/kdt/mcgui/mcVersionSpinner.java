@@ -54,6 +54,9 @@ public class mcVersionSpinner extends ExtendedTextView {
     }
 
     /** The class is in charge of displaying its own list with adapter content being known in advance */
+    /**
+     * this is releted with the
+     */
     private ListView mListView = null;
     private PopupWindow mPopupWindow = null;
     private Object mPopupAnimation;
@@ -80,6 +83,7 @@ public class mcVersionSpinner extends ExtendedTextView {
         Log.i(TAG, "Change the current profile the new position is " + position);
     }
 
+    // this function in called when you change of profile
     public void setSelection(int position){
         if(mListView != null) mListView.setSelection(position);
         mProfileAdapter.setView(this, mProfileAdapter.getItem(position), false);

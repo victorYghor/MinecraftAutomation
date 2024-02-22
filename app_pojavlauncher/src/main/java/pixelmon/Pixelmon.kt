@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
@@ -26,6 +27,12 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
             Log.i(TAG, "start forge installation")
             forgerInstaller.install()
         }
+//        changeProfile()
+        Log.i(TAG, "Start the game")
+        ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
+    }
+
+    fun changeProfile() {
         Log.i(TAG, "select the correct option")
         LauncherPreferences.DEFAULT_PREF.edit()
             .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "0")
@@ -33,7 +40,5 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
         LauncherPreferences.loadPreferences(context)
         val profile = LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "")
         Log.i(TAG, "The current profile is $profile")
-        Log.i(TAG, "Start the game")
-        ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
     }
 }
