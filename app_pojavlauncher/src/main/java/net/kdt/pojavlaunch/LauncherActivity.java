@@ -126,6 +126,8 @@ public class LauncherActivity extends BaseActivity {
                     (LauncherProfiles.mainProfileJson == null) +
                     "!LauncherProfiles.mainProfileJson.profiles.containsKey(selectedProfile) = "
                     + (!LauncherProfiles.mainProfileJson.profiles.containsKey(selectedProfile)));
+            Log.i(TAG, "the select profile is " + selectedProfile);
+
             Toast.makeText(this, R.string.error_no_version, Toast.LENGTH_LONG).show();
             return false;
         }

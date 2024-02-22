@@ -20,6 +20,7 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
 
     private val forgerInstaller = ForgerInstaller(context, popStack = popStack)
     fun start() {
+        Log.i(TAG, "the value of first_installation is ${LauncherPreferences.PREF_FIRST_INSTALLATION}")
         LauncherPreferences.loadPreferences(context)
         if (LauncherPreferences.PREF_FIRST_INSTALLATION) {
             Log.i(TAG, "start forge installation")
