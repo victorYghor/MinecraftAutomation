@@ -8,6 +8,9 @@ import androidx.annotation.Nullable;
 
 import net.kdt.pojavlaunch.value.MinecraftAccount;
 
+/** Handles accounts created in minecraft
+ *
+ */
 public class PojavProfile {
 	private static final String PROFILE_PREF = "pojav_profile";
 	private static final String PROFILE_PREF_FILE = "file";

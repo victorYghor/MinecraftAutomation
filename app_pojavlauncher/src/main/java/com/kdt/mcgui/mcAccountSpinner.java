@@ -55,6 +55,9 @@ public class mcAccountSpinner extends AppCompatSpinner implements AdapterView.On
     }
 
     private final List<String> mAccountList = new ArrayList<>(2);
+    /**
+     * the minecraft account or Microsoft account
+     */
     private MinecraftAccount mSelectecAccount = null;
 
     /** Display the head of the current profile, here just to allow bitmap recycling */
