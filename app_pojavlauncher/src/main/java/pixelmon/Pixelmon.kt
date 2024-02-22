@@ -23,12 +23,12 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
         runBlocking {
             Log.i(TAG, "start forge installation")
             forgerInstaller.install()
-            delay(3600)
+            delay(36000)
             Log.i(TAG, "select the correct option")
             LauncherPreferences.DEFAULT_PREF.edit()
                 .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "0")
-                .apply()
-            delay(1000)
+                .commit()
+            delay(100)
             Log.i(TAG, "Start the game")
             ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
         }
