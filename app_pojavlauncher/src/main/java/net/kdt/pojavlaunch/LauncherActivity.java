@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -50,6 +51,7 @@ import java.lang.ref.WeakReference;
 
 public class LauncherActivity extends BaseActivity {
     public static final String SETTING_FRAGMENT_TAG = "SETTINGS_FRAGMENT";
+    private static final String TAG = "LauncherActivity.java";
 
     public final ActivityResultLauncher<Object> modInstallerLauncher =
             registerForActivityResult(new OpenDocumentWithExtension("jar"), (data)->{
@@ -109,6 +111,9 @@ public class LauncherActivity extends BaseActivity {
             .setNeutralButton(R.string.global_delete, (dialog, which) -> mAccountSpinner.removeCurrentAccount())
             .show();
 
+    /**
+     * see for problems then start the minecraft game
+     */
     private final ExtraListener<Boolean> mLaunchGameListener = (key, value) -> {
         if(mProgressLayout.hasProcesses()){
             Toast.makeText(this, R.string.tasks_ongoing, Toast.LENGTH_LONG).show();
@@ -117,6 +122,10 @@ public class LauncherActivity extends BaseActivity {
 
         String selectedProfile = LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE,"");
         if (LauncherProfiles.mainProfileJson == null || !LauncherProfiles.mainProfileJson.profiles.containsKey(selectedProfile)){
+            Log.i(TAG, "LauncherProfiles.mainProfileJson == null = " +
+                    (LauncherProfiles.mainProfileJson == null) +
+                    "!LauncherProfiles.mainProfileJson.profiles.containsKey(selectedProfile) = "
+                    + (!LauncherProfiles.mainProfileJson.profiles.containsKey(selectedProfile)));
             Toast.makeText(this, R.string.error_no_version, Toast.LENGTH_LONG).show();
             return false;
         }

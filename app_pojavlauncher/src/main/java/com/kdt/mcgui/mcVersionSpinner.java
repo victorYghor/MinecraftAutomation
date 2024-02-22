@@ -60,7 +60,9 @@ public class mcVersionSpinner extends ExtendedTextView {
     private int mSelectedIndex;
     private static String TAG = "mcVersionSpinner.java";
 
-    // todo where this profile adapter is used ?
+    /**
+     *
+     */
     private final ProfileAdapter mProfileAdapter = new ProfileAdapter(new ProfileAdapterExtra[]{
             new ProfileAdapterExtra(VERSION_SPINNER_PROFILE_CREATE,
                     R.string.create_profile,

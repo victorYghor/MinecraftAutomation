@@ -30,7 +30,8 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
             .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "0")
             .commit()
         LauncherPreferences.loadPreferences(context)
-        Log.i(TAG, "The current profile is ${LauncherPreferences.PREF_KEY_CURRENT_PROFILE}")
+        val profile = LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "")
+        Log.i(TAG, "The current profile is $profile")
         Log.i(TAG, "Start the game")
         ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
     }
