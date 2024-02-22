@@ -20,18 +20,18 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
 
     private val forgerInstaller = ForgerInstaller(context, popStack = popStack)
     fun start() {
-        runBlocking {
+        LauncherPreferences.loadPreferences(context)
+        if (LauncherPreferences.PREF_FIRST_INSTALLATION) {
             Log.i(TAG, "start forge installation")
             forgerInstaller.install()
-            delay(36000)
-            Log.i(TAG, "select the correct option")
-            LauncherPreferences.DEFAULT_PREF.edit()
-                .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "0")
-                .commit()
-            delay(100)
-            Log.i(TAG, "Start the game")
-            ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
         }
-
+        Log.i(TAG, "select the correct option")
+        LauncherPreferences.DEFAULT_PREF.edit()
+            .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "0")
+            .commit()
+        LauncherPreferences.loadPreferences(context)
+        Log.i(TAG, "The current profile is ${LauncherPreferences.PREF_KEY_CURRENT_PROFILE}")
+        Log.i(TAG, "Start the game")
+        ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
     }
 }

@@ -116,7 +116,9 @@ public class mcVersionSpinner extends ExtendedTextView {
                     : getProfileAdapter().resolveProfileIndex(extra_value);
         }else
             profileIndex = mProfileAdapter.resolveProfileIndex(
-                    LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE,""));
+                    LauncherPreferences.DEFAULT_PREF
+                            .getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE,"")
+            );
 
         setProfileSelection(Math.max(0,profileIndex));
         /** set the comportment of view pop up

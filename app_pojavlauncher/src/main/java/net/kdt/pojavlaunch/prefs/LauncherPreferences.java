@@ -21,7 +21,7 @@ public class LauncherPreferences {
 
     public static SharedPreferences DEFAULT_PREF;
     public static String PREF_RENDERER = "opengles2";
-
+    public static boolean PREF_FIRST_INSTALLATION = true;
 	public static boolean PREF_VERTYPE_RELEASE = true;
 	public static boolean PREF_VERTYPE_SNAPSHOT = false;
 	public static boolean PREF_VERTYPE_OLDALPHA = false;
@@ -77,6 +77,8 @@ public class LauncherPreferences {
         PREF_RENDERER = DEFAULT_PREF.getString("renderer", "opengles2");
         PREF_BUTTONSIZE = DEFAULT_PREF.getInt("buttonscale", 100);
         PREF_MOUSESCALE = DEFAULT_PREF.getInt("mousescale", 100);
+        // first installation
+        PREF_FIRST_INSTALLATION = DEFAULT_PREF.getBoolean("first_installation", true);
 		PREF_MOUSESPEED = ((float)DEFAULT_PREF.getInt("mousespeed",100))/100f;
 		PREF_HIDE_SIDEBAR = DEFAULT_PREF.getBoolean("hideSidebar", false);
 		PREF_IGNORE_NOTCH = DEFAULT_PREF.getBoolean("ignoreNotch", false);

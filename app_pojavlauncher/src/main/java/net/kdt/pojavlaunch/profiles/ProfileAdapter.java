@@ -23,7 +23,7 @@ import java.util.Map;
 
 import fr.spse.extended_view.ExtendedTextView;
 
-/*
+/**
  * Adapter for listing launcher profiles in a Spinner
  */
 public class ProfileAdapter extends BaseAdapter {

@@ -12,6 +12,7 @@ import net.kdt.pojavlaunch.modloaders.ForgeDownloadTask
 import net.kdt.pojavlaunch.modloaders.ForgeUtils
 import net.kdt.pojavlaunch.modloaders.ModloaderDownloadListener
 import net.kdt.pojavlaunch.modloaders.ModloaderListenerProxy
+import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
 import java.io.File
 
@@ -47,6 +48,8 @@ class ForgerInstaller(private val context: Context, val popStack: () -> Boolean)
         val modInstallerStartIntent = Intent(context, JavaGUILauncherActivity::class.java)
         ForgeUtils.addAutoInstallArgs(modInstallerStartIntent, downloadedFile, true)
         context.startActivity(modInstallerStartIntent)
+        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
+        Log.i(TAG, "the value of first_installation is ${LauncherPreferences.PREF_FIRST_INSTALLATION}")
     }
 
     override fun onDataNotAvailable() {
