@@ -31,6 +31,8 @@ import net.kdt.pojavlaunch.fragments.ProfileTypeSelectFragment;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.profiles.ProfileAdapter;
 import net.kdt.pojavlaunch.profiles.ProfileAdapterExtra;
+import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles;
+import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftProfile;
 
 import fr.spse.extended_view.ExtendedTextView;
 
@@ -80,6 +82,8 @@ public class mcVersionSpinner extends ExtendedTextView {
                 .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE,
                         mProfileAdapter.getItem(position).toString())
                 .apply();
+        final MinecraftProfile profile = LauncherProfiles.getCurrentProfile();
+        Log.i(TAG, "the current profile is: \n" + profile.toString());
         Log.i(TAG, "Change the current profile the new position is " + position);
     }
 

@@ -15,12 +15,14 @@ import java.util.Map;
 import java.util.UUID;
 
 public class LauncherProfiles {
+    private static final String TAG = "LauncherProfiles.java";
     public static MinecraftLauncherProfiles mainProfileJson;
     private static final File launcherProfilesFile = new File(Tools.DIR_GAME_NEW, "launcher_profiles.json");
 
     /** Reload the profile from the file, creating a default one if necessary */
     public static void load(){
         if (launcherProfilesFile.exists()) {
+            Log.i(TAG, "load profiles form the file");
             try {
                 mainProfileJson = Tools.GLOBAL_GSON.fromJson(Tools.read(launcherProfilesFile.getAbsolutePath()), MinecraftLauncherProfiles.class);
             } catch (IOException e) {

@@ -1,6 +1,9 @@
 package net.kdt.pojavlaunch.value.launcherprofiles;
 
 import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
+
+import java.util.Arrays;
 
 @Keep
 public class MinecraftProfile {
@@ -52,5 +55,26 @@ public class MinecraftProfile {
 		pojavRendererName = profile.pojavRendererName;
 		controlFile = profile.controlFile;
 		resolution = profile.resolution;
+	}
+
+	@NonNull
+	@Override
+	public String toString() {
+		return "MinecraftProfile{" +
+				"name='" + name + '\'' +
+				", type='" + type + '\'' +
+				", created='" + created + '\'' +
+				", lastUsed='" + lastUsed + '\'' +
+				", icon='" + icon + '\'' +
+				", lastVersionId='" + lastVersionId + '\'' +
+				", gameDir='" + gameDir + '\'' +
+				", javaDir='" + javaDir + '\'' +
+				", javaArgs='" + javaArgs + '\'' +
+				", logConfig='" + logConfig + '\'' +
+				", logConfigIsXML=" + logConfigIsXML +
+				", pojavRendererName='" + pojavRendererName + '\'' +
+				", controlFile='" + controlFile + '\'' +
+				", resolution=" + Arrays.toString(resolution) +
+				'}';
 	}
 }
