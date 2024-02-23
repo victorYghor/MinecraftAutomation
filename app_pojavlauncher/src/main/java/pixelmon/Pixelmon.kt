@@ -5,6 +5,7 @@ import android.util.Log
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
+import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 
 class Pixelmon(private val context: Context, popStack: () -> Boolean) {
     companion object {
@@ -18,8 +19,16 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
 
     private val forgerInstaller = ForgerInstaller(context, popStack = popStack)
     fun start() {
-        Log.i(TAG, "the value of first_installation is ${LauncherPreferences.PREF_FIRST_INSTALLATION}")
         LauncherPreferences.loadPreferences(context)
+        val profile = LauncherProfiles.getCurrentProfile()
+        Log.i(
+            TAG, """
+            The current profile have
+            gameDIr: ${profile.gameDir}
+            name : ${profile.name}
+            last used: ${profile.lastUsed}
+        """.trimIndent()
+        )
         if (LauncherPreferences.PREF_FIRST_INSTALLATION) {
             Log.i(TAG, "start forge installation")
             forgerInstaller.install()
