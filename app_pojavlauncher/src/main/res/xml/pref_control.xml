@@ -13,8 +13,7 @@
         <intent android:targetPackage="@string/application_package" android:targetClass="net.kdt.pojavlaunch.CustomControlsActivity" android:action=".CustomControlsActivity"/>
     </Preference>
 
-    <PreferenceCategory
-        android:title="@string/preference_category_gestures">
+    <PreferenceCategory>
 
         <androidx.preference.SwitchPreferenceCompat
             android:defaultValue="false"
@@ -41,8 +40,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/preference_category_buttons">
+    <PreferenceCategory>
 
         <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
             android:key="buttonscale"

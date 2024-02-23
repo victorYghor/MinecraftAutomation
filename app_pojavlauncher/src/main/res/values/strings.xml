@@ -56,6 +56,8 @@
     <string name="mcl_setting_veroption_release">Versões finais</string>
     <string name="mcl_setting_veroption_snapshot">Snapshot</string>
     <string name="mcl_setting_veroption_oldalpha">Alpha antiga</string>
+    <string name="notification_permission_dialog_title">Solicitação de permissão</string>
+    <string name="notification_permission_dialog_text">Pixelmon Brasil precisa de permissão para criar notificações para evitar que o downloads de modpacks ou games parem quando você sai do app. Sem essa permissão, android pode cancelar os downloads, quando você coloca o app pixelmon no background.</string>
     <string name="mcl_setting_veroption_oldbeta">Beta antiga</string>
     <string name="mcl_setting_java_sandbox">Execução sandbox .jar</string>
     <string name="mcl_setting_java_sandbox_subtitle">Controla a disponibilidade do gerenciador de segurança da sandbox ao executar um arquivo .jar.</string>
@@ -297,4 +299,5 @@
     <string name="notif_error_occured">Ocorreu um erro</string>
     <string name="notif_error_occured_desc">Clique para mais detalhes</string>
     <string name="fabric_dl_only_stable">Mostrar apenas versões estáveis</string>
+    <string name="notification_permission_dialog_title" />
 </resources>

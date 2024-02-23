@@ -37,7 +37,6 @@
         android:id="@+id/color_selector_hex_edit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/color_default_hex"
         android:gravity="center"
         android:importantForAutofill="no"
         android:inputType="text"

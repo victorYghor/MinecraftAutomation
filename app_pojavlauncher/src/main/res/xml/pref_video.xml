@@ -4,7 +4,7 @@
 
     <net.kdt.pojavlaunch.prefs.BackButtonPreference/>
 
-    <PreferenceCategory android:title="@string/preference_category_video" >
+    <PreferenceCategory>
         <androidx.preference.ListPreference
             android:title="@string/mcl_setting_category_renderer"
             android:key="renderer"
@@ -52,8 +52,6 @@
         <androidx.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="vsync_in_zink"
-            android:summary="@string/preference_vsync_in_zink_description"
-            android:title="@string/preference_vsync_in_zink_title"
             />
     </PreferenceCategory>
 </PreferenceScreen>
