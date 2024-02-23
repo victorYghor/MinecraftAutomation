@@ -299,5 +299,27 @@
     <string name="notif_error_occured">Ocorreu um erro</string>
     <string name="notif_error_occured_desc">Clique para mais detalhes</string>
     <string name="fabric_dl_only_stable">Mostrar apenas versões estáveis</string>
-    <string name="notification_permission_dialog_title" />
+    <!-- Translation of new strings -->
+    <string name="notif_channel_id" translatable="false">channel_id</string>
+    <string name="notif_download_finished">O jogo está pronto para iniciar</string>
+    <string name="notif_download_finished_desc">Click aqui para começar!</string>
+    <string name="dl_tampered_manifest_title">Aviso de verificação de arquivo</string>
+    <string name="dl_tampered_manifest">
+    ![CDATA[O manifesto da versão do jogo no espelho não corresponde ao manifesto oficial da versão Mojang, o que significa que pode ter sido adulterado.<br/> <b>Isso não é seguro. Suas informações pessoais podem estar em risco se você continuar.</b><br/> Se você ainda quiser usar o espelho, pressione \"Desativar verificações de manifesto\" e inicie o download novamente.<br/> Se desejar para usar a fonte de download oficial, pressione \"Mudar para o site oficial\" e inicie o download novamente.<br/>]]
+    </string>
+    <string name="dl_switch_to_official_site">Mudar para o site oficial</string>
+
+    <string name="dl_turn_off_manifest_checks">Desativar verificações de manifesto</string>
+
+    <string name="notif_channel_id" translatable="false">channel_id</string>
+
+    <string name="newdl_starting">Lendo metadados do jogo…</string>
+
+    <string name="exception_failed_to_unpack_jre17">Falha ao instalar JRE 17</string>
+
+    <string name="newdl_downloading_game_files">Baixando arquivos do jogo… (%d/%d, %.2f MB)</string>
+
+    <string name="newdl_downloading_metadata">Baixando metadados do jogo (%s)</string>
+
+    <string name="notification_permission_toast">Você sempre pode mudar de ideia mais tarde indo para Configurações</string>
 </resources>
