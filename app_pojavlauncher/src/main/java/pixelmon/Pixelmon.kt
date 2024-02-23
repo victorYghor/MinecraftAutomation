@@ -35,17 +35,17 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
         } else {
             launchGame()
         }
-//        changeProfile()
+        changeProfile()
     }
 
 
-//    fun changeProfile() {
-//        Log.i(TAG, "select the correct option")
-//        LauncherPreferences.DEFAULT_PREF.edit()
-//            .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "0")
-//            .commit()
-//        LauncherPreferences.loadPreferences(context)
-//        val profile = LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "")
-//        Log.i(TAG, "The current profile is $profile")
-//    }
+    fun changeProfile() {
+        Log.i(TAG, "select the correct option")
+        LauncherPreferences.DEFAULT_PREF.edit()
+            .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "0")
+            .commit()
+        LauncherPreferences.loadPreferences(context)
+        val profile = LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "")
+        Log.i(TAG, "The current profile is $profile")
+    }
 }

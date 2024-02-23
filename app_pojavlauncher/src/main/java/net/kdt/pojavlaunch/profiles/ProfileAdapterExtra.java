@@ -2,6 +2,9 @@ package net.kdt.pojavlaunch.profiles;
 
 import android.graphics.drawable.Drawable;
 
+/** Class with general information about one profile
+ *
+ */
 public class ProfileAdapterExtra {
     public final int id;
     public final int name;

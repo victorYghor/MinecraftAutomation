@@ -118,6 +118,10 @@ public class ProfileAdapter extends BaseAdapter {
         }else extendedTextView.setBackgroundColor(Color.TRANSPARENT);
     }
 
+    /** Set text, icon background color for a profile visualization.
+     * @param v
+     * @param extra
+     */
     public void setViewExtra(View v, ProfileAdapterExtra extra) {
         ExtendedTextView extendedTextView = (ExtendedTextView) v;
         extendedTextView.setCompoundDrawablesRelative(extra.icon, null, extendedTextView.getCompoundsDrawables()[2], null);
