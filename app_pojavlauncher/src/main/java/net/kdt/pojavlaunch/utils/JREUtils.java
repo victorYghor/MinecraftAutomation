@@ -260,7 +260,7 @@ public class JREUtils {
             try {
                 Os.setenv(env.getKey(), env.getValue(), true);
             }catch (NullPointerException exception){
-                Os.setenv(env.getKey(), env.getValue(), true);
+                exception.printStackTrace();
                 Log.e("JREUtils", exception.toString());
             }
         }
