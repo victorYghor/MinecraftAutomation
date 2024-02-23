@@ -4,10 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Runnable
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import net.kdt.pojavlaunch.JavaGUILauncherActivity
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
@@ -17,8 +13,6 @@ import net.kdt.pojavlaunch.modloaders.ModloaderDownloadListener
 import net.kdt.pojavlaunch.modloaders.ModloaderListenerProxy
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
-import pixelmon.Pixelmon.Companion.startGame
-import pixelmon.Version.FORGE
 import java.io.File
 
 class ForgerInstaller(private val context: Context, val popStack: () -> Boolean) :
@@ -37,7 +31,9 @@ class ForgerInstaller(private val context: Context, val popStack: () -> Boolean)
         Log.i(TAG, "Starting the download")
         Thread {
             downloadTask.run()
-            Pixelmon.startGame()
+            Tools.runOnUiThread {
+                Pixelmon.launchGame()
+            }
         }.start()
         Log.i(TAG, "Download finished")
     }
