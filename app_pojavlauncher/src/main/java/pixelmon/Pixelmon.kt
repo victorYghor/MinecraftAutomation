@@ -17,6 +17,10 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
     companion object {
         @JvmStatic
         private val TAG = "Pixelmon.kt"
+        fun startGame() {
+            Log.i(TAG, "Start the game")
+            ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
+        }
     }
 
     private val forgerInstaller = ForgerInstaller(context, popStack = popStack)
@@ -28,9 +32,8 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
             forgerInstaller.install()
         }
 //        changeProfile()
-        Log.i(TAG, "Start the game")
-        ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
     }
+
 
     fun changeProfile() {
         Log.i(TAG, "select the correct option")
