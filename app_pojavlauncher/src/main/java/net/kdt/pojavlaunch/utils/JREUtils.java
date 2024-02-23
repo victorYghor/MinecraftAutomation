@@ -258,7 +258,9 @@ public class JREUtils {
         for (Map.Entry<String, String> env : envMap.entrySet()) {
             Logger.appendToLog("Added custom env: " + env.getKey() + "=" + env.getValue());
             try {
-                Os.setenv(env.getKey(), env.getValue(), true);
+                if(env.getKey() != null && env.getValue() != null) {
+                    Os.setenv(env.getKey(), env.getValue(), true);
+                }
             }catch (NullPointerException exception){
                 exception.printStackTrace();
                 Log.e("JREUtils", exception.toString());
