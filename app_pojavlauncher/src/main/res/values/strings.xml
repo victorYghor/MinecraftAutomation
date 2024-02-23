@@ -311,8 +311,6 @@
 
     <string name="dl_turn_off_manifest_checks">Desativar verificações de manifesto</string>
 
-    <string name="notif_channel_id" translatable="false">channel_id</string>
-
     <string name="newdl_starting">Lendo metadados do jogo…</string>
 
     <string name="exception_failed_to_unpack_jre17">Falha ao instalar JRE 17</string>
