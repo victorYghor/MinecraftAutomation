@@ -299,10 +299,16 @@ public class mcAccountSpinner extends AppCompatSpinner implements AdapterView.On
         }else {
             // Get the current profile, or the first available profile if the wanted one is unavailable
             selectedAccount = PojavProfile.getCurrentProfileContent(getContext(), null);
-            int spinnerPosition = selectedAccount == null
-                    ? mAccountList.size() <= 1 ? 0 : 1
-                    : mAccountList.indexOf(selectedAccount.username);
-            setSelection(spinnerPosition, false);
+            int spinnerPosition;
+            if(selectedAccount == null) {
+                if(mAccountList.size() <= 1) {
+                    spinnerPosition = 0;
+                } else {
+                    spinnerPosition = 1;
+                }
+            } else {
+                spinnerPosition = mAccountList.indexOf(selectedAccount.username);
+            }
         }
 
         mSelectecAccount = selectedAccount;

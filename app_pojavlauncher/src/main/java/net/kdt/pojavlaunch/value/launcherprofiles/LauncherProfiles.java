@@ -22,7 +22,7 @@ public class LauncherProfiles {
     /** Reload the profile from the file, creating a default one if necessary */
     public static void load(){
         if (launcherProfilesFile.exists()) {
-            Log.i(TAG, "load profiles form the file");
+            Log.w(TAG, "load profiles form the file");
             try {
                 mainProfileJson = Tools.GLOBAL_GSON.fromJson(Tools.read(launcherProfilesFile.getAbsolutePath()), MinecraftLauncherProfiles.class);
             } catch (IOException e) {
@@ -102,6 +102,7 @@ public class LauncherProfiles {
 
         // Swap the new keys
         for(String profileKey : keys){
+            // remove o profile antigo com a chave ruim e coloca um novo profile com uma boa chave
             MinecraftProfile currentProfile = launcherProfiles.profiles.get(profileKey);
             insertMinecraftProfile(currentProfile);
             launcherProfiles.profiles.remove(profileKey);

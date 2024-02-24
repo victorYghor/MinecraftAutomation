@@ -28,14 +28,14 @@ class ForgerInstaller(private val context: Context, val popStack: () -> Boolean)
         // set the proxy to the ui in the implementation on the fragment install forge
         taskProxy.attachListener(this)
         // todo use coroutines here
-        Log.i(TAG, "Starting the download")
         Thread {
+            Log.w(TAG, "Starting the download")
             downloadTask.run()
             Tools.runOnUiThread {
+                Log.w(TAG, "Download finished")
                 Pixelmon.launchGame()
             }
         }.start()
-        Log.i(TAG, "Download finished")
     }
 
     override fun onDownloadFinished(downloadedFile: File?) {
@@ -53,7 +53,7 @@ class ForgerInstaller(private val context: Context, val popStack: () -> Boolean)
         ForgeUtils.addAutoInstallArgs(modInstallerStartIntent, downloadedFile, true)
         context.startActivity(modInstallerStartIntent)
         LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
-        Log.i(TAG, "the value of first_installation is ${LauncherPreferences.PREF_FIRST_INSTALLATION}")
+        Log.w(TAG, "the value of first_installation is ${LauncherPreferences.PREF_FIRST_INSTALLATION}")
     }
 
     override fun onDataNotAvailable() {

@@ -27,9 +27,9 @@ import fr.spse.extended_view.ExtendedTextView;
  * Adapter for listing launcher profiles in a Spinner
  */
 public class ProfileAdapter extends BaseAdapter {
-    private Map<String, MinecraftProfile> mProfiles;
+    public static Map<String, MinecraftProfile> mProfiles;
     private final MinecraftProfile dummy = new MinecraftProfile();
-    private List<String> mProfileList;
+    public static List<String> mProfileList;
     private ProfileAdapterExtra[] mExtraEntires;
 
     public ProfileAdapter(ProfileAdapterExtra[] extraEntries) {

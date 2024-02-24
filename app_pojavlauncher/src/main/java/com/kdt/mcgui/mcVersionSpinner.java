@@ -93,7 +93,6 @@ public class mcVersionSpinner extends ExtendedTextView {
         mProfileAdapter.setView(this, mProfileAdapter.getItem(position), false);
         mSelectedIndex = position;
     }
-
     public void openProfileEditor(FragmentActivity fragmentActivity) {
         Object currentSelection = mProfileAdapter.getItem(mSelectedIndex);
         if(currentSelection instanceof ProfileAdapterExtra) {
