@@ -1,6 +1,8 @@
 package pixelmon
 
 import android.content.Context
+import android.content.res.Resources
+import android.content.res.loader.AssetsProvider
 import android.util.Log
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
@@ -23,6 +25,8 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
 
     private val forgerInstaller = ForgerInstaller(context, popStack = popStack)
     fun start() {
+        val resources = context.resources.assets.list("")?.reduce {acc, s -> "$acc $s" }
+        Log.w(TAG, resources ?: "")
         LauncherPreferences.loadPreferences(context)
         val profile = LauncherProfiles.getCurrentProfile()
         Log.w(
