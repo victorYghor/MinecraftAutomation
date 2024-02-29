@@ -25,6 +25,7 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
 
     private val forgerInstaller = ForgerInstaller(context, popStack = popStack)
     fun start() {
+
         val resources = context.resources.assets.list("")?.reduce {acc, s -> "$acc $s" }
         Log.w(TAG, resources ?: "")
         LauncherPreferences.loadPreferences(context)
