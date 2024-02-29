@@ -110,6 +110,9 @@ public final class Tools {
     // New since 3.3.1
     public static String DIR_ACCOUNT_NEW;
     public static String DIR_GAME_HOME = Environment.getExternalStorageDirectory().getAbsolutePath() + "/games/PojavLauncher";
+    /**
+     * Dir in android system accessed by android/data/package_name
+     */
     public static String DIR_GAME_NEW;
 
     // New since 3.0.0
@@ -157,7 +160,7 @@ public final class Tools {
         DIR_DATA = ctx.getFilesDir().getParent();
         MULTIRT_HOME = DIR_DATA+"/runtimes";
         DIR_GAME_HOME = getPojavStorageRoot(ctx).getAbsolutePath();
-        DIR_GAME_NEW = DIR_GAME_HOME + "/.minecraft";
+        DIR_GAME_NEW = DIR_GAME_HOME + "/minecraft";
         DIR_HOME_VERSION = DIR_GAME_NEW + "/versions";
         DIR_HOME_LIBRARY = DIR_GAME_NEW + "/libraries";
         DIR_HOME_CRASH = DIR_GAME_NEW + "/crash-reports";

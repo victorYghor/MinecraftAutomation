@@ -141,7 +141,7 @@ public class FileListView extends LinearLayout
                             if(file.isDirectory()){
                                 /* add the files that don't start with "." or start with .minecraft,
                                  and only when showFolders is turn on */
-                                if(showFolders && ((!file.getName().startsWith(".")) || file.getName().equals(".minecraft")))
+                                if(showFolders && ((!file.getName().startsWith(".")) || file.getName().equals("minecraft")))
                                     fileAdapter.add(file);
                                 continue;
                             }

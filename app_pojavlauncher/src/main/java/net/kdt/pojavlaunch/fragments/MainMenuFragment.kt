@@ -1,7 +1,9 @@
 package net.kdt.pojavlaunch.fragments
 
 import android.content.Intent
+import android.content.res.AssetManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -14,6 +16,7 @@ import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
+import pixelmon.MinecraftAssets
 import pixelmon.Pixelmon
 import java.io.File
 
@@ -71,12 +74,6 @@ class MainMenuFragment : Fragment(R.layout.fragment_launcher) {
             )
             true
         }
-
-        val inputStream = context?.assets?.open("components/test.txt")
-        val text = inputStream?.bufferedReader().use { it?.readText() }
-        inputStream?.close()
-        val outFile = File(context?.getExternalFilesDir(null), "/caciocavallo/testOut.txt")
-        outFile.writeText(text ?: "")
     }
 
     override fun onResume() {
