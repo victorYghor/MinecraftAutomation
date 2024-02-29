@@ -24,6 +24,10 @@ import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Pop up for showing the forge versions
+ * @param <T>
+ */
 public abstract class ModVersionListFragment<T> extends Fragment implements Runnable, View.OnClickListener, ExpandableListView.OnChildClickListener, ModloaderDownloadListener {
     public static final String TAG = "ForgeInstallFragment";
     private ExpandableListView mExpandableListView;

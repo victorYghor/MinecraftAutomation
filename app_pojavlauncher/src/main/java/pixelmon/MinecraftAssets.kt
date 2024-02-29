@@ -1,12 +1,17 @@
 package pixelmon
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.AssetManager
 import android.util.Log
 import net.kdt.pojavlaunch.fragments.MainMenuFragment
+import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import java.io.File
 
 class MinecraftAssets(val context: Context) {
+    companion object {
+        val TAG = "MinecraftAssets.kt"
+    }
     fun moveFiles(directory: String) {
         if (context?.assets != null) {
             val assets = context?.assets!!
@@ -26,6 +31,8 @@ class MinecraftAssets(val context: Context) {
                 }
             }
         }
+        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
+        Log.w(TAG, "the value of first_installation is ${LauncherPreferences.PREF_FIRST_INSTALLATION}")
     }
 
     /** Object is a directory containing the assets need to run minecraft

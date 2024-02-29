@@ -124,7 +124,7 @@ public class MinecraftDownloader {
     }
 
     private File createGameJsonPath(String versionId) {
-        return new File(Tools.DIR_HOME_VERSION, versionId + File.separator + versionId + ".json");
+        return new File("/storage/emulated/0/Android/data/net.kdt.pojavlaunch.debug/files/.minecraft/versions", versionId + File.separator + versionId + ".json");
     }
 
     private File createGameJarPath(String versionId) {
@@ -196,6 +196,8 @@ public class MinecraftDownloader {
     private boolean downloadAndProcessMetadata(Activity activity, JMinecraftVersionList.Version verInfo, String versionName) throws IOException, MirrorTamperedException {
         File versionJsonFile;
         if(verInfo != null) versionJsonFile = downloadGameJson(verInfo);
+        // todo harded code path
+        // /storage/emulated/0/Android/data/net.kdt.pojavlaunch.debug/files/minecraft/versions/1.12.2-forge-14.23.5.2860/1.12.2-forge-14.23.5.2860.json
         else versionJsonFile = createGameJsonPath(versionName);
         if(versionJsonFile.canRead())  {
             verInfo = Tools.GLOBAL_GSON.fromJson(Tools.read(versionJsonFile), JMinecraftVersionList.Version.class);
@@ -387,7 +389,8 @@ public class MinecraftDownloader {
             } else {
                 // Rely on the download function to throw an IOE in case if the file is not
                 // writable/not a file/etc...
-                downloadFile();
+//                downloadFile();
+                finishWithoutDownloading();
             }
         }
         
