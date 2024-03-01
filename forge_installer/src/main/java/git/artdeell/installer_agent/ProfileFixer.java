@@ -35,10 +35,12 @@ public class ProfileFixer {
     }
     public static void reinsertProfile(String profileName, String modpackFixupId, boolean suppressProfileCreation) {
             try {
+                String minecraftProfileString = new String(Files.readAllBytes(profilesPath),
+                        StandardCharsets.UTF_8);
                 JSONObject minecraftProfiles = new JSONObject(
-                        new String(Files.readAllBytes(profilesPath),
-                                StandardCharsets.UTF_8)
+                        minecraftProfileString
                 );
+                // pelo que lembro dentor o json com os profiles todos os profiles deve
                 JSONObject profilesArray = minecraftProfiles.getJSONObject("profiles");
                 profileName = findProfileName(profileName, profilesArray);
                 if(modpackFixupId != null) fixupModpackProfile(profileName, modpackFixupId, profilesArray);

@@ -4,11 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.AssetManager
 import android.util.Log
+import kotlinx.coroutines.Runnable
 import net.kdt.pojavlaunch.fragments.MainMenuFragment
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import java.io.File
 
-class MinecraftAssets(val context: Context) {
+class MinecraftAssets(val context: Context): Runnable {
     companion object {
         val TAG = "MinecraftAssets.kt"
     }
@@ -45,10 +46,20 @@ class MinecraftAssets(val context: Context) {
     }
 
     private fun putFilesInData(name: String, assets: AssetManager) {
-        val outFile = File(context?.getExternalFilesDir(null), "." + name)
+        val outFile = File(context.getExternalFilesDir(null), "." + name)
         Log.d(MainMenuFragment.TAG, "Attempting to write to: " + outFile.absolutePath)
         val copiedFile = assets.open(name)
         outFile.writeBytes(copiedFile.readBytes())
         copiedFile.close()
+    }
+//    fun checkFileIntegrity(directory: String): Boolean {
+//        val rootDirectory = File(context.getExternalFilesDir(null), directory)
+//        for(file in rootDirectory.list()) {
+//            if(context.assets.open(directory.drop(1) + "/" + file))
+//        }
+//    }
+
+    override fun run() {
+        moveFiles(".minecraft")
     }
 }

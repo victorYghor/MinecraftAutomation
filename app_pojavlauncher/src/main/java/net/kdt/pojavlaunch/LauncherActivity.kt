@@ -216,7 +216,7 @@ class LauncherActivity : BaseActivity() {
         mProgressLayout!!.observe(ProgressLayout.AUTHENTICATE_MICROSOFT)
         mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_VERSION_LIST)
         if(LauncherPreferences.PREF_FIRST_INSTALLATION) {
-            MinecraftAssets(this).moveFiles("minecraft")
+            Thread(MinecraftAssets(this))
         }
     }
 
