@@ -25,9 +25,6 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
 
     private val forgerInstaller = ForgerInstaller(context, popStack = popStack)
     fun start() {
-
-        val resources = context.resources.assets.list("")?.reduce {acc, s -> "$acc $s" }
-        Log.w(TAG, resources ?: "")
         LauncherPreferences.loadPreferences(context)
         val profile = LauncherProfiles.getCurrentProfile()
         Log.w(
@@ -38,13 +35,7 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
             last used: ${profile.lastUsed}
         """.trimIndent()
         )
-        if (LauncherPreferences.PREF_FIRST_INSTALLATION) {
-            Log.w(TAG, "start forge installation")
-            forgerInstaller.install()
-        } else {
-            launchGame()
-        }
-        changeProfile()
+        launchGame()
     }
 
 

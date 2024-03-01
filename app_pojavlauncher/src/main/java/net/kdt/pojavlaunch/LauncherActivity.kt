@@ -215,9 +215,9 @@ class LauncherActivity : BaseActivity() {
         mProgressLayout!!.observe(ProgressLayout.INSTALL_MODPACK)
         mProgressLayout!!.observe(ProgressLayout.AUTHENTICATE_MICROSOFT)
         mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_VERSION_LIST)
-//        if(LauncherPreferences.PREF_FIRST_INSTALLATION) {
-//            MinecraftAssets(this).moveFiles("minecraft")
-//        }
+        if(LauncherPreferences.PREF_FIRST_INSTALLATION) {
+            MinecraftAssets(this).moveFiles("minecraft")
+        }
     }
 
     override fun onResume() {
