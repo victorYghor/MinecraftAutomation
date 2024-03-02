@@ -8,12 +8,15 @@ import kotlinx.coroutines.Runnable
 import net.kdt.pojavlaunch.fragments.MainMenuFragment
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import java.io.File
+import java.nio.file.Files
 
 class MinecraftAssets(val context: Context): Runnable {
     companion object {
         val TAG = "MinecraftAssets.kt"
+        val filesCount = mutableListOf<Boolean>()
     }
     fun moveFiles(directory: String) {
+//        Log.i(TAG, "start moving files")
         if (context?.assets != null) {
             val assets = context?.assets!!
             assets.list(directory)?.let {
@@ -33,7 +36,7 @@ class MinecraftAssets(val context: Context): Runnable {
             }
         }
         LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
-        Log.w(TAG, "the value of first_installation is ${LauncherPreferences.PREF_FIRST_INSTALLATION}")
+//        Log.w(TAG, "the value of first_installation is ${LauncherPreferences.PREF_FIRST_INSTALLATION}")
     }
 
     /** Object is a directory containing the assets need to run minecraft
@@ -47,6 +50,7 @@ class MinecraftAssets(val context: Context): Runnable {
 
     private fun putFilesInData(name: String, assets: AssetManager) {
         val outFile = File(context.getExternalFilesDir(null), "." + name)
+        filesCount.add(outFile.exists())
         Log.d(MainMenuFragment.TAG, "Attempting to write to: " + outFile.absolutePath)
         val copiedFile = assets.open(name)
         outFile.writeBytes(copiedFile.readBytes())
@@ -60,6 +64,7 @@ class MinecraftAssets(val context: Context): Runnable {
 //    }
 
     override fun run() {
-        moveFiles(".minecraft")
+        Log.i(TAG, "call run from MinecraftAssets.kt")
+        moveFiles("minecraft")
     }
 }

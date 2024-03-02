@@ -74,6 +74,7 @@ class MainMenuFragment : Fragment(R.layout.fragment_launcher) {
             )
             true
         }
+
     }
 
     override fun onResume() {

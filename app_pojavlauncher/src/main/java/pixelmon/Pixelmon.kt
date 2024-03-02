@@ -35,6 +35,7 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
             last used: ${profile.lastUsed}
         """.trimIndent()
         )
+        Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
         launchGame()
     }
 
