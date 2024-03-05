@@ -17,16 +17,16 @@ class MinecraftAssets(val context: Context): Runnable {
     }
     fun moveFiles(directory: String) {
 //        Log.i(TAG, "start moving files")
-        if (context?.assets != null) {
-            val assets = context?.assets!!
+        if (context.assets != null) {
+            val assets = context.assets
             assets.list(directory)?.let {
                 try {
                     for (dir in it) {
-                        if (dir.isFile() || directory.isObjectsDir()) {
+                        if (isFile(directory + "/" + dir)) {
                             putFilesInData(assets = assets, name =  directory + "/" + dir)
                         } else {
                             val newDirectory = "$directory/$dir"
-                            File(context?.getExternalFilesDir(null), "." + newDirectory).mkdir()
+                            File(context.getExternalFilesDir(null), "." + newDirectory).mkdirs()
                             moveFiles(newDirectory)
                         }
                     }
@@ -35,17 +35,13 @@ class MinecraftAssets(val context: Context): Runnable {
                 }
             }
         }
-        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
+//        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
 //        Log.w(TAG, "the value of first_installation is ${LauncherPreferences.PREF_FIRST_INSTALLATION}")
     }
 
-    /** Object is a directory containing the assets need to run minecraft
-     */
-    fun String.isObjectsDir(): Boolean {
-        return this.takeLast(2).matches(Regex("([a-f]|\\d){2}"))
-    }
-    fun String.isFile(): Boolean {
-        return Regex("\\.([A-Za-z])+").containsMatchIn(this)
+    fun isFile(path: String): Boolean {
+        val file = context.assets.list(path)
+        return file?.isEmpty() ?: throw Exception("Não existe arquivo nesse path $path")
     }
 
     private fun putFilesInData(name: String, assets: AssetManager) {
