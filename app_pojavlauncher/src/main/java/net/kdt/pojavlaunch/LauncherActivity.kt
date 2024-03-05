@@ -149,6 +149,7 @@ class LauncherActivity : BaseActivity() {
             return@ExtraListener false
         }
         val prof = LauncherProfiles.mainProfileJson.profiles[selectedProfile]
+        Log.i(TAG, "The current profile is $prof, and the select profile is $selectedProfile")
         if (prof?.lastVersionId == null || "Unknown" == prof.lastVersionId) {
             Toast.makeText(this, R.string.error_no_version, Toast.LENGTH_LONG).show()
             return@ExtraListener false
