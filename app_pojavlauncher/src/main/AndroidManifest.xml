@@ -123,6 +123,11 @@
         <service
             android:name=".services.GameService"
             android:process=":game" />
+        <receiver android:name="pixelmon.mods.ModDownloadReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+            </intent-filter>
+        </receiver>
     </application>
     <queries>
         <package android:name="net.kdt.pojavlaunch.ffmpeg"/>
