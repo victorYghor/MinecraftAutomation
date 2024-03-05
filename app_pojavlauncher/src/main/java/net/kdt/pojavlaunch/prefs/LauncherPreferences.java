@@ -16,6 +16,9 @@ import net.kdt.pojavlaunch.multirt.MultiRTUtils;
 import net.kdt.pojavlaunch.utils.JREUtils;
 
 public class LauncherPreferences {
+    /**
+     * Key value pair representing the number of the profile.
+     */
     public static final String PREF_KEY_CURRENT_PROFILE = "currentProfile";
     public static final String PREF_KEY_SKIP_NOTIFICATION_CHECK = "skipNotificationPermissionCheck";
 
