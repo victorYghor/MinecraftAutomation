@@ -28,5 +28,35 @@
       "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/OptiFine.jar",
       "MD5": "043ac1db6f7441ea4cf31bcb621aff0b"
     }
+  },
+  {
+    "id": "mezz.jei:jei:4.15.0.275@jar",
+    "name": "Just Enough Items",
+    "type": "ForgeMod",
+    "artifact": {
+      "size": 647930,
+      "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/JEI.jar",
+      "MD5": "4c3284f41c01b2a378493d4e8c32575c"
+    }
+  },
+  {
+    "id": "journeymap:journeymap:1.12.2-5.7.1@jar",
+    "name": "JourneyMap",
+    "type": "ForgeMod",
+    "artifact": {
+      "size": 6780710,
+      "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/JourneyMap.jar",
+      "MD5": "41f581c60bd09f207dffb76088026771"
+    }
+  },
+  {
+    "id": "de.keksuccino:fancymenu:2.13.2@jar",
+    "name": "FancyMenu",
+    "type": "ForgeMod",
+    "artifact": {
+      "size": 1049836,
+      "url": "<https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/fancymenu_forge_2.13.2_MC_1.12-1.12.2.jar>",
+      "MD5": "a61ff5cac56305113eb44c33321b8161"
+    }
   }
 ]

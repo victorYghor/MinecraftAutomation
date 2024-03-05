@@ -27,6 +27,8 @@ class ModDownloader(private val context: Context) {
     }
     fun downloadMods() {
         Log.d(TAG, "the mods downloads start")
-        mods.forEach { download(it) }
+        Thread {
+            mods.forEach { download(it) }
+        }
     }
 }
