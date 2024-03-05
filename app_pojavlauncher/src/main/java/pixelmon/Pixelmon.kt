@@ -11,6 +11,7 @@ import net.kdt.pojavlaunch.profiles.ProfileAdapter
 import net.kdt.pojavlaunch.profiles.ProfileAdapter.mProfileList
 import net.kdt.pojavlaunch.profiles.ProfileAdapter.mProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
+import pixelmon.mods.ModDownloader
 import java.util.Arrays
 
 class Pixelmon(private val context: Context, popStack: () -> Boolean) {
@@ -36,6 +37,7 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
         """.trimIndent()
         )
         Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
+        ModDownloader(context).downloadMods()
         launchGame()
     }
 

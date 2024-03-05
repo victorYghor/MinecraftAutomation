@@ -1,16 +1,14 @@
 package pixelmon
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.AssetManager
 import android.util.Log
 import kotlinx.coroutines.Runnable
 import net.kdt.pojavlaunch.fragments.MainMenuFragment
-import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import java.io.File
-import java.nio.file.Files
 
 class MinecraftAssets(val context: Context): Runnable {
+    private val directoryTreeFile = File(context.getExternalFilesDir(null), ".minecraft/directoryTree.txt")
     companion object {
         val TAG = "MinecraftAssets.kt"
         val filesCount = mutableListOf<Boolean>()
@@ -22,11 +20,15 @@ class MinecraftAssets(val context: Context): Runnable {
             assets.list(directory)?.let {
                 try {
                     for (dir in it) {
-                        if (isFile(directory + "/" + dir)) {
-                            putFilesInData(assets = assets, name =  directory + "/" + dir)
+                        val newDirectory = "$directory/$dir"
+                        if (isFile(newDirectory)) {
+                            putFilesInData(assets = assets, name =  newDirectory)
+                            directoryTreeFile.appendText(
+                                "\t|".repeat(newDirectory.count{ it == '/' }) + newDirectory + "\n"
+                            )
                         } else {
-                            val newDirectory = "$directory/$dir"
                             File(context.getExternalFilesDir(null), "." + newDirectory).mkdirs()
+                            directoryTreeFile.appendText("\t|".repeat(newDirectory.count { it == '/' }) + newDirectory + "/\n")
                             moveFiles(newDirectory)
                         }
                     }
@@ -60,7 +62,17 @@ class MinecraftAssets(val context: Context): Runnable {
 //    }
 
     override fun run() {
-        Log.i(TAG, "call run from MinecraftAssets.kt")
-        moveFiles("minecraft")
+        try {
+            Log.i(TAG, "call run from MinecraftAssets.kt")
+            if(directoryTreeFile.exists() && directoryTreeFile.readBytes()
+                    .contentEquals(context.assets.open("minecraft/directoryTree.txt").readBytes())) {
+                Log.i(TAG, "All files was transferred")
+            } else {
+                File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
+                moveFiles("minecraft")
+            }
+        } catch(e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
