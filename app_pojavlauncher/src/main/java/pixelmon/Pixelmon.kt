@@ -38,7 +38,6 @@ class Pixelmon(private val context: Context, popStack: () -> Boolean) {
         )
         Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
         ModDownloader(context).downloadMods()
-        launchGame()
     }
 
 

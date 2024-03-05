@@ -1,9 +1,12 @@
+{
+  "mods":
 [
   {
     "id": "com.pixelmonmod:pixelmon:8.3.8@jar",
     "name": "Pixelmon",
     "type": "ForgeMod",
     "artifact": {
+      "fileName": "Pixelmon-1.12.2-8.3.8-universal.jar",
       "size": 386205079,
       "url": "https://download.nodecdn.net/containers/reforged/universal/release/Pixelmon-1.12.2-8.3.8-universal.jar",
       "MD5": "b231e74eadcd4c3bd012e094e3075944"
@@ -14,6 +17,7 @@
     "name": "CustomNPCs",
     "type": "ForgeMod",
     "artifact": {
+      "fileName": "CustomNPCs_1.12.2-05Jun21snapshot.jar",
       "size": 9924337,
       "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/CustomNPCs_1.12.2-05Jun21snapshot.jar",
       "MD5": "0fef5f8d294cc33e24f963ba27b7167a"
@@ -24,6 +28,7 @@
     "name": "OptiFine 1.12.2_HD_U_F5",
     "type": "ForgeMod",
     "artifact": {
+      "fileName": "OptiFine.jar",
       "size": 2598821,
       "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/OptiFine.jar",
       "MD5": "043ac1db6f7441ea4cf31bcb621aff0b"
@@ -34,6 +39,7 @@
     "name": "Just Enough Items",
     "type": "ForgeMod",
     "artifact": {
+      "fileName": "JEI.jar",
       "size": 647930,
       "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/JEI.jar",
       "MD5": "4c3284f41c01b2a378493d4e8c32575c"
@@ -44,6 +50,7 @@
     "name": "JourneyMap",
     "type": "ForgeMod",
     "artifact": {
+      "fileName":  "JourneyMap.jar",
       "size": 6780710,
       "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/JourneyMap.jar",
       "MD5": "41f581c60bd09f207dffb76088026771"
@@ -54,9 +61,12 @@
     "name": "FancyMenu",
     "type": "ForgeMod",
     "artifact": {
+      "fileName": "fancymenu_forge_2.13.2_MC_1.12-1.12.2.jar",
       "size": 1049836,
-      "url": "<https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/fancymenu_forge_2.13.2_MC_1.12-1.12.2.jar>",
+      "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/fancymenu_forge_2.13.2_MC_1.12-1.12.2.jar",
       "MD5": "a61ff5cac56305113eb44c33321b8161"
     }
   }
 ]
+
+}
