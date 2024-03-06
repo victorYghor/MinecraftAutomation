@@ -77,6 +77,17 @@
       "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/MainMenuScale-1.3.2.jar",
       "MD5": "851ffaf71aad9d7977be26dce6d2f595"
     }
+  },
+  {
+    "id": "reborncore:reborncore:3.19.5@jar",
+    "name": "Reborn Core",
+    "type": "ForgeMod",
+    "artifact": {
+      "fileName":"RebornCore.jar",
+      "size": 2285146,
+      "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/RebornCore.jar",
+      "MD5": "7ae0f971af00b7fea64dc850be957ddc"
+    }
   }
 ]
 
