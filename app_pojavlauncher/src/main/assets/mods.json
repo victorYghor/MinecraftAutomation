@@ -88,6 +88,17 @@
       "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/RebornCore.jar",
       "MD5": "7ae0f971af00b7fea64dc850be957ddc"
     }
+  },
+  {
+    "id": "de.keksuccino:konkrete:1.6.0@jar",
+    "name": "Konkrete",
+    "type": "ForgeMod",
+    "artifact": {
+      "fileName": "konkrete_forge_1.6.0_MC_1.12-1.12.2.jar",
+      "size": 618151,
+      "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/konkrete_forge_1.6.0_MC_1.12-1.12.2.jar",
+      "MD5": "1812e95a402c0aae9b1f00add7216e58"
+    }
   }
 ]
 
