@@ -219,6 +219,14 @@ class LauncherActivity : BaseActivity() {
         Thread {
             MinecraftAssets(this).run()
         }.start()
+        if(mAccountSpinner == null) {
+            Log.w(TAG, "Account spiner is null")
+        } else {
+            mAccountSpinner!!.reloadAccounts(false, mAccountSpinner!!.mAccountList.size -1)
+            if(mAccountSpinner!!.selectedAccount == null) {
+                ExtraCore.setValue(ExtraConstants.SELECT_AUTH_METHOD, true)
+            }
+        }
     }
 
     override fun onResume() {

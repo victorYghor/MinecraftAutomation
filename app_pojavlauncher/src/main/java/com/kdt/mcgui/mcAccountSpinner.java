@@ -54,7 +54,7 @@ public class mcAccountSpinner extends AppCompatSpinner implements AdapterView.On
         init();
     }
 
-    private final List<String> mAccountList = new ArrayList<>(2);
+    public final List<String> mAccountList = new ArrayList<>(2);
     /**
      * the minecraft account or Microsoft account
      */
@@ -237,7 +237,7 @@ public class mcAccountSpinner extends AppCompatSpinner implements AdapterView.On
      * @param fromFiles Whether we use files as the source of truth
      * @param overridePosition Force the spinner to be at this position, if not 0
      */
-    private void reloadAccounts(boolean fromFiles, int overridePosition){
+    public void reloadAccounts(boolean fromFiles, int overridePosition){
         if(fromFiles){
             mAccountList.clear();
 
