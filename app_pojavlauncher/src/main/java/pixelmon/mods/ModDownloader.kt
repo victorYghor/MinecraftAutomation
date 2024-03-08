@@ -37,7 +37,7 @@ class ModDownloader(private val context: Context) {
     fun downloadTexture(texture: Texture): Long {
         Log.d(TAG, "Straing downloading texture ${texture.name}")
         val title = "Baixando ${texture.name}"
-        File(context.getExternalFilesDir(null), ".minecraft/resourcepacks")
+        File(context.getExternalFilesDir(null), ".minecraft/resourcepacks").mkdirs()
         val request = DownloadManager.Request(texture.url.toUri())
             .setTitle(title)
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
