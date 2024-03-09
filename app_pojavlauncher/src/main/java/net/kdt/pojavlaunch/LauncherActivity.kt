@@ -220,6 +220,18 @@ class LauncherActivity : BaseActivity() {
         Thread {
             MinecraftAssets(this).run()
         }.start()
+        insertProfiles()
+        if (mAccountSpinner == null) {
+            Log.w(TAG, "Account spiner is null")
+        } else {
+            mAccountSpinner!!.reloadAccounts(false, mAccountSpinner!!.mAccountList.size - 1)
+            if (mAccountSpinner!!.selectedAccount == null) {
+                ExtraCore.setValue(ExtraConstants.SELECT_AUTH_METHOD, true)
+            }
+        }
+    }
+
+    fun insertProfiles() {
         Tools.write(
             Tools.DIR_GAME_NEW + "/" + "launcher_profiles.json", """{
   "profiles": {
@@ -238,14 +250,6 @@ class LauncherActivity : BaseActivity() {
             Tools.read(LauncherProfiles.launcherProfilesFile.absolutePath),
             MinecraftLauncherProfiles::class.java
         )
-        if (mAccountSpinner == null) {
-            Log.w(TAG, "Account spiner is null")
-        } else {
-            mAccountSpinner!!.reloadAccounts(false, mAccountSpinner!!.mAccountList.size - 1)
-            if (mAccountSpinner!!.selectedAccount == null) {
-                ExtraCore.setValue(ExtraConstants.SELECT_AUTH_METHOD, true)
-            }
-        }
     }
 
     override fun onResume() {

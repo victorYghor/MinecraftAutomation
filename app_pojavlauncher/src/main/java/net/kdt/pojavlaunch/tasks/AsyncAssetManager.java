@@ -12,6 +12,8 @@ import com.kdt.mcgui.ProgressLayout;
 
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.multirt.MultiRTUtils;
+import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles;
+import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles;
 
 import org.apache.commons.io.FileUtils;
 
@@ -812,6 +814,7 @@ public class AsyncAssetManager {
                         "    }\n" +
                         "  }\n" +
                         "}\n");
+
                 Tools.copyAssetFile(ctx,"resolv.conf",Tools.DIR_DATA, false);
             } catch (IOException e) {
                 Log.e("AsyncAssetManager", "Failed to unpack critical components !");
