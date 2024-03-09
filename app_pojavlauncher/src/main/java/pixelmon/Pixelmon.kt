@@ -1,13 +1,10 @@
 package pixelmon
 
 import android.content.Context
-import android.content.res.Resources
-import android.content.res.loader.AssetsProvider
 import android.util.Log
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
-import net.kdt.pojavlaunch.profiles.ProfileAdapter
 import net.kdt.pojavlaunch.profiles.ProfileAdapter.mProfileList
 import net.kdt.pojavlaunch.profiles.ProfileAdapter.mProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
