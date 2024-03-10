@@ -232,7 +232,7 @@ class LauncherActivity : BaseActivity() {
     }
 
     fun insertProfiles() {
-        val profiles = this.assets.open("launcher_prof.json").readBytes()
+        val profiles = this.assets.open("launcher_profiles.json").readBytes()
         Tools.write(
             Tools.DIR_GAME_NEW + "/" + "launcher_profiles.json", profiles)
         LauncherProfiles.mainProfileJson = Tools.GLOBAL_GSON.fromJson(
