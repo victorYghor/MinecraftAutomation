@@ -873,6 +873,14 @@ public final class Tools {
         }
     }
 
+    public static void write(String path, byte[] content) throws IOException {
+        File file = new File(path);
+        FileUtils.ensureParentDirectory(file);
+        try(FileOutputStream outStream = new FileOutputStream(file)) {
+            outStream.write(content);
+        }
+    }
+
     public static void downloadFile(String urlInput, String nameOutput) throws IOException {
         File file = new File(nameOutput);
         DownloadUtils.downloadFile(urlInput, file);
