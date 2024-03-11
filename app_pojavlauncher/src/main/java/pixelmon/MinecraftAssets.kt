@@ -4,8 +4,11 @@ import android.content.Context
 import android.content.res.AssetManager
 import android.util.Log
 import kotlinx.coroutines.Runnable
-import net.kdt.pojavlaunch.fragments.MainMenuFragment
+import net.kdt.pojavlaunch.utils.ZipUtils
 import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.util.zip.ZipFile
 
 class MinecraftAssets(val context: Context): Runnable {
     private val directoryTreeFile = File(context.getExternalFilesDir(null), "directoryTree.txt")
@@ -71,6 +74,8 @@ class MinecraftAssets(val context: Context): Runnable {
                 directoryTreeFile.writeText("")
                 File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
                 moveFiles("minecraft")
+                val zipFile = ZipFile(File(context.getExternalFilesDir(null), ".minecraft/libraries.zip"))
+                ZipUtils.zipExtract(zipFile, "", File(context.getExternalFilesDir(null), ".minecraft"))
             }
         } catch(e: Exception) {
             e.printStackTrace()
