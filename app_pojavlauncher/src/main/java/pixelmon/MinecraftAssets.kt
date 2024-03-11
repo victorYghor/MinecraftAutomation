@@ -74,8 +74,6 @@ class MinecraftAssets(val context: Context): Runnable {
                 directoryTreeFile.writeText("")
                 File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
                 moveFiles("minecraft")
-                val zipFile = ZipFile(File(context.getExternalFilesDir(null), ".minecraft/libraries.zip"))
-                ZipUtils.zipExtract(zipFile, "", File(context.getExternalFilesDir(null), ".minecraft"))
             }
         } catch(e: Exception) {
             e.printStackTrace()
