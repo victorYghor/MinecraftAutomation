@@ -99,6 +99,17 @@
       "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/konkrete_forge_1.6.0_MC_1.12-1.12.2.jar",
       "MD5": "1812e95a402c0aae9b1f00add7216e58"
     }
+  },
+  {
+    "id": "Surge-2.0.79.jar",
+    "name": "Surge",
+    "type": "ForgeMod",
+    "artifact": {
+      "fileName": "Surge-2.0.79.jar",
+      "surge": 957330,
+      "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/Surge.jar",
+      "MD5": ""
+    }
   }
 ]
 

@@ -62,7 +62,7 @@ class MainMenuFragment : Fragment(R.layout.fragment_launcher) {
             )
         }
         mShareLogsButton.setOnClickListener { v: View? -> Tools.shareLog(requireContext()) }
-        val pixelmon = Pixelmon(requireContext()) { parentFragmentManager.popBackStackImmediate() }
+        val pixelmon = Pixelmon(requireContext(), mVersionSpinner) { parentFragmentManager.popBackStackImmediate() }
         mTestButton.setOnClickListener { v: View? -> pixelmon.start() }
         mNewsButton.setOnLongClickListener { v: View? ->
             Tools.swapFragment(

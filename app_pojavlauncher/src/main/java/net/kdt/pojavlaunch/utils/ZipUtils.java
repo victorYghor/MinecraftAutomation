@@ -12,6 +12,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class ZipUtils {
+    public static final String TAG = "ZipUtils.java";
     /**
      * Gets an InputStream for a given ZIP entry, throwing an IOException if the ZIP entry does not
      * exist.

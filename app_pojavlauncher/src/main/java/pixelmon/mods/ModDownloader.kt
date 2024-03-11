@@ -15,7 +15,7 @@ class ModDownloader(private val context: Context) {
     }
 
     private val mods =
-        Tools.GLOBAL_GSON.fromJson(read(context.assets.open("mods.json")), ModFile::class.java).mods
+        Tools.GLOBAL_GSON.fromJson(read(context.assets.open("mods-1.12.json")), ModFile::class.java).mods
     private val downloadManager = context.getSystemService(DownloadManager::class.java)
     private val pixelmonTexture = Texture(
         url = "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/files/resourcepacks/Texturas.zip",
