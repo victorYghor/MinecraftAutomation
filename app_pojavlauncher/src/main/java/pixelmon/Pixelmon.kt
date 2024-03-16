@@ -6,14 +6,14 @@ import com.kdt.mcgui.mcVersionSpinner
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
-import net.kdt.pojavlaunch.profiles.ProfileAdapter.mProfileList
-import net.kdt.pojavlaunch.profiles.ProfileAdapter.mProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import pixelmon.mods.ModDownloader
-import java.util.Arrays
 
 class Pixelmon(private val context: Context, private val versionSpinner: mcVersionSpinner, popStack: () -> Boolean) {
+
     companion object {
+        @JvmStatic
+        var state = State.MOVING_FILES
         @JvmStatic
         private val TAG = "Pixelmon.kt"
         fun launchGame() {
@@ -35,7 +35,7 @@ class Pixelmon(private val context: Context, private val versionSpinner: mcVersi
         """.trimIndent()
         )
         Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
-//        ModDownloader(context).downloadMods()
+        ModDownloader(context).downloadMods()
         changeProfile(versionSpinner)
     }
 
@@ -50,8 +50,8 @@ class Pixelmon(private val context: Context, private val versionSpinner: mcVersi
         Log.w(TAG, "The current profile is $profile")
         versionSpinner.reloadProfiles()
         LauncherProfiles.load()
-        mProfiles = HashMap(LauncherProfiles.mainProfileJson.profiles)
-        mProfileList =
-            ArrayList(Arrays.asList(*mProfiles.keys.toTypedArray<String>()))
+//        mProfiles = HashMap(LauncherProfiles.mainProfileJson.profiles)
+//        mProfileList =
+//            ArrayList(Arrays.asList(*mProfiles.keys.toTypedArray<String>()))
     }
 }

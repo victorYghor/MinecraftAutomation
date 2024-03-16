@@ -6,15 +6,19 @@ import android.util.Log
 import androidx.core.net.toUri
 import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.Tools.read
+import net.kdt.pojavlaunch.prefs.LauncherPreferences
+import pixelmon.Pixelmon
+import pixelmon.State
 import pixelmon.Texture
 import java.io.File
+import java.io.FileNotFoundException
+import java.security.MessageDigest
 
 class ModDownloader(private val context: Context) {
     companion object {
         private val TAG = "ModDownloader"
     }
-
-    private val mods =
+    val mods =
         Tools.GLOBAL_GSON.fromJson(read(context.assets.open("mods-1.12.json")), ModFile::class.java).mods
     private val downloadManager = context.getSystemService(DownloadManager::class.java)
     private val pixelmonTexture = Texture(
@@ -48,7 +52,40 @@ class ModDownloader(private val context: Context) {
 
     fun downloadMods() {
         Log.d(TAG, "the mods downloads start")
-        mods.forEach { download(it) }
-        downloadTexture(texture = pixelmonTexture)
+        Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity()}")
+        if(!LauncherPreferences.DOWNLOAD_ONE_DOT_TWELVE) {
+            Pixelmon.state = State.DOWNLOAD_MODS
+            mods.forEach { download(it) }
+            downloadTexture(texture = pixelmonTexture)
+            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_twelve", true).commit()
+            Pixelmon.state = State.PLAY
+        }
+        Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity()}")
+    }
+    fun File.md5(): String {
+        val md = MessageDigest.getInstance("MD5")
+        val digest = md.digest(this.readBytes())
+        return digest.joinToString("").filter{ it != '-'}
+    }
+
+    fun checkModsIntegrity(): Boolean {
+        val modsDir = File(context.getExternalFilesDir(null), ".minecraft/mods")
+        Log.i(TAG, modsDir.list().joinToString(" "))
+        for(f in modsDir.list()) {
+            val path = ".minecraft/mods/$f"
+            try {
+                val mod = File(context.getExternalFilesDir(null), path)
+                val modSource = mods.find {it.artifact.fileName == f}
+                val md5 = modSource?.artifact?.MD5
+                if(mod.md5() != md5) return false
+            } catch (e: FileNotFoundException) {
+                Log.e(TAG, "File Not found $path")
+                return false
+            } catch(e: Exception) {
+                e.printStackTrace()
+                return false
+            }
+        }
+        return true
     }
 }

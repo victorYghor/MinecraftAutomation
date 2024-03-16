@@ -23,6 +23,7 @@ public class LauncherPreferences {
     public static final String PREF_KEY_SKIP_NOTIFICATION_CHECK = "skipNotificationPermissionCheck";
 
     public static SharedPreferences DEFAULT_PREF;
+    public static boolean DOWNLOAD_ONE_DOT_TWELVE;
     public static String PREF_RENDERER = "opengles2";
     public static boolean PREF_FIRST_INSTALLATION = true;
 	public static boolean PREF_VERTYPE_RELEASE = true;
@@ -81,6 +82,7 @@ public class LauncherPreferences {
         PREF_BUTTONSIZE = DEFAULT_PREF.getInt("buttonscale", 100);
         PREF_MOUSESCALE = DEFAULT_PREF.getInt("mousescale", 100);
         // first installation
+        DOWNLOAD_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("download_one_dot_twelve", false);
         PREF_FIRST_INSTALLATION = DEFAULT_PREF.getBoolean("first_installation", true);
 		PREF_MOUSESPEED = ((float)DEFAULT_PREF.getInt("mousespeed",100))/100f;
 		PREF_HIDE_SIDEBAR = DEFAULT_PREF.getBoolean("hideSidebar", false);
