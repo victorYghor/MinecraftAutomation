@@ -1,7 +1,6 @@
 package net.kdt.pojavlaunch.fragments
 
 import android.content.Intent
-import android.content.res.AssetManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,10 +16,8 @@ import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
-import pixelmon.ForgerInstaller
-import pixelmon.MinecraftAssets
+import pixelmon.forge.ForgerDownload
 import pixelmon.Pixelmon
-import java.io.File
 
 class MainMenuFragment : Fragment(R.layout.fragment_launcher) {
     private lateinit var mVersionSpinner: mcVersionSpinner
@@ -58,12 +55,9 @@ class MainMenuFragment : Fragment(R.layout.fragment_launcher) {
             )
         }
         mPlayButton.setOnClickListener { v: View? ->
-            if (LauncherProfiles.getCurrentProfile().name == "1.16.5-forge-36.2.34"){
-                ForgerInstaller(requireContext()).downloadLibraries()
-                ExtraCore.setValue(
-                    ExtraConstants.LAUNCH_GAME,
-                    true
-                )
+            if (LauncherProfiles.getCurrentProfile().name == "minecraft 1.16.5"){
+                Log.i(TAG, "Select the forge 1.16 profile")
+                ForgerDownload(requireContext()).downloadLibraries()
             } else {
                 ExtraCore.setValue(
                     ExtraConstants.LAUNCH_GAME,

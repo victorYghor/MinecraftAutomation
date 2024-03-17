@@ -33,7 +33,6 @@ class Pixelmon(private val context: Context, private val versionSpinner: mcVersi
         """.trimIndent()
         )
         Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
-        ModDownloader(context).downloadMods()
         changeProfile(versionSpinner)
     }
 
