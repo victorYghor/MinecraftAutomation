@@ -18,8 +18,15 @@ class ModDownloader(private val context: Context) {
     companion object {
         private val TAG = "ModDownloader"
     }
-    val mods =
-        Tools.GLOBAL_GSON.fromJson(read(context.assets.open("mods-1.12.json")), ModFile::class.java).mods
+    val modsOneDotTwelve =
+        Tools.GLOBAL_GSON.fromJson(
+            read(context.assets.open("mods-1.12.json")),
+            ModFile::class.java
+        ).mods
+    val modsOneDotSixteen = Tools.GLOBAL_GSON.fromJson(
+        read(context.assets.open("mods-1.16.json")),
+        ModFile::class.java
+    )
     private val downloadManager = context.getSystemService(DownloadManager::class.java)
     private val pixelmonTexture = Texture(
         url = "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/files/resourcepacks/Texturas.zip",
@@ -55,7 +62,7 @@ class ModDownloader(private val context: Context) {
         Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity()}")
         if(!LauncherPreferences.DOWNLOAD_ONE_DOT_TWELVE) {
             Pixelmon.state = State.DOWNLOAD_MODS
-            mods.forEach { download(it) }
+            modsOneDotTwelve.forEach { download(it) }
             downloadTexture(texture = pixelmonTexture)
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_twelve", true).commit()
             Pixelmon.state = State.PLAY
@@ -75,7 +82,7 @@ class ModDownloader(private val context: Context) {
             val path = ".minecraft/mods/$f"
             try {
                 val mod = File(context.getExternalFilesDir(null), path)
-                val modSource = mods.find {it.artifact.fileName == f}
+                val modSource = modsOneDotTwelve.find {it.artifact.fileName == f}
                 val md5 = modSource?.artifact?.MD5
                 if(mod.md5() != md5) return false
             } catch (e: FileNotFoundException) {

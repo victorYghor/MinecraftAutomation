@@ -1,0 +1,30 @@
+{
+  "mods": [
+    {
+      "id": "mezz.jei:jei:7.8.0.1009@jar",
+      "name": "Just Enough Items",
+      "type": "ForgeMod",
+      "artifact": {
+        "size": 839446,
+        "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/forgemods/optionalon/JEI.jar",
+        "MD5": "6c7827e443f483cc5e94aaff7c694901"
+      },
+      "required": {
+        "value": false
+      }
+    },
+    {
+      "id": "journeymap:journeymap:5.8.5p6@jar",
+      "name": "Journeymap",
+      "type": "ForgeMod",
+      "artifact": {
+        "size": 6693593,
+        "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/forgemods/optionalon/JourneyMap.jar",
+        "MD5": "398f1e0c23efec7b5ed317ba0e80a7c7"
+      },
+      "required": {
+        "value": false
+      }
+    }
+  ]
+}

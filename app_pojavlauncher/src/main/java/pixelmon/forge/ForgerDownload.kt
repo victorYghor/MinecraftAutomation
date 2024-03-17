@@ -32,11 +32,13 @@ class ForgerDownload(private val context: Context) {
     }
     fun unpackLibraries() {
         Log.i(TAG, "unpakcLibraries")
+        val librariesZipFile = File(context.getExternalFilesDir(null), ".minecraft/libraries.zip")
         ZipUtils.zipExtract(
-            ZipFile(File(context.getExternalFilesDir(null), ".minecraft/libraries.zip")),
+            ZipFile(librariesZipFile),
             "",
             File(context.getExternalFilesDir(null), ".minecraft/libraries")
             )
+        librariesZipFile.delete()
         Log.i(TAG, "finish to unpack libraries of forge")
     }
 }

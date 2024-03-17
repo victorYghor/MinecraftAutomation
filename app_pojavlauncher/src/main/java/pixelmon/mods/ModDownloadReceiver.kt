@@ -21,7 +21,5 @@ class ModDownloadReceiver: BroadcastReceiver() {
                 Log.i(TAG, "Download with Id $id finished!")
             }
         }
-
     }
-
 }
