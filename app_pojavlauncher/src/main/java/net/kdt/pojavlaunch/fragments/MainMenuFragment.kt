@@ -14,6 +14,7 @@ import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
+import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import pixelmon.forge.ForgerDownload
@@ -55,7 +56,7 @@ class MainMenuFragment : Fragment(R.layout.fragment_launcher) {
             )
         }
         mPlayButton.setOnClickListener { v: View? ->
-            if (LauncherProfiles.getCurrentProfile().name == "minecraft 1.16.5"){
+            if (LauncherProfiles.getCurrentProfile().name == "minecraft 1.16.5" && !LauncherPreferences.DOWNLOAD_FORGE_LIBRARIES) {
                 Log.i(TAG, "Select the forge 1.16 profile")
                 ForgerDownload(requireContext()).downloadLibraries()
             } else {
@@ -66,7 +67,10 @@ class MainMenuFragment : Fragment(R.layout.fragment_launcher) {
             }
         }
         mShareLogsButton.setOnClickListener { v: View? -> Tools.shareLog(requireContext()) }
-        val pixelmon = Pixelmon(requireContext(), mVersionSpinner) { parentFragmentManager.popBackStackImmediate() }
+        val pixelmon = Pixelmon(
+            requireContext(),
+            mVersionSpinner
+        ) { parentFragmentManager.popBackStackImmediate() }
         mTestButton.setOnClickListener { v: View? -> pixelmon.start() }
         mNewsButton.setOnLongClickListener { v: View? ->
             Tools.swapFragment(
