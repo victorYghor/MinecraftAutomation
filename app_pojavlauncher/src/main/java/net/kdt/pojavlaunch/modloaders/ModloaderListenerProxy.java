@@ -2,6 +2,9 @@ package net.kdt.pojavlaunch.modloaders;
 
 import java.io.File;
 
+/**
+ * A way to see the states that proxy can have throughout the app
+ */
 public class ModloaderListenerProxy implements ModloaderDownloadListener {
     public static final int PROXY_RESULT_NONE = -1;
     public static final int PROXY_RESULT_FINISHED = 0;
@@ -40,7 +43,7 @@ public class ModloaderListenerProxy implements ModloaderDownloadListener {
             mProxyResultObject = e;
         }
     }
-
+    // A way to alert about the sate of the attach listener
     public synchronized void attachListener(ModloaderDownloadListener listener) {
         switch(mProxyResult) {
             case PROXY_RESULT_FINISHED:

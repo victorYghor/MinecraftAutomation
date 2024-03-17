@@ -1,80 +1,62 @@
 package pixelmon
 
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.util.Log
 import android.widget.Toast
+import androidx.core.net.toUri
 import net.kdt.pojavlaunch.JavaGUILauncherActivity
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
+import net.kdt.pojavlaunch.Tools.read
 import net.kdt.pojavlaunch.modloaders.ForgeDownloadTask
 import net.kdt.pojavlaunch.modloaders.ForgeUtils
 import net.kdt.pojavlaunch.modloaders.ModloaderDownloadListener
 import net.kdt.pojavlaunch.modloaders.ModloaderListenerProxy
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
+import net.kdt.pojavlaunch.utils.FileUtils
+import net.kdt.pojavlaunch.utils.ZipUtils
+import org.apache.commons.io.IOUtils
 import java.io.File
+import java.io.FileOutputStream
+import java.util.zip.ZipFile
 
-class ForgerInstaller(private val context: Context, val popStack: () -> Boolean) :
-    ModloaderDownloadListener {
-    private val TAG = "ForgerInstaller.kt"
-    private var proxy: ModloaderListenerProxy? = ModloaderListenerProxy()
-    fun install() {
-        if (ProgressKeeper.hasOngoingTasks()) {
-            Toast.makeText(context, R.string.tasks_ongoing, Toast.LENGTH_LONG).show()
-        }
-        val taskProxy = ModloaderListenerProxy()
-        val downloadTask = ForgeDownloadTask(taskProxy, "")
-        // set the proxy to the ui in the implementation on the fragment install forge
-        taskProxy.attachListener(this)
-        // todo use coroutines here
-        Thread {
-            Log.w(TAG, "Starting the download")
-            downloadTask.run()
-            Tools.runOnUiThread {
-                Log.w(TAG, "Download finished")
-                Pixelmon.launchGame()
-            }
-        }.start()
+class ForgerInstaller(private val context: Context): BroadcastReceiver() {
+    private val libraries = Tools.GLOBAL_GSON.fromJson(read(context.assets.open("support-files.json")), SupportFile::class.java)
+    private val downloadManager = context.getSystemService(DownloadManager::class.java)
+    val filter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+    fun downloadLibraries(): Long {
+        val librariesDir = File(context.getExternalFilesDir(null), ".minecraft/libraries")
+        librariesDir.mkdirs()
+        val title = "Instalando blibliotecas do forge"
+        val request = DownloadManager.Request(libraries.link.toUri())
+            .setTitle(title)
+            .setMimeType("application/zip")
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setDestinationInExternalFilesDir(context, null, ".minecraft/libraries")
+        return downloadManager.enqueue(request)
     }
 
-    override fun onDownloadFinished(downloadedFile: File?) {
-        // faz com que a thread que estava baixando o forge, desapareça quando terminar o download
-        Tools.runOnUiThread {
-            proxy?.detachListener()
-            proxy = null
-            popStack()
-            onDownloadFinished(context, downloadedFile)
-        }
-    }
-
-    fun onDownloadFinished(context: Context, downloadedFile: File?) {
-        val modInstallerStartIntent = Intent(context, JavaGUILauncherActivity::class.java)
-        ForgeUtils.addAutoInstallArgs(modInstallerStartIntent, downloadedFile, true)
-        context.startActivity(modInstallerStartIntent)
-        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
-        Log.w(TAG, "the value of first_installation is ${LauncherPreferences.PREF_FIRST_INSTALLATION}")
-    }
-
-    override fun onDataNotAvailable() {
-        Tools.runOnUiThread {
-            proxy?.detachListener()
-            proxy = null
-            Tools.dialog(
-                context,
-                context.getString(R.string.global_error),
-                context.getString(R.string.forge_dl_no_installer)
+    fun unpackLibraries() {
+        ZipUtils.zipExtract(
+            ZipFile(File(context.getExternalFilesDir(null), ".minecraft/libraries.zip")),
+            "",
+            File(context.getExternalFilesDir(null), ".minecraft/libraries")
             )
-        }
+        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_forge_libraries", true).commit()
     }
 
-    override fun onDownloadError(e: Exception?) {
-        Tools.runOnUiThread {
-            proxy?.detachListener()
-            proxy = null
-            Tools.showError(context, e)
+    override fun onReceive(context: Context?, intent: Intent?) {
+        val reference = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1) ?: -1
+        val librariesReference = downloadLibraries()
+        if(reference == librariesReference) {
+            unpackLibraries()
+            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_forge_libraries", true).commit()
         }
     }
-
-
 }

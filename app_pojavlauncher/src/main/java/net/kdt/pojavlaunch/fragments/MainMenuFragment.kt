@@ -16,6 +16,8 @@ import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
+import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
+import pixelmon.ForgerInstaller
 import pixelmon.MinecraftAssets
 import pixelmon.Pixelmon
 import java.io.File
@@ -56,10 +58,18 @@ class MainMenuFragment : Fragment(R.layout.fragment_launcher) {
             )
         }
         mPlayButton.setOnClickListener { v: View? ->
-            ExtraCore.setValue(
-                ExtraConstants.LAUNCH_GAME,
-                true
-            )
+            if (LauncherProfiles.getCurrentProfile().name == "1.16.5-forge-36.2.34"){
+                ForgerInstaller(requireContext()).downloadLibraries()
+                ExtraCore.setValue(
+                    ExtraConstants.LAUNCH_GAME,
+                    true
+                )
+            } else {
+                ExtraCore.setValue(
+                    ExtraConstants.LAUNCH_GAME,
+                    true
+                )
+            }
         }
         mShareLogsButton.setOnClickListener { v: View? -> Tools.shareLog(requireContext()) }
         val pixelmon = Pixelmon(requireContext(), mVersionSpinner) { parentFragmentManager.popBackStackImmediate() }

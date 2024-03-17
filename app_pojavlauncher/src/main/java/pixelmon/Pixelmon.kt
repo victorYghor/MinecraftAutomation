@@ -21,8 +21,6 @@ class Pixelmon(private val context: Context, private val versionSpinner: mcVersi
             ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
         }
     }
-
-    private val forgerInstaller = ForgerInstaller(context, popStack = popStack)
     fun start() {
         LauncherPreferences.loadPreferences(context)
         val profile = LauncherProfiles.getCurrentProfile()
