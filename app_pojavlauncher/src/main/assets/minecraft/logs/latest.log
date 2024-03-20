@@ -1,11 +1,24 @@
-[17:30:39] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[17:30:39] [main/INFO]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
-[17:30:39] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
-[17:30:39] [main/INFO]: Forge Mod Loader version 14.23.5.2860 for Minecraft 1.12.2 loading
-[17:30:39] [main/INFO]: Java is OpenJDK 64-Bit Server VM, version 1.8.0_402-internal, running on Linux:aarch64:Android-13, installed at /data/user/0/net.kdt.pojavlaunch.debug/runtimes/Internal
-[17:30:39] [main/INFO]: Searching /storage/emulated/0/Android/data/net.kdt.pojavlaunch.debug/files/.minecraft/mods for mods
-[17:30:39] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[17:30:39] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
-[17:30:39] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[17:30:39] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
-[17:30:39] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[15:01:16] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[15:01:16] [main/INFO]: Using primary tweak class name net.minecraftforge.fml.common.launcher.FMLTweaker
+[15:01:16] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
+[15:01:16] [main/INFO]: Forge Mod Loader version 14.23.5.2860 for Minecraft 1.12.2 loading
+[15:01:16] [main/INFO]: Java is OpenJDK 64-Bit Server VM, version 1.8.0_402-internal, running on Linux:aarch64:Android-13, installed at /data/user/0/net.kdt.pojavlaunch.debug/runtimes/Internal
+[15:01:17] [main/INFO]: Searching /storage/emulated/0/Android/data/net.kdt.pojavlaunch.debug/files/.minecraft/mods for mods
+[15:01:17] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[15:01:17] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[15:01:17] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[15:01:17] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLInjectionAndSortingTweaker
+[15:01:17] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[15:01:21] [main/INFO]: Found valid fingerprint for Minecraft Forge. Certificate fingerprint e3c3d50c7c986df74c645c0ac54639741c90a557
+[15:01:21] [main/INFO]: Found valid fingerprint for Minecraft. Certificate fingerprint cd99959656f753dc28d863b46769f7f8fbaefcfc
+[15:01:21] [main/INFO]: Calling tweak class net.minecraftforge.fml.relauncher.CoreModManager$FMLPluginWrapper
+[15:01:21] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLDeobfTweaker
+[15:01:23] [main/INFO]: Loading tweak class name net.minecraftforge.fml.common.launcher.TerminalTweaker
+[15:01:23] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.TerminalTweaker
+[15:01:23] [main/INFO]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+[15:01:25] [main/INFO]: [org.lwjgl.system.Library:printError:555]: [LWJGL] Failed to load a library. Possible solutions:
+	a) Add the directory that contains the shared library to -Djava.library.path or -Dorg.lwjgl.librarypath.
+	b) Add the JAR that contains the shared library to the classpath.
+[15:01:25] [main/INFO]: [org.lwjgl.system.Library:printError:557]: [LWJGL] Enable debug mode with -Dorg.lwjgl.util.Debug=true for better diagnostics.
+[15:01:25] [main/INFO]: [org.lwjgl.system.Library:printError:559]: [LWJGL] Enable the SharedLibraryLoader debug mode with -Dorg.lwjgl.util.DebugLoader=true for better diagnostics.
+[15:01:27] [Client thread/INFO]: Setting user: syeghy
