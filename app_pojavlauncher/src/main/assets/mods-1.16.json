@@ -1,6 +1,26 @@
 {
   "mods": [
     {
+      "id": "generated.forgemod:_mixinbootstrap:1.1.0@jar",
+      "name": "_MixinBootstrap",
+      "type": "ForgeMod",
+      "artifact": {
+        "size": 1119478,
+        "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/forgemods/optionalon/_MixinBootstrap-1.1.0.jar",
+        "MD5": "9df0dc628ebcd787270f487fbbf8157a"
+      }
+    },
+    {
+      "id": "malte0811.ferritecore:ferritecore:2.1.1@jar",
+      "name": "Ferrite Core",
+      "type": "ForgeMod",
+      "artifact": {
+        "size": 108557,
+        "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/forgemods/optionalon/ferritecore-2.1.1-forge.jar",
+        "MD5": "6a96a36de00e5d8e9bf2e87634d13125"
+      }
+    },
+    {
       "id": "mezz.jei:jei:7.8.0.1009@jar",
       "name": "Just Enough Items",
       "type": "ForgeMod",
@@ -8,9 +28,6 @@
         "size": 839446,
         "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/forgemods/optionalon/JEI.jar",
         "MD5": "6c7827e443f483cc5e94aaff7c694901"
-      },
-      "required": {
-        "value": false
       }
     },
     {
@@ -21,9 +38,76 @@
         "size": 6693593,
         "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/forgemods/optionalon/JourneyMap.jar",
         "MD5": "398f1e0c23efec7b5ed317ba0e80a7c7"
-      },
-      "required": {
-        "value": false
+      }
+    },
+    {
+      "id": "shadows.placebo:placebo:4.7.1@jar",
+      "name": "Placebo",
+      "type": "ForgeMod",
+      "artifact": {
+        "size": 174158,
+        "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/forgemods/optionalon/Placebo-1.16.5-4.7.1.jar",
+        "MD5": "b9436888ceffed9622ce58e0d71f8fd2"
+      }
+    },
+    {
+      "id": "com.pixelmonmod:pixelmon:9.1.10@jar",
+      "name": "Pixelmon",
+      "type": "ForgeMod",
+      "artifact": {
+        "size": 414882791,
+        "url": "https://download.nodecdn.net/containers/reforged/universal/release/Pixelmon-1.16.5-9.1.10-universal.jar",
+        "MD5": "b88415a1a4c0ebbdfbeabdbe28e224ac"
+      }
+    },
+    {
+      "id": "com.zephaniahnoah:shulkertooltip:1.10@jar",
+      "name": "Shulker Tooltip",
+      "type": "ForgeMod",
+      "artifact": {
+        "size": 11554,
+        "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/forgemods/optionalon/ShulkerTooltip-1.10.jar",
+        "MD5": "4c201f33c80afa96ed019a4296727fee"
+      }
+    },
+    {
+      "id": "io.github.ultimateboomer:smoothboot:1.16.4-1.2.2@jar",
+      "name": "Smooth Boot",
+      "type": "ForgeMod",
+      "artifact": {
+        "size": 84744,
+        "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/forgemods/optionalon/smoothboot-forge-1.16.4-1.2.2.jar",
+        "MD5": "104ca76ce6b18b90fbfa4c58b3bbdfc2"
+      }
+    },
+    {
+      "id": "ca.spottedleaf:starlight:1.0.0-RC2@jar",
+      "name": "Starlight",
+      "type": "ForgeMod",
+      "artifact": {
+        "size": 97563,
+        "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/forgemods/optionalon/starlight-forge-1.0.0-RC2-1.16.5%20(1).jar",
+        "MD5": "f28757895197b3e6a61b6e9caea6d7d9"
+      }
+    },
+    {
+      "id": "lazydfu@jar",
+      "name": "lazydfu",
+      "type": "ForgeMod",
+      "artifact": {
+        "size": 15258 ,
+        "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/files/mods/lazydfu.jar",
+        "MD5": "fce7920ba6329d631da4025e9322e5e0"
+      }
+    },
+    {
+      "id": "MultiplayerMode@jar",
+      "name": "MultiplayerMode",
+      "type": "ForgeMod",
+      "artifact": {
+        "size": 3961,
+        "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/files/mods/MultiplayerMode.jar",
+        "MD5": "c4eb970a74e8274f65f168c5a1e9cd73"
       }
     }
   ]
