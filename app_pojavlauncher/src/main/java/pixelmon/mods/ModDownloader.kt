@@ -57,7 +57,7 @@ class ModDownloader(private val context: Context) {
         return downloadManager.enqueue(request)
     }
 
-    fun downloadMods() {
+    fun downloadModsOneDotTwelve() {
         Log.d(TAG, "the mods downloads start")
         Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity()}")
         if(!LauncherPreferences.DOWNLOAD_ONE_DOT_TWELVE) {

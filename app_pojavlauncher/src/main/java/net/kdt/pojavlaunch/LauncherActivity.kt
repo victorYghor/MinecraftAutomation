@@ -217,9 +217,9 @@ class LauncherActivity : BaseActivity() {
         mProgressLayout!!.observe(ProgressLayout.INSTALL_MODPACK)
         mProgressLayout!!.observe(ProgressLayout.AUTHENTICATE_MICROSOFT)
         mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_VERSION_LIST)
-//        Thread {
-//            MinecraftAssets(this).run()
-//        }.start()
+        Thread {
+            MinecraftAssets(this).run()
+        }.start()
         insertProfiles()
         if (mAccountSpinner == null) {
             Log.w(TAG, "Account spiner is null")
