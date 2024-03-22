@@ -26,7 +26,7 @@ class ModDownloader(private val context: Context) {
     val modsOneDotSixteen = Tools.GLOBAL_GSON.fromJson(
         read(context.assets.open("mods-1.16.json")),
         ModFile::class.java
-    )
+    ).mods
     private val downloadManager = context.getSystemService(DownloadManager::class.java)
     private val pixelmonTexture = Texture(
         url = "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/files/resourcepacks/Texturas.zip",
@@ -63,11 +63,24 @@ class ModDownloader(private val context: Context) {
         if(!LauncherPreferences.DOWNLOAD_ONE_DOT_TWELVE) {
             Pixelmon.state = State.DOWNLOAD_MODS
             modsOneDotTwelve.forEach { download(it) }
-            downloadTexture(texture = pixelmonTexture)
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_twelve", true).commit()
             Pixelmon.state = State.PLAY
         }
         Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity()}")
+    }
+
+    fun downloadModOneDotSixteen() {
+        Log.i(TAG, "the mods 1.16 will strat")
+        Log.i(TAG, "The value of checkFilesInregrity is ${checkModsIntegrity()}")
+        if(!LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN) {
+            Pixelmon.state = State.DOWNLOAD_MODS
+            val essentialMods = listOf("MultiplayerMode", "lazydfu")
+            val mods = modsOneDotSixteen.filter { essentialMods.contains(it.name) }
+            mods.forEach { download(it) }
+            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_sixteen", true).commit()
+            Pixelmon.state = State.PLAY
+        }
+        Log.i(TAG, "checkFilesIntegrity = ${checkModsIntegrity()}")
     }
     fun File.md5(): String {
         val md = MessageDigest.getInstance("MD5")

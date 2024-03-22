@@ -127,6 +127,7 @@ class LauncherActivity : BaseActivity() {
      * see for problems then start the minecraft game
      */
     private val mLaunchGameListener = ExtraListener { key: String?, value: Boolean? ->
+        // logs para avisar que algo de errado esta acontecenod
         if (mProgressLayout!!.hasProcesses()) {
             Toast.makeText(this, R.string.tasks_ongoing, Toast.LENGTH_LONG).show()
             return@ExtraListener false
@@ -160,6 +161,8 @@ class LauncherActivity : BaseActivity() {
             ExtraCore.setValue(ExtraConstants.SELECT_AUTH_METHOD, true)
             return@ExtraListener false
         }
+
+
         val normalizedVersionId = AsyncMinecraftDownloader.normalizeVersionId(prof.lastVersionId)
         val mcVersion = AsyncMinecraftDownloader.getListedVersion(normalizedVersionId)
         MinecraftDownloader().start(

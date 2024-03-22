@@ -56,15 +56,10 @@ class MainMenuFragment : Fragment(R.layout.fragment_launcher) {
             )
         }
         mPlayButton.setOnClickListener { v: View? ->
-            if (LauncherProfiles.getCurrentProfile().name == "minecraft 1.16.5" && !LauncherPreferences.DOWNLOAD_FORGE_LIBRARIES) {
-                Log.i(TAG, "Select the forge 1.16 profile")
-                ForgerDownload(requireContext()).downloadLibraries()
-            } else {
-                ExtraCore.setValue(
-                    ExtraConstants.LAUNCH_GAME,
-                    true
-                )
-            }
+            ExtraCore.setValue(
+                ExtraConstants.LAUNCH_GAME,
+                true
+            )
         }
         mShareLogsButton.setOnClickListener { v: View? -> Tools.shareLog(requireContext()) }
         val pixelmon = Pixelmon(

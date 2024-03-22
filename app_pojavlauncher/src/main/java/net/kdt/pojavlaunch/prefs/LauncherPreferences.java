@@ -25,6 +25,7 @@ public class LauncherPreferences {
     public static SharedPreferences DEFAULT_PREF;
     public static boolean DOWNLOAD_FORGE_LIBRARIES;
     public static boolean DOWNLOAD_ONE_DOT_TWELVE;
+    public static boolean DOWNLOAD_ONE_DOT_SIXTEEN;
     public static String PREF_RENDERER = "opengles2";
     public static boolean PREF_FIRST_INSTALLATION = true;
 	public static boolean PREF_VERTYPE_RELEASE = true;
@@ -84,6 +85,7 @@ public class LauncherPreferences {
         PREF_MOUSESCALE = DEFAULT_PREF.getInt("mousescale", 100);
         DOWNLOAD_FORGE_LIBRARIES = DEFAULT_PREF.getBoolean("download_forge_libraries", false);
         DOWNLOAD_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("download_one_dot_twelve", false);
+        DOWNLOAD_ONE_DOT_SIXTEEN = DEFAULT_PREF.getBoolean("download_one_dot_sixteen", false);
         PREF_FIRST_INSTALLATION = DEFAULT_PREF.getBoolean("first_installation", true);
 		PREF_MOUSESPEED = ((float)DEFAULT_PREF.getInt("mousespeed",100))/100f;
 		PREF_HIDE_SIDEBAR = DEFAULT_PREF.getBoolean("hideSidebar", false);
