@@ -12,7 +12,7 @@
     },
     {
       "id": "malte0811.ferritecore:ferritecore:2.1.1@jar",
-      "name": "Ferrite Core",
+      "name": "FerriteCore",
       "type": "ForgeMod",
       "artifact": {
         "size": 108557,
@@ -22,7 +22,7 @@
     },
     {
       "id": "mezz.jei:jei:7.8.0.1009@jar",
-      "name": "Just Enough Items",
+      "name": "JustEnoughItems",
       "type": "ForgeMod",
       "artifact": {
         "size": 839446,

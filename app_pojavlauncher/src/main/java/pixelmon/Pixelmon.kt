@@ -32,6 +32,9 @@ class Pixelmon(private val context: Context, private val versionSpinner: mcVersi
             last used: ${profile.lastUsed}
         """.trimIndent()
         )
+        val modDownloader = ModDownloader(context)
+        modDownloader.downloadModOneDotSixteen()
+        modDownloader.downloadModsOneDotTwelve(listOf("Pixelmon"))
         Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
         changeProfile(versionSpinner)
     }

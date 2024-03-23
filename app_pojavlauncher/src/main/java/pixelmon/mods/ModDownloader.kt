@@ -57,12 +57,17 @@ class ModDownloader(private val context: Context) {
         return downloadManager.enqueue(request)
     }
 
-    fun downloadModsOneDotTwelve() {
+    fun downloadModsOneDotTwelve(exclude:List<String> = listOf()) {
         Log.d(TAG, "the mods downloads start")
         Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity()}")
         if(!LauncherPreferences.DOWNLOAD_ONE_DOT_TWELVE) {
             Pixelmon.state = State.DOWNLOAD_MODS
-            modsOneDotTwelve.forEach { download(it) }
+
+            var mods = if(exclude.isNotEmpty()) {
+                modsOneDotSixteen.filter { !exclude.contains(it.name) }
+            } else {
+                modsOneDotTwelve.toList()
+            }
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_twelve", true).commit()
             Pixelmon.state = State.PLAY
         }
@@ -74,7 +79,7 @@ class ModDownloader(private val context: Context) {
         Log.i(TAG, "The value of checkFilesInregrity is ${checkModsIntegrity()}")
         if(!LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN) {
             Pixelmon.state = State.DOWNLOAD_MODS
-            val essentialMods = listOf("MultiplayerMode", "lazydfu")
+            val essentialMods = listOf("MultiplayerMode", "lazydfu", "pixelmon")
             val mods = modsOneDotSixteen.filter { essentialMods.contains(it.name) }
             mods.forEach { download(it) }
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_sixteen", true).commit()
