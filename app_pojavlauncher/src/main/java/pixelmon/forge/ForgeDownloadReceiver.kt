@@ -15,7 +15,8 @@ class ForgeDownloadReceiver: BroadcastReceiver() {
         val downloadManager = context?.getSystemService(DownloadManager::class.java)
         if(intent?.action == "android.intent.action.DOWNLOAD_COMPLETE") {
             val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
-            if(id == DownloadsIds.forge.last()) {
+            val downloadsIds = DownloadsIds.forge
+            if(downloadsIds.isNotEmpty() && id == downloadsIds.last()) {
                 Log.i(TAG, "the download was complete the forge will initiate")
                 ForgerDownload(context!!).unpackLibraries()
                 ExtraCore.setValue(
