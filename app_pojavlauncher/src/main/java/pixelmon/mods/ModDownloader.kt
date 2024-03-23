@@ -68,6 +68,9 @@ class ModDownloader(private val context: Context) {
             } else {
                 modsOneDotTwelve.toList()
             }
+            mods.forEach{
+                download(it)
+            }
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_twelve", true).commit()
             Pixelmon.state = State.PLAY
         }
