@@ -75,6 +75,7 @@ class MinecraftAssets(val context: Context): Runnable {
             } else {
                 directoryTreeFile.writeText("")
                 File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
+
                 moveFiles("minecraft")
             }
         } catch(e: Exception) {
