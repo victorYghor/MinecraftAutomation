@@ -7,10 +7,10 @@ import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
+import pixelmon.forge.ForgerInstaller
 import pixelmon.mods.ModDownloader
 
 class Pixelmon(private val context: Context, private val versionSpinner: mcVersionSpinner, popStack: () -> Boolean) {
-
     companion object {
         @JvmStatic
         var state = State.MOVING_FILES
@@ -21,6 +21,7 @@ class Pixelmon(private val context: Context, private val versionSpinner: mcVersi
             ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
         }
     }
+    private val forgeInstaller = ForgerInstaller(context, popStack)
     fun start() {
         LauncherPreferences.loadPreferences(context)
         val profile = LauncherProfiles.getCurrentProfile()
@@ -36,7 +37,8 @@ class Pixelmon(private val context: Context, private val versionSpinner: mcVersi
         modDownloader.downloadModOneDotSixteen()
         modDownloader.downloadModsOneDotTwelve(exclude = listOf("Pixelmon"))
         Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
-        changeProfile(versionSpinner)
+        forgeInstaller.install()
+//        changeProfile(versionSpinner)
     }
 
 

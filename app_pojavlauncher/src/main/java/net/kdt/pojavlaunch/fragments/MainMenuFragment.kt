@@ -2,7 +2,6 @@ package net.kdt.pojavlaunch.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -14,10 +13,7 @@ import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
-import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
-import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
-import pixelmon.forge.ForgerDownload
 import pixelmon.Pixelmon
 
 class MainMenuFragment : Fragment(R.layout.fragment_launcher) {
@@ -64,7 +60,7 @@ class MainMenuFragment : Fragment(R.layout.fragment_launcher) {
         mShareLogsButton.setOnClickListener { v: View? -> Tools.shareLog(requireContext()) }
         val pixelmon = Pixelmon(
             requireContext(),
-            mVersionSpinner
+            mVersionSpinner,
         ) { parentFragmentManager.popBackStackImmediate() }
         mTestButton.setOnClickListener { v: View? -> pixelmon.start() }
         mNewsButton.setOnLongClickListener { v: View? ->
