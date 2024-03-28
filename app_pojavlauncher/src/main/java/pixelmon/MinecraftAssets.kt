@@ -74,10 +74,12 @@ class MinecraftAssets(val context: Context): Runnable {
                 Log.i(TAG, "All files was transferred")
             } else {
                 directoryTreeFile.writeText("")
+                // Por garantia muda o estado para dizer que ele vai mover os assets
+                Pixelmon.state = State.MOVING_FILES
                 File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
-
                 moveFiles("minecraft")
             }
+            Pixelmon.state = State.PLAY
         } catch(e: Exception) {
             e.printStackTrace()
         }

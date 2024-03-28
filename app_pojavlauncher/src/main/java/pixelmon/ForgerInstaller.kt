@@ -29,7 +29,7 @@ class ForgerInstaller(private val context: Context, val popStack: () -> Boolean)
         taskProxy.attachListener(this)
         // todo use coroutines here
         Thread {
-            Log.w(TAG, "Starting the download")
+            Pixelmon.state = State.DOWNLOAD_FORGE
             downloadTask.run()
             Tools.runOnUiThread {
                 Log.w(TAG, "Download finished")
