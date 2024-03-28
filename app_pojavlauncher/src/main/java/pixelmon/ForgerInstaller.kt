@@ -19,12 +19,13 @@ class ForgerInstaller(private val context: Context, val popStack: () -> Boolean)
     ModloaderDownloadListener {
     private val TAG = "ForgerInstaller.kt"
     private var proxy: ModloaderListenerProxy? = ModloaderListenerProxy()
+    private val forgeVersion = "1.16.5-forge-36.2.34"
     fun install() {
         if (ProgressKeeper.hasOngoingTasks()) {
             Toast.makeText(context, R.string.tasks_ongoing, Toast.LENGTH_LONG).show()
         }
         val taskProxy = ModloaderListenerProxy()
-        val downloadTask = ForgeDownloadTask(taskProxy, "")
+        val downloadTask = ForgeDownloadTask(taskProxy, forgeVersion)
         // set the proxy to the ui in the implementation on the fragment install forge
         taskProxy.attachListener(this)
         // todo use coroutines here
