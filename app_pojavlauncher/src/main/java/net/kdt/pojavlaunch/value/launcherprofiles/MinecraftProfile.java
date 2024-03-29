@@ -5,6 +5,9 @@ import androidx.annotation.NonNull;
 
 import java.util.Arrays;
 
+/**
+ * This is a template for create a a minecraft profile
+ */
 @Keep
 public class MinecraftProfile {
 

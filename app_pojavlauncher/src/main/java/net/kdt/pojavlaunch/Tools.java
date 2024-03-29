@@ -172,6 +172,15 @@ public final class Tools {
         NATIVE_LIB_DIR = ctx.getApplicationInfo().nativeLibraryDir;
     }
 
+    /**
+     * Add all the arguments need in the minecraft
+     * @param activity
+     * @param minecraftAccount
+     * @param minecraftProfile
+     * @param versionId
+     * @param versionJavaRequirement
+     * @throws Throwable
+     */
     public static void launchMinecraft(final AppCompatActivity activity, MinecraftAccount minecraftAccount,
                                        MinecraftProfile minecraftProfile, String versionId, int versionJavaRequirement) throws Throwable {
         int freeDeviceMemory = getFreeDeviceMemory(activity);
