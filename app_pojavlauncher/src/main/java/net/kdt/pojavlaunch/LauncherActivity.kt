@@ -223,7 +223,11 @@ class LauncherActivity : BaseActivity() {
         Thread {
             MinecraftAssets(this).run()
         }.start()
-        insertProfiles()
+        if(LauncherPreferences.PREF_FIRST_INSTALLATION){
+            insertProfiles()
+            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
+        }
+
         if (mAccountSpinner == null) {
             Log.w(TAG, "Account spiner is null")
         } else {
