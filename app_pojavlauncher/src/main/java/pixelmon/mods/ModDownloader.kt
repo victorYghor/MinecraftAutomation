@@ -10,10 +10,15 @@ import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import pixelmon.Pixelmon
 import pixelmon.State
 import pixelmon.Texture
+import pixelmon.Tools.checkFileIntegrity
+import pixelmon.Tools.md5
 import java.io.File
 import java.io.FileNotFoundException
 import java.security.MessageDigest
-
+enum class ModVersion {
+    OneDotTwelve,
+    OneDotSixteen
+}
 class ModDownloader(private val context: Context) {
     companion object {
         private val TAG = "ModDownloader"
@@ -59,7 +64,6 @@ class ModDownloader(private val context: Context) {
 
     fun downloadModsOneDotTwelve(exclude:List<String> = listOf()) {
         Log.d(TAG, "the mods downloads start")
-        Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity()}")
         if(!LauncherPreferences.DOWNLOAD_ONE_DOT_TWELVE) {
             Pixelmon.state = State.DOWNLOAD_MODS
 
@@ -74,12 +78,27 @@ class ModDownloader(private val context: Context) {
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_twelve", true).commit()
             Pixelmon.state = State.PLAY
         }
-        Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity()}")
+        Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity(ModVersion.OneDotTwelve)}")
+    }
+
+    private fun checkModsIntegrity(modVersion: ModVersion): Boolean {
+        val mods = File(context.getExternalFilesDir(null), "./minecraft/mods")
+        for(file in mods.list()){
+            val path = "./minecraft/mods/$file"
+            val mod =
+                if(modVersion == ModVersion.OneDotSixteen) {
+                    modsOneDotSixteen.find { it.artifact.fileName == file}
+                } else {
+                    modsOneDotSixteen.find{ it.artifact.fileName == file}
+                }
+            if(!checkFileIntegrity(context, path, mod?.artifact?.MD5)) return false
+        }
+        return true
     }
 
     fun downloadModOneDotSixteen() {
         Log.i(TAG, "the mods 1.16 will strat")
-        Log.i(TAG, "The value of checkFilesInregrity is ${checkModsIntegrity()}")
+        Log.i(TAG, "The value of checkFilesInregrity is ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
         if(!LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN) {
             Pixelmon.state = State.DOWNLOAD_MODS
             val essentialMods = listOf("MultiplayerMode", "lazydfu", "pixelmon")
@@ -88,32 +107,6 @@ class ModDownloader(private val context: Context) {
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_sixteen", true).commit()
             Pixelmon.state = State.PLAY
         }
-        Log.i(TAG, "checkFilesIntegrity = ${checkModsIntegrity()}")
-    }
-    fun File.md5(): String {
-        val md = MessageDigest.getInstance("MD5")
-        val digest = md.digest(this.readBytes())
-        return digest.joinToString("").filter{ it != '-'}
-    }
-
-    fun checkModsIntegrity(): Boolean {
-        val modsDir = File(context.getExternalFilesDir(null), ".minecraft/mods")
-        Log.i(TAG, modsDir.list().joinToString(" "))
-        for(f in modsDir.list()) {
-            val path = ".minecraft/mods/$f"
-            try {
-                val mod = File(context.getExternalFilesDir(null), path)
-                val modSource = modsOneDotTwelve.find {it.artifact.fileName == f}
-                val md5 = modSource?.artifact?.MD5
-                if(mod.md5() != md5) return false
-            } catch (e: FileNotFoundException) {
-                Log.e(TAG, "File Not found $path")
-                return false
-            } catch(e: Exception) {
-                e.printStackTrace()
-                return false
-            }
-        }
-        return true
+        Log.i(TAG, "checkFilesIntegrity = ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
     }
 }
