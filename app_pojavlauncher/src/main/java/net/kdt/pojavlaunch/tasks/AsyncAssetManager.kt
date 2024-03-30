@@ -59,8 +59,8 @@ object AsyncAssetManager {
                 Tools.copyAssetFile(ctx, "options.txt", Tools.DIR_GAME_NEW, false)
                 Tools.copyAssetFile(ctx, "default.json", Tools.CTRLMAP_PATH, true)
                 Tools.write(Tools.CTRLMAP_PATH, controlMap)
-                Tools.copyAssetFile(ctx, "resolv.conf", Tools.DIR_DATA, false)
-                Tools.copyAssetFile(ctx, "launcher_profiles.json", Tools.DIR_GAME_NEW, true)
+//                Tools.copyAssetFile(ctx, "resolv.conf", Tools.DIR_DATA, false)
+//                Tools.copyAssetFile(ctx, "launcher_profiles.json", Tools.DIR_GAME_NEW, true)
             } catch (e: IOException) {
                 Log.e("AsyncAssetManager", "Failed to unpack critical components !")
             }
