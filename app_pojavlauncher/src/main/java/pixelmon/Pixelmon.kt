@@ -7,7 +7,7 @@ import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
-import pixelmon.forge.ForgerInstaller
+import pixelmon.forge.ForgerDownload
 import pixelmon.mods.ModDownloader
 
 class Pixelmon(private val context: Context, private val versionSpinner: mcVersionSpinner, popStack: () -> Boolean) {
@@ -21,7 +21,6 @@ class Pixelmon(private val context: Context, private val versionSpinner: mcVersi
             ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
         }
     }
-    private val forgeInstaller = ForgerInstaller(context, popStack)
     fun start() {
         LauncherPreferences.loadPreferences(context)
         val profile = LauncherProfiles.getCurrentProfile()
@@ -36,13 +35,14 @@ class Pixelmon(private val context: Context, private val versionSpinner: mcVersi
         val modDownloader = ModDownloader(context)
 //        modDownloader.downloadModOneDotSixteen()
 //        modDownloader.downloadModsOneDotTwelve(exclude = listOf("Pixelmon"))
+        val forgeDownloader = ForgerDownload(context)
+        forgeDownloader.downloadLibraries()
         Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
-        forgeInstaller.install()
-//        changeProfile(versionSpinner)
+        changeProfile()
     }
 
 
-    fun changeProfile(versionSpinner: mcVersionSpinner) {
+    fun changeProfile() {
         Log.w(TAG, "select the correct option")
         LauncherPreferences.DEFAULT_PREF.edit()
             .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, idForgeOneDot16)
@@ -52,8 +52,5 @@ class Pixelmon(private val context: Context, private val versionSpinner: mcVersi
         Log.w(TAG, "The current profile is $profile")
         versionSpinner.reloadProfiles()
         LauncherProfiles.load()
-//        mProfiles = HashMap(LauncherProfiles.mainProfileJson.profiles)
-//        mProfileList =
-//            ArrayList(Arrays.asList(*mProfiles.keys.toTypedArray<String>()))
     }
 }
