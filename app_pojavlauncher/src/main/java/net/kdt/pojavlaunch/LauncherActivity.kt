@@ -44,6 +44,7 @@ import net.kdt.pojavlaunch.utils.NotificationUtils
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
 import pixelmon.MinecraftAssets
+import pixelmon.forge.ForgerDownload
 import java.lang.ref.WeakReference
 
 class LauncherActivity : BaseActivity() {
@@ -224,6 +225,7 @@ class LauncherActivity : BaseActivity() {
         if(LauncherPreferences.PREF_FIRST_INSTALLATION){
             Thread {
             MinecraftAssets(this).run()
+                ForgerDownload(this).run()
             }.start()
 
             insertProfiles()

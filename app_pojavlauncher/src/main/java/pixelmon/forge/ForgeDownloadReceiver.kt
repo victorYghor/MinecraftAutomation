@@ -20,10 +20,10 @@ class ForgeDownloadReceiver: BroadcastReceiver() {
             if(downloadsIds.isNotEmpty() && id == downloadsIds.last()) {
                 Log.i(TAG, "the download was complete the forge will initiate")
                 ForgerDownload(context!!).unpackLibraries()
-                ExtraCore.setValue(
-                    ExtraConstants.LAUNCH_GAME,
-                    true
-                )
+//                ExtraCore.setValue(
+//                    ExtraConstants.LAUNCH_GAME,
+//                    true
+//                )
             }
         }
     }

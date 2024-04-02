@@ -13,7 +13,7 @@ import pixelmon.Tools.DownloadsIds
 import java.io.File
 import java.util.zip.ZipFile
 
-class ForgerDownload(private val context: Context) {
+class ForgerDownload(private val context: Context): Runnable {
     private val TAG = "ForgerInstaller.kt"
     private val libraries = Tools.GLOBAL_GSON.fromJson(read(context.assets.open("support-files.json")), SupportFile::class.java)
     private val downloadManager = context.getSystemService(DownloadManager::class.java)
@@ -27,9 +27,6 @@ class ForgerDownload(private val context: Context) {
             .setDestinationInExternalFilesDir(context, null, ".minecraft/libraries.zip")
         return downloadManager.enqueue(request)
     }
-    fun downloadLibraries() {
-        DownloadsIds.forge.add(download())
-    }
     fun unpackLibraries() {
         Log.i(TAG, "unpakcLibraries")
         val librariesZipFile = File(context.getExternalFilesDir(null), ".minecraft/libraries.zip")
@@ -40,5 +37,9 @@ class ForgerDownload(private val context: Context) {
             )
         librariesZipFile.delete()
         Log.i(TAG, "finish to unpack libraries of forge")
+    }
+
+    override fun run() {
+        DownloadsIds.forge.add(download())
     }
 }
