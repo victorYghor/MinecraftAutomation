@@ -225,7 +225,6 @@ class LauncherActivity : BaseActivity() {
         if(LauncherPreferences.PREF_FIRST_INSTALLATION){
             Thread {
             MinecraftAssets(this).run()
-                ForgerDownload(this).run()
             }.start()
 
             insertProfiles()
