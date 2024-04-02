@@ -9,6 +9,6 @@
     <color name="background_status_bar">#242424</color>
     <color name="background_bottom_bar">#232323</color>
     <color name="black_pixelmon">#0C0C0C</color>
-    <color name="primary_text">#FFFFFF</color>
+    <color name="primary_text">#efefef</color>
     <color name="secondary_text">#B2B2B2</color>
 </resources>
