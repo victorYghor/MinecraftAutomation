@@ -1,5 +1,6 @@
 package net.kdt.pojavlaunch.utils
 
+import android.util.Log
 import org.apache.commons.io.IOUtils
 import java.io.File
 import java.io.FileOutputStream
@@ -44,8 +45,10 @@ object ZipUtils {
         while (zipEntries.hasMoreElements()) {
             val zipEntry = zipEntries.nextElement()
             val entryName = zipEntry.name
+            Log.d("zipExtract", "unpack entryName = $entryName")
             if (!entryName.startsWith(dirName) || zipEntry.isDirectory) continue
             val zipDestination = File(destination, entryName.substring(dirNameLen))
+            Log.d("zipExtract", "unpakc zipDestination = $zipDestination")
             FileUtils.ensureParentDirectory(zipDestination)
             zipFile.getInputStream(zipEntry).use { inputStream ->
                 FileOutputStream(zipDestination).use { outputStream ->

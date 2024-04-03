@@ -7,8 +7,11 @@ import android.content.Intent
 import android.util.Log
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
+import net.kdt.pojavlaunch.utils.FileUtils
+import pixelmon.Tools.DeleteDirecoty
 import pixelmon.Tools.DownloadsIds
 import pixelmon.forge.ForgerDownload
+import java.io.File
 
 class ForgeDownloadReceiver: BroadcastReceiver() {
     private val TAG = "ForgeDownloadReceiver.kt"
@@ -19,7 +22,8 @@ class ForgeDownloadReceiver: BroadcastReceiver() {
             val downloadsIds = DownloadsIds.forge
             if(downloadsIds.isNotEmpty() && id == downloadsIds.last()) {
                 Log.i(TAG, "the download was complete the forge will initiate")
-                ForgerDownload(context!!).unpackLibraries()
+                    DeleteDirecoty(File(context?.getExternalFilesDir(null), ".minecraft/libraries"))
+                    ForgerDownload(context!!).unpackLibraries()
                 ExtraCore.setValue(
                     ExtraConstants.LAUNCH_GAME,
                     true
