@@ -165,6 +165,8 @@
     <string name="multirt_delete_runtime">Excluir runtime</string>
     <string name="pvc_gameDirectory">Diretório do jogo</string>
     <string name="pvc_jvmArgs">Argumentos JVM</string>
+    <string name="preference_account_title">Contas</string>
+    <string name="preference_account_description">Adicione, selecione e remova contas</string>
     <string name="preference_mouse_start_title">Iniciar com o mouse virtual ligado</string>
     <string name="preference_mouse_start_description">O mouse virtual aparece na inicialização quando esta opção está ativada.</string>
     <string name="preference_video_title">Vídeo e renderizador</string>

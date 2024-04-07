@@ -5,13 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import net.kdt.pojavlaunch.LauncherActivity
 import net.kdt.pojavlaunch.R
+import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.databinding.PixelmonHomeBinding
+import net.kdt.pojavlaunch.prefs.screens.LauncherPreferenceFragment
 import pixelmon.SocialMedia
 
 class PixelmonMenuFragment(): Fragment(R.layout.pixelmon_home) {
     var _binding: PixelmonHomeBinding? = null
-    val binding = _binding!!
+    val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +34,15 @@ class PixelmonMenuFragment(): Fragment(R.layout.pixelmon_home) {
         }
         binding.btnTiktok.setOnClickListener {
             startActivity(SocialMedia.TIK_TOK.open)
+        }
+        binding.btnSettings.setOnClickListener {
+            Tools.swapFragment(
+                requireActivity(),
+                LauncherPreferenceFragment::class.java,
+                LauncherActivity.SETTING_FRAGMENT_TAG,
+                true,
+                null
+            )
         }
         super.onViewCreated(view, savedInstanceState)
     }
