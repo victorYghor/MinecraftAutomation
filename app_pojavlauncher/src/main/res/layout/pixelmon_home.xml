@@ -39,7 +39,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="32dp"
         android:background="@color/black_pixelmon"
-        android:src="@drawable/official_site_pixelmon"
+        android:src="@drawable/pixelmon_official_site"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_discord"
         app:layout_constraintHorizontal_bias="0.5"
