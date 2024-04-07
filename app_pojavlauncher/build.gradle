@@ -184,6 +184,7 @@ android {
 
     buildFeatures {
         prefab true
+        viewBinding true
     }
 
     buildToolsVersion = '33.0.2'
