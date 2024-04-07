@@ -9,7 +9,7 @@ import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.databinding.PixelmonHomeBinding
 import pixelmon.SocialMedia
 
-class PixelmonMenuFragment: Fragment(R.layout.pixelmon_home) {
+class PixelmonMenuFragment(): Fragment(R.layout.pixelmon_home) {
     var _binding: PixelmonHomeBinding? = null
     val binding = _binding!!
 
