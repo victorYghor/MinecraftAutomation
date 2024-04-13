@@ -4,7 +4,6 @@
         <color android:color="@color/background_app"/>
     </item>
 
-
     <item android:id="@android:id/progress">
         <clip>
              <color android:color='@color/minebutton_color'/>
