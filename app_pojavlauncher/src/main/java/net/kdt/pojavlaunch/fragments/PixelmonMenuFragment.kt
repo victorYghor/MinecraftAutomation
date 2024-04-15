@@ -1,5 +1,6 @@
 package net.kdt.pojavlaunch.fragments
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,7 @@ import pixelmon.SocialMedia
 
 class PixelmonMenuFragment(): Fragment(R.layout.pixelmon_home) {
     var _binding: PixelmonHomeBinding? = null
-    val binding get() = _binding!!
+    val b get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,20 +23,30 @@ class PixelmonMenuFragment(): Fragment(R.layout.pixelmon_home) {
         savedInstanceState: Bundle?
     ): View? {
         _binding = PixelmonHomeBinding.inflate(layoutInflater, container, false)
-        return binding.root
+        return b.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.btnDiscord.setOnClickListener {
+        b.btnOpenSelectVersion.setOnClickListener {
+
+            b.radioGroupSelectVersion.visibility =
+                if(b.radioGroupSelectVersion.visibility == View.GONE) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+        }
+
+        b.btnDiscord.setOnClickListener {
             startActivity(SocialMedia.DISCORD.open)
         }
-        binding.btnOfficialSite.setOnClickListener {
+        b.btnOfficialSite.setOnClickListener {
             startActivity(SocialMedia.OFFICIAL_SITE.open)
         }
-        binding.btnTiktok.setOnClickListener {
+        b.btnTiktok.setOnClickListener {
             startActivity(SocialMedia.TIK_TOK.open)
         }
-        binding.btnSettings.setOnClickListener {
+        b.btnSettings.setOnClickListener {
             Tools.swapFragment(
                 requireActivity(),
                 LauncherPreferenceFragment::class.java,

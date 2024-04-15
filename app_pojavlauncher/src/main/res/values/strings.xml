@@ -322,4 +322,6 @@
     <string name="newdl_downloading_metadata">Baixando metadados do jogo (%s)</string>
 
     <string name="notification_permission_toast">Você sempre pode mudar de ideia mais tarde indo para Configurações</string>
+    <string name="pixelmon_1_12_2">Pixelmon 1.12.2</string>
+    <string name="pixelmon_1_16_5">Pixelmon 1.16.5</string>
 </resources>

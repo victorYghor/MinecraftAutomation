@@ -10,35 +10,85 @@
         android:id="@+id/img_pixelmon_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/pixelmon_home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view_version_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/btn_play"
+        app:layout_constraintTop_toBottomOf="@+id/img_pixelmon_home"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/black_pixelmon">
+            <RadioGroup
+                android:id="@+id/radio_group_select_version"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+                <RadioButton
+                    android:id="@+id/radio_btn_version_1_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pixelmon_1_12_2"
+                    android:outlineSpotShadowColor="@color/white"
+                    android:checked="true"/>
+                <RadioButton
+                    android:id="@+id/radio_btn_version_1_16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pixelmon_1_16_5"/>
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btn_open_select_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/pixelmon_version_clicked_aperence"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/pixelmon_icon_version_select"
+                android:text="@string/pixelmon_1_16_5"
+                android:textColor="@color/primary_text"
+                app:layout_constraintBottom_toTopOf="@+id/btn_play"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_pixelmon_home" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
     <Button
+        android:layout_margin="8dp"
         android:id="@+id/btn_play"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_16sdp"
-        android:layout_marginTop="32dp"
         android:background="@drawable/roundedbutton"
         android:text="@string/main_play"
         android:textColor="@color/black_pixelmon"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_discord"
+        app:layout_constraintTop_toBottomOf="@+id/btn_select_version"
+        app:layout_constraintBottom_toTopOf="@+id/btn_tiktok"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_pixelmon_home" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/btn_official_site"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/control_button"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/pixelmon_clicked_aperence_button_social_media"
         android:src="@drawable/pixelmon_official_site"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_discord"
@@ -49,8 +99,8 @@
         android:id="@+id/btn_discord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/control_button"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/pixelmon_clicked_aperence_button_social_media"
         android:src="@drawable/pixelmon_discord"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_tiktok"
@@ -61,8 +111,8 @@
         android:id="@+id/btn_tiktok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/control_button"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/pixelmon_clicked_aperence_button_social_media"
         android:src="@drawable/pixelmon_tik_tok"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_settings"
@@ -73,8 +123,9 @@
         android:id="@+id/btn_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/control_button"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/pixelmon_clicked_aperence_button_social_media"
         android:src="@drawable/pixelmon_settings"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
