@@ -26,13 +26,31 @@ class PixelmonMenuFragment(): Fragment(R.layout.pixelmon_home) {
         return b.root
     }
 
+    fun toggleArrowIcon() {
+        b.imgDownloadIcon.visibility = View.GONE
+        val upVis = b.imgArrowUp.visibility
+        val downVis = b.imgArrowDown.visibility
+        when {
+            upVis == View.GONE && downVis == View.GONE -> b.imgArrowDown.visibility = View.VISIBLE
+            upVis == View.GONE -> {
+                b.imgArrowUp.visibility = View.VISIBLE
+                b.imgArrowDown.visibility = View.GONE
+            }
+            downVis == View.GONE -> {
+                b.imgArrowUp.visibility = View.GONE
+                b.imgArrowDown.visibility = View.VISIBLE
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         b.btnOpenSelectVersion.setOnClickListener {
-
             b.radioGroupSelectVersion.visibility =
                 if(b.radioGroupSelectVersion.visibility == View.GONE) {
+                    toggleArrowIcon()
                     View.VISIBLE
                 } else {
+                    toggleArrowIcon()
                     View.GONE
                 }
         }
