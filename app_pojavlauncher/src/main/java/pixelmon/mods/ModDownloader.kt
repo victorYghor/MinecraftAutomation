@@ -11,10 +11,8 @@ import pixelmon.Pixelmon
 import pixelmon.State
 import pixelmon.Texture
 import pixelmon.Tools.checkFileIntegrity
-import pixelmon.Tools.md5
 import java.io.File
-import java.io.FileNotFoundException
-import java.security.MessageDigest
+
 enum class ModVersion {
     OneDotTwelve,
     OneDotSixteen
@@ -64,7 +62,7 @@ class ModDownloader(private val context: Context) {
 
     fun downloadModsOneDotTwelve(exclude:List<String> = listOf()) {
         Log.d(TAG, "the mods downloads start")
-        if(!LauncherPreferences.DOWNLOAD_ONE_DOT_TWELVE) {
+        if(!LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE) {
             Pixelmon.state = State.DOWNLOAD_MODS
 
             var mods = if(exclude.isNotEmpty()) {
@@ -75,7 +73,7 @@ class ModDownloader(private val context: Context) {
             mods.forEach{
                 download(it)
             }
-            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_twelve", true).commit()
+            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
             Pixelmon.state = State.PLAY
         }
         Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity(ModVersion.OneDotTwelve)}")
@@ -99,12 +97,12 @@ class ModDownloader(private val context: Context) {
     fun downloadModOneDotSixteen() {
         Log.i(TAG, "the mods 1.16 will strat")
         Log.i(TAG, "The value of checkFilesInregrity is ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
-        if(!LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN) {
+        if(!LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_SIXTEEN) {
             Pixelmon.state = State.DOWNLOAD_MODS
             val essentialMods = listOf("MultiplayerMode", "lazydfu", "pixelmon")
             val mods = modsOneDotSixteen.filter { essentialMods.contains(it.name) }
             mods.forEach { download(it) }
-            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_sixteen", true).commit()
+            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_sixteen", true).commit()
             Pixelmon.state = State.PLAY
         }
         Log.i(TAG, "checkFilesIntegrity = ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
