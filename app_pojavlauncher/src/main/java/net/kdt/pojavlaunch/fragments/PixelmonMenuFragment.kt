@@ -11,18 +11,25 @@ import net.kdt.pojavlaunch.LauncherActivity
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.databinding.PixelmonHomeBinding
+import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.prefs.screens.LauncherPreferenceFragment
 import pixelmon.SocialMedia
+import pixelmon.forge.ForgerDownload
 
 class PixelmonMenuFragment(): Fragment(R.layout.pixelmon_home) {
     val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
         setTitle(R.string.install_one_dot_sixteen)
         setMessage(R.string.description_install_one_dot_sixteen)
         setNegativeButton(R.string.cancel) { dialog, witch ->
-
+            // fecha o pop up quando voce clica em cancelar
+            dialog.cancel()
         }
         setPositiveButton(R.string.confirm) { dialog, witch ->
-
+            // isso inicia o download do forge
+            Thread {
+                ForgerDownload(requireContext()).run()
+            }
+            dialog.cancel()
         }
     }
     var _binding: PixelmonHomeBinding? = null
@@ -56,14 +63,18 @@ class PixelmonMenuFragment(): Fragment(R.layout.pixelmon_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         b.btnOpenSelectVersion.setOnClickListener {
-            b.radioGroupSelectVersion.visibility =
-                if(b.radioGroupSelectVersion.visibility == View.GONE) {
-                    toggleArrowIcon()
-                    View.VISIBLE
-                } else {
-                    toggleArrowIcon()
-                    View.GONE
-                }
+            if(LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN) {
+                b.radioGroupSelectVersion.visibility =
+                    if(b.radioGroupSelectVersion.visibility == View.GONE) {
+                        toggleArrowIcon()
+                        View.VISIBLE
+                    } else {
+                        toggleArrowIcon()
+                        View.GONE
+                    }
+            } else {
+                installOneDotSixTeenDialog.create().show()
+            }
         }
 
         b.btnDiscord.setOnClickListener {

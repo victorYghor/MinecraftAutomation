@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.core.net.toUri
 import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.Tools.read
+import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.utils.ZipUtils
 import pixelmon.SupportFile
 import pixelmon.Tools.DownloadsIds
@@ -36,10 +37,12 @@ class ForgerDownload(private val context: Context): Runnable {
             File(context.getExternalFilesDir(null), ".minecraft")
             )
         librariesZipFile.delete()
+        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_sixteen", true).commit()
         Log.i(TAG, "finish to unpack libraries of forge")
     }
 
     override fun run() {
+        Log.d(TAG, "iniciando o download do minecraft 1.16")
         DownloadsIds.forge.add(download())
     }
 }
