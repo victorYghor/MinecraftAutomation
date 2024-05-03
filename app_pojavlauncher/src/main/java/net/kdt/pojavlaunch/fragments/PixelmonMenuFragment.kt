@@ -2,6 +2,7 @@ package net.kdt.pojavlaunch.fragments
 
 import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,8 @@ import net.kdt.pojavlaunch.prefs.screens.LauncherPreferenceFragment
 import pixelmon.SocialMedia
 import pixelmon.forge.ForgerDownload
 
-class PixelmonMenuFragment(): Fragment(R.layout.pixelmon_home) {
+class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
+    val TAG = "PixelmonMenuFragment"
     val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
         setTitle(R.string.install_one_dot_sixteen)
         setMessage(R.string.description_install_one_dot_sixteen)
@@ -60,12 +62,25 @@ class PixelmonMenuFragment(): Fragment(R.layout.pixelmon_home) {
             }
         }
     }
-
+    fun toggleVersionSelectPreference(checked: Boolean) {
+        LauncherPreferences.DEFAULT_PREF.edit().putBoolean(
+            "select_version_is_one_dot_twelve",
+            checked
+        ).commit()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        b.radioBtnVersion112.setOnCheckedChangeListener { buttonView, checked ->
+                toggleVersionSelectPreference(checked)
+            Log.d(TAG, "the select_version_is_one_dot_twelve preference is ${LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE}")
+        }
+        b.radioBtnVersion116.setOnCheckedChangeListener { buttonView, checked ->
+            toggleVersionSelectPreference(!checked)
+            Log.d(TAG, "the select_version_is_one_dot_twelve preference is ${LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE}")
+        }
         b.btnOpenSelectVersion.setOnClickListener {
-            if(LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN) {
+            if (LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN) {
                 b.radioGroupSelectVersion.visibility =
-                    if(b.radioGroupSelectVersion.visibility == View.GONE) {
+                    if (b.radioGroupSelectVersion.visibility == View.GONE) {
                         toggleArrowIcon()
                         View.VISIBLE
                     } else {
@@ -76,7 +91,6 @@ class PixelmonMenuFragment(): Fragment(R.layout.pixelmon_home) {
                 installOneDotSixTeenDialog.create().show()
             }
         }
-
         b.btnDiscord.setOnClickListener {
             startActivity(SocialMedia.DISCORD.open)
         }

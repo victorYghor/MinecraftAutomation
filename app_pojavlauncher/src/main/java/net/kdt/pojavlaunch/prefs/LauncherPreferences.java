@@ -28,6 +28,11 @@ public class LauncherPreferences {
     public static boolean DOWNLOAD_MOD_ONE_DOT_TWELVE;
     public static boolean DOWNLOAD_MOD_ONE_DOT_SIXTEEN;
     public static boolean DOWNLOAD_ONE_DOT_SIXTEEN;
+    /**
+     * If the value is true version of pixelmon is 1.12,
+     * else is the value is false version of pixelmon is 1.16
+     */
+    public static boolean SELECT_VERSION_IS_ONE_DOT_TWELVE = true;
     public static String PREF_RENDERER = "opengles2";
     public static boolean PREF_FIRST_INSTALLATION = true;
 	public static boolean PREF_VERTYPE_RELEASE = true;
@@ -89,8 +94,10 @@ public class LauncherPreferences {
         DOWNLOAD_FORGE_LIBRARIES = DEFAULT_PREF.getBoolean("download_forge_libraries", false);
         DOWNLOAD_MOD_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("download_mod_one_dot_twelve", false);
         DOWNLOAD_MOD_ONE_DOT_SIXTEEN = DEFAULT_PREF.getBoolean("download_one_dot_sixteen", false);
+        SELECT_VERSION_IS_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("select_version_is_one_dot_twelve", true);
         DOWNLOAD_ONE_DOT_SIXTEEN = DEFAULT_PREF.getBoolean("", false);
         PREF_FIRST_INSTALLATION = DEFAULT_PREF.getBoolean("first_installation", true);
+
 		PREF_MOUSESPEED = ((float)DEFAULT_PREF.getInt("mousespeed",100))/100f;
 		PREF_HIDE_SIDEBAR = DEFAULT_PREF.getBoolean("hideSidebar", false);
 		PREF_IGNORE_NOTCH = DEFAULT_PREF.getBoolean("ignoreNotch", false);
