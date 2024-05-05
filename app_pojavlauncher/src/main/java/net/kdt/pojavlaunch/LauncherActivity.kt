@@ -44,6 +44,8 @@ import net.kdt.pojavlaunch.utils.NotificationUtils
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
 import pixelmon.MinecraftAssets
+import pixelmon.Tools.DownloadResult
+import pixelmon.Tools.InformativeAlertDialog
 import pixelmon.forge.ForgerDownload
 import java.lang.ref.WeakReference
 
@@ -83,13 +85,18 @@ class LauncherActivity : BaseActivity() {
      * resource for description for the index 1 the pop up.
      */
     private val mDialogAlertDownload = ExtraListener { key: String?, value: List<Int> ->
-        android.app.AlertDialog.Builder(this).apply {
-            setTitle(value[0])
-            setMessage(value[1])
-            setPositiveButton(R.string.ok) { dialog, witch ->
-                dialog.cancel()
+       InformativeAlertDialog(this, value[0], value[1])
+        false
+    }
+    private val mOneDotSixTeenDownloadResult = ExtraListener { key: String?, result: DownloadResult ->
+        when(result) {
+            DownloadResult.SUCCESS -> {
+
             }
-        }.create().show()
+            DownloadResult.FAIL -> {
+
+            }
+        }
         false
     }
 

@@ -323,7 +323,7 @@
 
     <!-- pixelmon strings-->
     <string name="install_one_dot_sixteen">Instalar a versão 1.16</string>
-    <string name="description_install_one_dot_sixteen">O pixelmon ira instalar a versão 1.16 do minecraft e do forge para poder acessar servidores especiais do pixelmon</string>
+    <string name="description_install_one_dot_sixteen">Deseja instalar mods e blibliotecas necessárias para usar o pixelmon 1.6?</string>
     <string name="confirm">Sim</string>
     <string name="cancel">Nâo</string>
     <string name="notification_permission_toast">Você sempre pode mudar de ideia mais tarde indo para Configurações</string>
