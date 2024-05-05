@@ -2,6 +2,8 @@ package net.kdt.pojavlaunch.extra;
 
 public class ExtraConstants {
     /** ExtraCore constant: a HashMap for converting values such as latest-snapshot or latest-release to actual game version names */
+    /** for trigger the alert dialog about some download problem */
+    public static final String ALERT_DIALOG_DOWNLOAD = "alert_dialog_download";
     public static final String RELEASE_TABLE = "release_table";
     /** ExtraCore constant: Serpent's back button tracking thing */
     public static final String BACK_PREFERENCE = "back_preference";
@@ -19,7 +21,4 @@ public class ExtraConstants {
     public static final String REFRESH_VERSION_SPINNER = "refresh_version";
     /** ExtraCore Constant: When we want to launch the game */
     public static final String LAUNCH_GAME = "launch_game";
-
-
-
 }

@@ -82,7 +82,6 @@
                         android:src="@drawable/pixelmon_arrow_down"
                         android:visibility="gone" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <Button
                     android:id="@+id/btn_open_select_version"
                     android:layout_width="wrap_content"
@@ -90,7 +89,7 @@
                     android:layout_marginTop="6dp"
                     android:background="@drawable/pixelmon_version_clicked_aperence"
                     android:drawablePadding="16dp"
-                    android:text="@string/pixelmon_1_16_5"
+                    android:text="@string/empty"
                     android:textColor="@color/primary_text"
                     app:layout_constraintBottom_toTopOf="@+id/btn_play"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -113,8 +112,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btn_tiktok"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_select_version" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/btn_official_site"

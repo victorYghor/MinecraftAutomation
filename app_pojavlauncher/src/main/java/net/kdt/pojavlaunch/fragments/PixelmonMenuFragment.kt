@@ -55,6 +55,7 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         ).commit()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.e(TAG, "the code reach here")
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.install_one_dot_sixteen)
             setMessage(R.string.description_install_one_dot_sixteen)
@@ -64,9 +65,12 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
             }
             setPositiveButton(R.string.confirm) { dialog, witch ->
                 // isso inicia o download do forge
+
                 Thread {
+                    Log.i(TAG, "tentar iniciar o download do pixelmon")
+                    // é necessário colocar run para o codigo funcionar
                     ForgerDownload(requireContext()).run()
-                }
+                }.start()
                 dialog.cancel()
             }
         }
@@ -78,20 +82,24 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
             toggleVersionSelectPreference(!checked)
             Log.d(TAG, "the select_version_is_one_dot_twelve preference is ${LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE}")
         }
-        b.btnOpenSelectVersion.setOnClickListener {
-            if (LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN) {
-                b.radioGroupSelectVersion.visibility =
-                    if (b.radioGroupSelectVersion.visibility == View.GONE) {
-                        toggleArrowIcon()
-                        View.VISIBLE
-                    } else {
-                        toggleArrowIcon()
-                        View.GONE
-                    }
-            } else {
-                installOneDotSixTeenDialog.create().show()
+        b.btnOpenSelectVersion.apply {
+            text = if(LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE) getString(R.string.pixelmon_1_12_2) else getString(R.string.pixelmon_1_16_5)
+            setOnClickListener {
+                if (LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN) {
+                    b.radioGroupSelectVersion.visibility =
+                        if (b.radioGroupSelectVersion.visibility == View.GONE) {
+                            toggleArrowIcon()
+                            View.VISIBLE
+                        } else {
+                            toggleArrowIcon()
+                            View.GONE
+                        }
+                } else {
+                    installOneDotSixTeenDialog.create().show()
+                }
             }
         }
+
         b.btnDiscord.setOnClickListener {
             startActivity(SocialMedia.DISCORD.open)
         }

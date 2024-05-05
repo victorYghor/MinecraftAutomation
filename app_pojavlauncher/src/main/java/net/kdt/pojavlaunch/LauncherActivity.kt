@@ -78,6 +78,21 @@ class LauncherActivity : BaseActivity() {
             }
         }
 
+    /**
+     * @param value in this list you put the string resource for title for index 0 and the string
+     * resource for description for the index 1 the pop up.
+     */
+    private val mDialogAlertDownload = ExtraListener { key: String?, value: List<Int> ->
+        android.app.AlertDialog.Builder(this).apply {
+            setTitle(value[0])
+            setMessage(value[1])
+            setPositiveButton(R.string.ok) { dialog, witch ->
+                dialog.cancel()
+            }
+        }.create().show()
+        false
+    }
+
     /* Listener for the back button in settings */
     private val mBackPreferenceListener = ExtraListener { key: String?, value: String ->
         if (value == "true") onBackPressed()
@@ -185,6 +200,7 @@ class LauncherActivity : BaseActivity() {
     private var mRequestNotificationPermissionRunnable: WeakReference<Runnable>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.e(TAG, "Hey I am LauncherActivity.kt")
         setContentView(R.layout.activity_pojav_launcher)
         IconCacheJanitor.runJanitor()
         mRequestNotificationPermissionLauncher = registerForActivityResult(
@@ -198,6 +214,7 @@ class LauncherActivity : BaseActivity() {
         window.setBackgroundDrawable(null)
         bindViews()
         checkNotificationPermission()
+        // place for putting extra listener
         mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         ProgressKeeper.addTaskCountListener(mDoubleLaunchPreventionListener)
         ProgressKeeper.addTaskCountListener(ProgressServiceKeeper(this).also {
@@ -206,6 +223,8 @@ class LauncherActivity : BaseActivity() {
         mSettingsButton!!.setOnClickListener(mSettingButtonListener)
         mDeleteAccountButton!!.setOnClickListener(mAccountDeleteButtonListener)
         ProgressKeeper.addTaskCountListener(mProgressLayout)
+
+        ExtraCore.addExtraListener(ExtraConstants.ALERT_DIALOG_DOWNLOAD, mDialogAlertDownload)
         ExtraCore.addExtraListener(ExtraConstants.BACK_PREFERENCE, mBackPreferenceListener)
         ExtraCore.addExtraListener(ExtraConstants.SELECT_AUTH_METHOD, mSelectAuthMethod)
         ExtraCore.addExtraListener(ExtraConstants.LAUNCH_GAME, mLaunchGameListener)
@@ -221,16 +240,10 @@ class LauncherActivity : BaseActivity() {
         mProgressLayout!!.observe(ProgressLayout.INSTALL_MODPACK)
         mProgressLayout!!.observe(ProgressLayout.AUTHENTICATE_MICROSOFT)
         mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_VERSION_LIST)
-
-        if(LauncherPreferences.PREF_FIRST_INSTALLATION){
-            Thread {
+        Thread {
             MinecraftAssets(this).run()
-            }.start()
-
-            insertProfiles()
-            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
-        }
-
+        }.start()
+        insertProfiles()
         if (mAccountSpinner == null) {
             Log.w(TAG, "Account spiner is null")
         } else {
@@ -244,7 +257,8 @@ class LauncherActivity : BaseActivity() {
     fun insertProfiles() {
         val profiles = this.assets.open("launcher_profiles.json").readBytes()
         Tools.write(
-            Tools.DIR_GAME_NEW + "/" + "launcher_profiles.json", profiles)
+            Tools.DIR_GAME_NEW + "/" + "launcher_profiles.json", profiles
+        )
         LauncherProfiles.mainProfileJson = Tools.GLOBAL_GSON.fromJson(
             Tools.read(LauncherProfiles.launcherProfilesFile.absolutePath),
             MinecraftLauncherProfiles::class.java

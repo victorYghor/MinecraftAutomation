@@ -1,6 +1,7 @@
 package net.kdt.pojavlaunch.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -29,10 +30,9 @@ public class LocalLoginFragment extends Fragment {
         mUsernameEditText = view.findViewById(R.id.login_edit_email);
         view.findViewById(R.id.login_button).setOnClickListener(v -> {
             if(!checkEditText()) return;
-
             ExtraCore.setValue(ExtraConstants.MOJANG_LOGIN_TODO, new String[]{
                     mUsernameEditText.getText().toString(), "" });
-
+            Log.e(TAG, "Hey LocalLoginFragment.java");
             Tools.swapFragment(requireActivity(), PixelmonMenuFragment.class, MainMenuFragment.TAG, false, null);
         });
     }

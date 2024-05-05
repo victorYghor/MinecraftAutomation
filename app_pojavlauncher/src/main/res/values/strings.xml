@@ -329,4 +329,8 @@
     <string name="notification_permission_toast">Você sempre pode mudar de ideia mais tarde indo para Configurações</string>
     <string name="pixelmon_1_12_2">Pixelmon 1.12.2</string>
     <string name="pixelmon_1_16_5">Pixelmon 1.16.5</string>
+    <string name="error_download_libraries">Teve um problema baixando o pixelmon 1.16.5</string>
+    <string name="message_error_download_libraries">Tentamos baixar as blibliotecas do forge 1.16.5 e houve um problema no download.</string>
+    <string name="empty" />
+    <string name="ok">OK</string>
 </resources>

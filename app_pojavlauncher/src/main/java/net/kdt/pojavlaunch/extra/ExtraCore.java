@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+// I need to use this to update the ui
 /**
  * Class providing callback across all of a program
  * to allow easy thread safe implementations of UI update without context leak
