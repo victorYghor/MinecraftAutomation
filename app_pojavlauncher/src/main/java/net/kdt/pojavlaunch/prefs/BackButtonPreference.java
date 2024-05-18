@@ -1,6 +1,7 @@
 package net.kdt.pojavlaunch.prefs;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 
 import androidx.preference.Preference;
@@ -32,6 +33,7 @@ public class BackButtonPreference extends Preference {
     @Override
     protected void onClick() {
         // It is caught by an ExtraListener in the LauncherActivity
+
         ExtraCore.setValue(ExtraConstants.BACK_PREFERENCE, "true");
     }
 }

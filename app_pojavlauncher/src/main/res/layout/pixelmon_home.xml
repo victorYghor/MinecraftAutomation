@@ -33,12 +33,14 @@
             android:orientation="vertical">
 
             <RadioGroup
+                style="@style/MyRadioButtonStyle"
                 android:id="@+id/radio_group_select_version"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone">
 
                 <RadioButton
+                    style="@style/MyRadioButtonStyle"
                     android:id="@+id/radio_btn_version_1_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -46,6 +48,7 @@
                     android:text="@string/pixelmon_1_12_2" />
 
                 <RadioButton
+                    style="@style/MyRadioButtonStyle"
                     android:id="@+id/radio_btn_version_1_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
