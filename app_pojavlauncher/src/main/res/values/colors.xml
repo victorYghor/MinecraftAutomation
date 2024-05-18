@@ -2,11 +2,11 @@
 <resources>
     <color name="control_button_color">#4CC4C4C4</color>
     <color name="tranparent">#00000000</color>
-    <color name="minebutton_color">#57CC33</color>
-    <color name="background_app">#181818</color>
-    <color name="background_overlay">#464646</color>
-    <color name="background_status_bar">#242424</color>
-    <color name="background_bottom_bar">#232323</color>
+    <color name="minebutton_color">#ffffff</color>
+    <color name="background_app">#000000</color>
+    <color name="background_overlay">#000000</color>
+    <color name="background_status_bar">#000000</color>
+    <color name="background_bottom_bar">#000000</color>
     <color name="black_pixelmon">#000000</color>
     <color name="white">#ffffff</color>
     <color name="primary_text">#efefef</color>
