@@ -28,9 +28,8 @@ class ForgerDownload(private val context: Context): Runnable {
             .setDestinationInExternalFilesDir(context, null, ".minecraft/libraries.zip")
         return downloadManager.enqueue(request)
     }
-    fun unpackLibraries() {
+    fun unpackLibraries(librariesZipFile: File) {
         Log.i(TAG, "unpack Libraries")
-        val librariesZipFile = File(context.getExternalFilesDir(null), ".minecraft/libraries.zip")
         ZipUtils.zipExtract(
             ZipFile(librariesZipFile),
             "",

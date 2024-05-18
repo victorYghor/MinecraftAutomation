@@ -7,10 +7,8 @@ import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
-import pixelmon.Tools.DeleteDirecoty
 import pixelmon.forge.ForgerDownload
 import pixelmon.mods.ModDownloader
-import java.io.File
 
 class Pixelmon(private val context: Context, private val versionSpinner: mcVersionSpinner, popStack: () -> Boolean) {
     companion object {

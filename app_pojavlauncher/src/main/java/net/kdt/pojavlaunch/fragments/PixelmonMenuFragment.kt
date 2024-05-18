@@ -42,18 +42,21 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
                 b.imgArrowUp.visibility = View.VISIBLE
                 b.imgArrowDown.visibility = View.GONE
             }
+
             downVis == View.GONE -> {
                 b.imgArrowUp.visibility = View.GONE
                 b.imgArrowDown.visibility = View.VISIBLE
             }
         }
     }
+
     fun toggleVersionSelectPreference(checked: Boolean) {
         LauncherPreferences.DEFAULT_PREF.edit().putBoolean(
             "select_version_is_one_dot_twelve",
             checked
         ).commit()
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.e(TAG, "the code reach here")
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
@@ -74,29 +77,35 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
                 dialog.cancel()
             }
         }
+
         b.radioBtnVersion112.setOnCheckedChangeListener { buttonView, checked ->
-                toggleVersionSelectPreference(checked)
-            Log.d(TAG, "the select_version_is_one_dot_twelve preference is ${LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE}")
+            toggleVersionSelectPreference(checked)
+            Log.d(
+                TAG,
+                "the select_version_is_one_dot_twelve preference is ${LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE}"
+            )
         }
         b.radioBtnVersion116.setOnCheckedChangeListener { buttonView, checked ->
             toggleVersionSelectPreference(!checked)
-            Log.d(TAG, "the select_version_is_one_dot_twelve preference is ${LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE}")
+            Log.d(
+                TAG,
+                "the select_version_is_one_dot_twelve preference is ${LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE}"
+            )
         }
         b.btnOpenSelectVersion.apply {
-            text = if(LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE) getString(R.string.pixelmon_1_12_2) else getString(R.string.pixelmon_1_16_5)
+            text =
+                if (LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE) getString(R.string.pixelmon_1_12_2) else getString(
+                    R.string.pixelmon_1_16_5
+                )
             setOnClickListener {
-                if (LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN) {
-                    b.radioGroupSelectVersion.visibility =
-                        if (b.radioGroupSelectVersion.visibility == View.GONE) {
-                            toggleArrowIcon()
-                            View.VISIBLE
-                        } else {
-                            toggleArrowIcon()
-                            View.GONE
-                        }
-                } else {
-                    installOneDotSixTeenDialog.create().show()
-                }
+                b.radioGroupSelectVersion.visibility =
+                    if (b.radioGroupSelectVersion.visibility == View.GONE) {
+                        toggleArrowIcon()
+                        View.VISIBLE
+                    } else {
+                        toggleArrowIcon()
+                        View.GONE
+                    }
             }
         }
 

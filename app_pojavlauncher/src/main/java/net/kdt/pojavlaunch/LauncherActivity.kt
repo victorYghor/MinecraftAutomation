@@ -45,8 +45,7 @@ import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
 import pixelmon.MinecraftAssets
 import pixelmon.Tools.DownloadResult
-import pixelmon.Tools.InformativeAlertDialog
-import pixelmon.forge.ForgerDownload
+import pixelmon.Tools.informativeAlertDialog
 import java.lang.ref.WeakReference
 
 class LauncherActivity : BaseActivity() {
@@ -85,13 +84,15 @@ class LauncherActivity : BaseActivity() {
      * resource for description for the index 1 the pop up.
      */
     private val mDialogAlertDownload = ExtraListener { key: String?, value: List<Int> ->
-       InformativeAlertDialog(this, value[0], value[1])
+       informativeAlertDialog(this, value[0], value[1])
         false
     }
     private val mOneDotSixTeenDownloadResult = ExtraListener { key: String?, result: DownloadResult ->
         when(result) {
             DownloadResult.SUCCESS -> {
-
+                // precisa mudar o icone ele precisa ficar com uma setinha para cima aqui
+                LauncherPreferences.DEFAULT_PREF.edit()
+                    .putBoolean("download_one_dot_sixteen", true).commit()
             }
             DownloadResult.FAIL -> {
 
