@@ -1,29 +1,48 @@
-package net.kdt.pojavlaunch.fragments;
+package net.kdt.pojavlaunch.fragments
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import net.kdt.pojavlaunch.R
+import net.kdt.pojavlaunch.Tools
+import pixelmon.SocialMedia
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+/**
+ * Fragment for selecting the atuhentication method.
+ */
+class SelectAuthFragment : Fragment(R.layout.fragment_select_auth_method) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-import net.kdt.pojavlaunch.R;
-import net.kdt.pojavlaunch.Tools;
+        val mMicrosoftButton = view.findViewById<Button>(R.id.button_microsoft_authentication)
+        val mLocalButton = view.findViewById<Button>(R.id.button_local_authentication)
+        val tvIHaveProblems = view.findViewById<TextView>(R.id.tv_problems_with_login)
 
-public class SelectAuthFragment extends Fragment {
-    public static final String TAG = "AUTH_SELECT_FRAGMENT";
-
-    public SelectAuthFragment(){
-        super(R.layout.fragment_select_auth_method);
+        tvIHaveProblems.setOnClickListener {
+            startActivity(SocialMedia.DISCORD.open)
+        }
+        mMicrosoftButton.setOnClickListener {
+            Tools.swapFragment(
+                requireActivity(),
+                MicrosoftLoginFragment::class.java,
+                MicrosoftLoginFragment.TAG,
+                false,
+                null
+            )
+        }
+        mLocalButton.setOnClickListener {
+            Tools.swapFragment(
+                requireActivity(),
+                LocalLoginFragment::class.java,
+                LocalLoginFragment.TAG,
+                false,
+                null
+            )
+        }
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Button mMicrosoftButton = view.findViewById(R.id.button_microsoft_authentication);
-        Button mLocalButton = view.findViewById(R.id.button_local_authentication);
-
-        mMicrosoftButton.setOnClickListener(v -> Tools.swapFragment(requireActivity(), MicrosoftLoginFragment.class, MicrosoftLoginFragment.TAG, false, null));
-        mLocalButton.setOnClickListener(v -> Tools.swapFragment(requireActivity(), LocalLoginFragment.class, LocalLoginFragment.TAG, false, null));
+    companion object {
+        const val TAG = "AUTH_SELECT_FRAGMENT"
     }
 }

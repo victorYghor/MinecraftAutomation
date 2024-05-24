@@ -7,7 +7,10 @@
     <!-- Languages list part -->
     <!-- Login strings -->
     <string name="login_online_username_hint">Email ou nome de usuário</string>
-    <string name="login_online_login_label">Iniciar sessão</string>
+    <string name="login_online_login_label">LOGAR</string>
+    <string name="pixelmon_login">LOGIN</string>
+    <string name="i_have_problems_to_connect"><u>Eu estou com problemas para me conectar</u></string>
+    <string name="pixelmon_login_options">Opções de Login</string>
     <!-- Hint -->
     <string name="hint_control_mapping">"Toque na engrenagem no topo e centro para abrir as opções ⚙\nToque em um botão para customizar: editar, redimensionar, deletar, ou customizar o mapeamento."</string>
     <!-- Warnings -->
@@ -307,7 +310,7 @@
     <string name="notif_download_finished_desc">Click aqui para começar!</string>
     <string name="dl_tampered_manifest_title">Aviso de verificação de arquivo</string>
     <string name="dl_tampered_manifest">
-    ![CDATA[O manifesto da versão do jogo no espelho não corresponde ao manifesto oficial da versão Mojang, o que significa que pode ter sido adulterado.<br/> <b>Isso não é seguro. Suas informações pessoais podem estar em risco se você continuar.</b><br/> Se você ainda quiser usar o espelho, pressione \"Desativar verificações de manifesto\" e inicie o download novamente.<br/> Se desejar para usar a fonte de download oficial, pressione \"Mudar para o site oficial\" e inicie o download novamente.<br/>]]
+    ![CDATA[O manifesto da versão do jogo no espelho não corresponde ao manifesto oficial da versão Mojang, o que significa que pode ter sido adulterado.<br /> <b>Isso não é seguro. Suas informações pessoais podem estar em risco se você continuar.</b><br /> Se você ainda quiser usar o espelho, pressione \"Desativar verificações de manifesto\" e inicie o download novamente.<br /> Se desejar para usar a fonte de download oficial, pressione \"Mudar para o site oficial\" e inicie o download novamente.<br />]]
     </string>
     <string name="dl_switch_to_official_site">Mudar para o site oficial</string>
 
@@ -322,10 +325,14 @@
     <string name="newdl_downloading_metadata">Baixando metadados do jogo (%s)</string>
 
     <!-- pixelmon strings-->
+    <string name="welcome_pixelmon_brazil">BEM-VINDO AO PIXELMON BRASIL</string>
+    <string name="pixelmon_btn_continue">Continuar</string>
+    <string name="welcome_pixelmon_message">Explore um mundo incrível, faça amizades, colecione pokémons raros, treine e dispute duelos emocionantes para se tornar o campeão supremo!</string>
     <string name="install_one_dot_sixteen">Instalar a versão 1.16</string>
     <string name="description_install_one_dot_sixteen">Deseja instalar mods e blibliotecas necessárias para usar o pixelmon 1.6?</string>
     <string name="confirm">Sim</string>
     <string name="cancel">Nâo</string>
+    <string name="hint_btn_text_user_name">Nome de usuário</string>
     <string name="notification_permission_toast">Você sempre pode mudar de ideia mais tarde indo para Configurações</string>
     <string name="pixelmon_1_12_2">Pixelmon 1.12.2</string>
     <string name="pixelmon_1_16_5">Pixelmon 1.16.5</string>
@@ -333,4 +340,6 @@
     <string name="message_error_download_libraries">Tentamos baixar as blibliotecas do forge 1.16.5 e houve um problema no download.</string>
     <string name="empty" />
     <string name="ok">OK</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -14,42 +14,68 @@
         android:id="@+id/login_menu"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_200sdp"
-
         android:background="@drawable/background_card"
         android:translationZ="-1dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <TextView
+        android:id="@+id/welcome_pixelmon_brazil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/pixelmon_login_options"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/login_menu" />
     <com.kdt.mcgui.MineButton
         android:id="@+id/button_microsoft_authentication"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Microsoft Account"
-        android:textSize="@dimen/_12ssp"
         android:layout_marginHorizontal="@dimen/_25sdp"
         android:layout_marginBottom="@dimen/_20sdp"
+        android:drawableStart="@drawable/pixelmon_windows_logo"
+        android:text="Microsoft Account"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintBottom_toTopOf="@+id/button_local_authentication"
         app:layout_constraintEnd_toEndOf="@+id/login_menu"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/login_menu"
         app:layout_constraintTop_toTopOf="@id/login_menu"
-        app:layout_constraintVertical_chainStyle="packed"
-        />
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <com.kdt.mcgui.MineButton
         android:id="@+id/button_local_authentication"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_25sdp"
+        android:drawableStart="@drawable/pixelmon_logar_with_pirate_account"
         android:text="Conta pirata"
         android:textSize="@dimen/_12ssp"
-        android:layout_marginHorizontal="@dimen/_25sdp"
         app:layout_constraintBottom_toBottomOf="@id/login_menu"
         app:layout_constraintEnd_toEndOf="@+id/login_menu"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/login_menu"
         app:layout_constraintTop_toBottomOf="@+id/button_microsoft_authentication" />
 
+    <TextView
+        android:id="@+id/tv_problems_with_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/i_have_problems_to_connect"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/button_local_authentication"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+ />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,7 +34,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MissingStorageActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme"
+            />
 
         <meta-data
             android:name="android.max_aspect"
@@ -44,7 +46,8 @@
             android:name=".TestStorageActivity"
             android:exported="true"
             android:label="@string/app_short_name"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,13 +56,15 @@
         </activity>
         <activity
             android:name=".LauncherActivity"
-            android:label="@string/app_short_name" />
+            android:label="@string/app_short_name"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ImportControlActivity"
             android:configChanges="keyboard|keyboardHidden"
             android:exported="true"
             android:launchMode="singleInstance"
-            android:windowSoftInputMode="stateVisible">
+            android:windowSoftInputMode="stateVisible"
+            android:theme="@style/AppTheme">
             <intent-filter
                 android:label="@string/import_control_label"
                 android:scheme="content"
@@ -77,23 +82,26 @@
         <activity
             android:name=".FatalErrorActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|keyboard|navigation"
-            android:theme="@style/Theme.AppCompat.DayNight.Dialog" />
-        <activity android:name=".ShowErrorActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ShowErrorActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|keyboard|navigation"
-            android:theme="@style/Theme.AppCompat.DayNight.Dialog" />
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ExitActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|keyboard|navigation"
-            android:theme="@style/Theme.AppCompat.DayNight.Dialog" />
+            android:theme="@style/AppTheme"/>
         <activity
-            android:process=":gui_installer"
             android:name=".JavaGUILauncherActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|keyboard|navigation|uiMode"
+            android:process=":gui_installer"
+            android:theme="@style/AppTheme"
             android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".CustomControlsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|keyboard|navigation"
             android:exported="false"
+            android:theme="@style/AppTheme"
             android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name=".CustomControlsActivity" />
@@ -106,7 +114,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|keyboard|navigation|uiMode"
             android:launchMode="standard"
             android:process=":game"
-            android:screenOrientation="sensorLandscape" />
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/AppTheme"/>
 
         <provider
             android:name=".scoped.FolderProvider"
@@ -123,18 +132,23 @@
         <service
             android:name=".services.GameService"
             android:process=":game" />
-        <receiver android:name="pixelmon.mods.ModDownloadReceiver" android:exported="true">
+
+        <receiver
+            android:name="pixelmon.mods.ModDownloadReceiver"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
-        <receiver android:name="pixelmon.forge.ForgeDownloadReceiver" android:exported="true">
+        <receiver
+            android:name="pixelmon.forge.ForgeDownloadReceiver"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
     </application>
     <queries>
-        <package android:name="net.kdt.pojavlaunch.ffmpeg"/>
+        <package android:name="net.kdt.pojavlaunch.ffmpeg" />
     </queries>
 </manifest>

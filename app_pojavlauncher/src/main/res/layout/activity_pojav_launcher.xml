@@ -7,16 +7,16 @@
     android:background="@android:color/transparent">
 
     <com.kdt.mcgui.mcAccountSpinner
+        android:visibility="gone"
         android:id="@+id/account_spinner"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_52sdp"
-
         android:dropDownWidth="@dimen/_250sdp"
         android:dropDownVerticalOffset="@dimen/_52sdp"
-
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
+        android:visibility="gone"
         android:id="@+id/setting_button"
         android:layout_width="@dimen/_52sdp"
         android:layout_height="@dimen/_52sdp"
@@ -24,11 +24,11 @@
         android:src="@drawable/ic_menu_settings"
         android:scaleType="fitCenter"
         android:paddingVertical="@dimen/_8sdp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
+        android:visibility="gone"
         android:id="@+id/delete_account_button"
         android:layout_width="@dimen/_52sdp"
         android:layout_height="@dimen/_52sdp"
@@ -45,7 +45,6 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_fragment"
         android:name="net.kdt.pojavlaunch.fragments.PixelmonMenuFragment"
-
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/progress_layout"
@@ -56,7 +55,6 @@
         android:id="@+id/progress_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         app:layout_constraintBottom_toBottomOf="parent" />
 
 

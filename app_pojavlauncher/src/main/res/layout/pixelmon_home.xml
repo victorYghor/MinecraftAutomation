@@ -40,6 +40,7 @@
                 android:visibility="gone">
 
                 <RadioButton
+                    android:buttonTint="@color/white"
                     style="@style/MyRadioButtonStyle"
                     android:id="@+id/radio_btn_version_1_12"
                     android:layout_width="wrap_content"
@@ -48,6 +49,7 @@
                     android:text="@string/pixelmon_1_12_2" />
 
                 <RadioButton
+                    android:buttonTint="@color/white"
                     style="@style/MyRadioButtonStyle"
                     android:id="@+id/radio_btn_version_1_16"
                     android:layout_width="wrap_content"

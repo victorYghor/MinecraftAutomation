@@ -211,6 +211,7 @@ class LauncherActivity : BaseActivity() {
         Log.e(TAG, "Hey I am LauncherActivity.kt")
         setContentView(R.layout.activity_pojav_launcher)
         IconCacheJanitor.runJanitor()
+
         mRequestNotificationPermissionLauncher = registerForActivityResult(
             RequestPermission()
         ) { isAllowed: Boolean? ->

@@ -22,7 +22,7 @@ public class LocalLoginFragment extends Fragment {
     private EditText mUsernameEditText;
 
     public LocalLoginFragment(){
-        super(R.layout.fragment_local_login);
+        super(R.layout.fragment_pixelmon_local_login);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class LocalLoginFragment extends Fragment {
             ExtraCore.setValue(ExtraConstants.MOJANG_LOGIN_TODO, new String[]{
                     mUsernameEditText.getText().toString(), "" });
             Log.e(TAG, "Hey LocalLoginFragment.java");
-            Tools.swapFragment(requireActivity(), PixelmonMenuFragment.class, MainMenuFragment.TAG, false, null);
+            Tools.swapFragment(requireActivity(), LocalLoginFragment.class, LocalLoginFragment.TAG, false, null);
         });
     }
 

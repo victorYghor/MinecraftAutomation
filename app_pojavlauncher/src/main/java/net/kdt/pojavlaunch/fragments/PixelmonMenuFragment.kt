@@ -58,7 +58,16 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.e(TAG, "the code reach here")
+        // Handle the first fragment to show
+        if (LauncherPreferences.PREF_FIRST_INSTALLATION) {
+            Tools.swapFragment(
+                requireActivity(),
+                PixelmonWelcomeScreen::class.java,
+                PixelmonWelcomeScreen.TAG,
+                false,
+                null
+            )
+        }
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.install_one_dot_sixteen)
             setMessage(R.string.description_install_one_dot_sixteen)
