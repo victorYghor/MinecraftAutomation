@@ -11,7 +11,7 @@ import net.kdt.pojavlaunch.databinding.FragmentPixelmonWelcomeScreenBinding
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 
 /**
- * the first that show When the user open the app
+ * The first that show. When the user open the app
  */
 class PixelmonWelcomeScreen : Fragment() {
     var _binging : FragmentPixelmonWelcomeScreenBinding? = null

@@ -7,6 +7,7 @@
     android:background="@color/black_pixelmon">
 
     <ImageView
+        android:scaleType="centerInside"
         android:id="@+id/img_pixelmon_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +22,8 @@
         android:id="@+id/card_view_version_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btn_play"
+        android:layout_marginTop="30dp"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_pixelmon_home">
@@ -33,27 +35,27 @@
             android:orientation="vertical">
 
             <RadioGroup
-                style="@style/MyRadioButtonStyle"
                 android:id="@+id/radio_group_select_version"
+                style="@style/MyRadioButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone">
 
                 <RadioButton
-                    android:buttonTint="@color/white"
-                    style="@style/MyRadioButtonStyle"
                     android:id="@+id/radio_btn_version_1_12"
+                    style="@style/MyRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/white"
                     android:outlineSpotShadowColor="@color/white"
                     android:text="@string/pixelmon_1_12_2" />
 
                 <RadioButton
-                    android:buttonTint="@color/white"
-                    style="@style/MyRadioButtonStyle"
                     android:id="@+id/radio_btn_version_1_16"
+                    style="@style/MyRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/white"
                     android:text="@string/pixelmon_1_16_5" />
             </RadioGroup>
 
@@ -87,6 +89,7 @@
                         android:src="@drawable/pixelmon_arrow_down"
                         android:visibility="gone" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <Button
                     android:id="@+id/btn_open_select_version"
                     android:layout_width="wrap_content"
@@ -104,6 +107,33 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- progress layout-->
+    <View
+        android:id="@+id/view_background_progress"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/pixelmon_wrapper_loading_progress"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_tiktok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:elevation="1dp"
+        android:id="@+id/progress_bar_pixelmon_home"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:progressDrawable="@drawable/pixelmon_home_progress_bar"
+        android:layout_marginHorizontal="28dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view_background_progress"
+        app:layout_constraintEnd_toEndOf="@id/view_background_progress"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/view_background_progress"
+        app:layout_constraintTop_toTopOf="@+id/view_background_progress"
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/btn_play"
@@ -114,9 +144,10 @@
         android:text="@string/main_play"
         android:textColor="@color/black_pixelmon"
         android:textSize="24sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/btn_tiktok"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton

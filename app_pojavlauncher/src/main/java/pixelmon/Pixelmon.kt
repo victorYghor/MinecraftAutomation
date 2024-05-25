@@ -10,7 +10,11 @@ import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import pixelmon.forge.ForgerDownload
 import pixelmon.mods.ModDownloader
 
-class Pixelmon(private val context: Context, private val versionSpinner: mcVersionSpinner, popStack: () -> Boolean) {
+class Pixelmon(
+    private val context: Context,
+    private val versionSpinner: mcVersionSpinner,
+    popStack: () -> Boolean
+) {
     companion object {
         @JvmStatic
         var state = State.MOVING_FILES

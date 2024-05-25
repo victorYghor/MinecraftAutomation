@@ -33,7 +33,7 @@ public class LocalLoginFragment extends Fragment {
             ExtraCore.setValue(ExtraConstants.MOJANG_LOGIN_TODO, new String[]{
                     mUsernameEditText.getText().toString(), "" });
             Log.e(TAG, "Hey LocalLoginFragment.java");
-            Tools.swapFragment(requireActivity(), LocalLoginFragment.class, LocalLoginFragment.TAG, false, null);
+            Tools.swapFragment(requireActivity(), PixelmonMenuFragment.class, PixelmonMenuFragment.TAG, false, null);
         });
     }
 
