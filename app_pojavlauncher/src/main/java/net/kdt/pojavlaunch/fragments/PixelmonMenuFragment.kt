@@ -64,7 +64,7 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // Handle the first fragment to show
         LauncherPreferences.loadPreferences(requireContext())
-      val firsInstallation = LauncherPreferences.PREF_FIRST_INSTALLATION
+        val firsInstallation = LauncherPreferences.PREF_FIRST_INSTALLATION
         Log.d(TAG, "the first installation is $firsInstallation")
         if (firsInstallation) {
             Tools.swapFragment(
@@ -80,7 +80,7 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         val handler = Handler(Looper.getMainLooper())
         handler.post(object : Runnable {
             override fun run() {
-                if(progressBar.progress < 100) {
+                if (progressBar.progress < 100) {
                     Log.d(TAG, "progress: ${progressBar.progress}")
                     progressBar.progress += 10
                     handler.postDelayed(this, 100)

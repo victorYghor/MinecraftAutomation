@@ -243,6 +243,7 @@ class LauncherActivity : BaseActivity() {
                 versions
             )
         }, false)
+        // progress layotu
         mInstallTracker = ModloaderInstallTracker(this)
         mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_MINECRAFT)
         mProgressLayout!!.observe(ProgressLayout.UNPACK_RUNTIME)

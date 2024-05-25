@@ -68,7 +68,6 @@ class MinecraftAssets(val context: Context): Runnable {
 
     override fun run() {
         try {
-            Log.i(TAG, "call run from MinecraftAssets.kt")
             if(directoryTreeFile.exists() && directoryTreeFile.readBytes()
                     .contentEquals(context.assets.open("directoryTree.txt").readBytes())) {
                 Log.i(TAG, "All files was transferred")
@@ -80,6 +79,7 @@ class MinecraftAssets(val context: Context): Runnable {
                 moveFiles("minecraft")
             }
             Pixelmon.state = State.PLAY
+            Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
         } catch(e: Exception) {
             e.printStackTrace()
         }

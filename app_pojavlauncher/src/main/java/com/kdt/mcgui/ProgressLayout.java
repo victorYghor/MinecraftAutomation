@@ -28,7 +28,8 @@ import java.util.ArrayList;
  * This class relies on ExtraCore for its behavior.
  */
 public class ProgressLayout extends ConstraintLayout implements View.OnClickListener, TaskCountListener{
-    // todo for what this constant string need ?
+    // aqui é basicamento o tipo de carregamento que existe dentro do app
+    // Vê se ficar muito complexo essa parte de carregamento o que pode fazer é fazer um carregamento fake
     public static final String UNPACK_RUNTIME = "unpack_runtime";
     public static final String DOWNLOAD_MINECRAFT = "download_minecraft";
     public static final String DOWNLOAD_VERSION_LIST = "download_verlist";
@@ -77,6 +78,9 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
     }
 
 
+    /**
+     * Applying styles to the progress viewer
+     */
     private void init(){
         inflate(getContext(), R.layout.view_progress, this);
         mLinearLayout = findViewById(R.id.progress_linear_layout);
@@ -149,8 +153,15 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
             });
         }
 
+        /**
+         * O texto da questão do progresso da barra é colocado aqui, texto da barra de progresso
+         * @param progress
+         * @param resid
+         * @param va
+         */
         @Override
         public void onProgressUpdated(int progress, int resid, Object... va) {
+            // isso é o texto interno ou externo da barra de progresso ?
             post(()-> {
                 textView.setProgress(progress);
                 if(resid != -1) textView.setText(getContext().getString(resid, va));

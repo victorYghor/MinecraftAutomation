@@ -7,12 +7,12 @@
     android:background="@color/black_pixelmon">
 
     <ImageView
-        android:scaleType="centerInside"
+        android:scaleType="fitCenter"
         android:id="@+id/img_pixelmon_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:src="@drawable/pixelmon_home"
+        android:src="@drawable/pixelmon_home_first"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
         android:id="@+id/card_view_version_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,8 @@
                 <RadioButton
                     android:id="@+id/radio_btn_version_1_12"
                     style="@style/MyRadioButtonStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/white"
                     android:outlineSpotShadowColor="@color/white"
@@ -53,7 +54,7 @@
                 <RadioButton
                     android:id="@+id/radio_btn_version_1_16"
                     style="@style/MyRadioButtonStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/white"
                     android:text="@string/pixelmon_1_16_5" />
@@ -107,33 +108,68 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- progress layout-->
-    <View
-        android:id="@+id/view_background_progress"
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/linear_progress_layout"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginHorizontal="16dp"
-        android:background="@drawable/pixelmon_wrapper_loading_progress"
-        android:elevation="2dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/btn_tiktok"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:layout_marginBottom="4dp"
+            android:id="@+id/tv_progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/progress_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <ProgressBar
-        android:elevation="1dp"
-        android:id="@+id/progress_bar_pixelmon_home"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="24dp"
-        android:progressDrawable="@drawable/pixelmon_home_progress_bar"
-        android:layout_marginHorizontal="28dp"
-        app:layout_constraintBottom_toBottomOf="@+id/view_background_progress"
-        app:layout_constraintEnd_toEndOf="@id/view_background_progress"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@id/view_background_progress"
-        app:layout_constraintTop_toTopOf="@+id/view_background_progress"
-        app:layout_constraintVertical_bias="0.5" />
+        <!-- progress layout-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress_layout"
+            >
+
+            <View
+                android:id="@+id/view_background_progress"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="@drawable/pixelmon_wrapper_loading_progress"
+                android:elevation="2dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ProgressBar
+                android:elevation="1dp"
+                android:id="@+id/progress_bar_pixelmon_home"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:progressDrawable="@drawable/pixelmon_home_progress_bar"
+                android:layout_marginHorizontal="28dp"
+                app:layout_constraintBottom_toBottomOf="@+id/view_background_progress"
+                app:layout_constraintEnd_toEndOf="@id/view_background_progress"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/view_background_progress"
+                app:layout_constraintTop_toTopOf="@+id/view_background_progress"
+                app:layout_constraintVertical_bias="0.5" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+
+
+
+
 
     <Button
         android:id="@+id/btn_play"

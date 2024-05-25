@@ -41,7 +41,6 @@ class Pixelmon(
 //        modDownloader.downloadModsOneDotTwelve(exclude = listOf("Pixelmon"))
         val forgerDownload = ForgerDownload(context)
         forgerDownload.run()
-        Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
         changeProfile()
     }
 

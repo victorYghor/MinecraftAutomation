@@ -22,6 +22,7 @@
         <item name="android:background">?android:attr/listDivider</item>
     </style>
         <style name="MyRadioButtonStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+            <item name="android:background">@drawable/pixelmon_border_select_version</item>
             <item name="colorControlActivated">#FFFFFF</item> <!-- Change this to your desired color -->
             <item name="colorPrimary">#FFFFFF</item>
         </style>
