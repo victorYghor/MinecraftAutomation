@@ -6,8 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-
     >
 
 
@@ -54,8 +52,6 @@
         android:paddingHorizontal="@dimen/padding_heavy"
         android:paddingTop="@dimen/padding_heavy"
         android:weightSum="3"
-
-
         app:layout_constraintBottom_toTopOf="@+id/progress_generic_progressbar"
         tools:layout_height="@dimen/_100sdp"
         tools:visibility="visible"

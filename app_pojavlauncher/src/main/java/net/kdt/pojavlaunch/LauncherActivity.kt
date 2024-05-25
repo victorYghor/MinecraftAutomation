@@ -27,6 +27,8 @@ import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.extra.ExtraListener
 import net.kdt.pojavlaunch.fragments.MainMenuFragment
 import net.kdt.pojavlaunch.fragments.MicrosoftLoginFragment
+import net.kdt.pojavlaunch.fragments.PixelmonPlayButton
+import net.kdt.pojavlaunch.fragments.PixelmonProgressBar
 import net.kdt.pojavlaunch.fragments.SelectAuthFragment
 import net.kdt.pojavlaunch.lifecycle.ContextAwareDoneListener
 import net.kdt.pojavlaunch.lifecycle.ContextExecutor
@@ -43,6 +45,7 @@ import net.kdt.pojavlaunch.tasks.MinecraftDownloader
 import net.kdt.pojavlaunch.utils.NotificationUtils
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
+import pixelmon.LoadingType
 import pixelmon.MinecraftAssets
 import pixelmon.Tools.DownloadResult
 import pixelmon.Tools.informativeAlertDialog
@@ -78,6 +81,9 @@ class LauncherActivity : BaseActivity() {
                 )
             }
         }
+
+    //Pixelmon stuff
+
 
     /**
      * @param value in this list you put the string resource for title for index 0 and the string
@@ -233,7 +239,11 @@ class LauncherActivity : BaseActivity() {
         mDeleteAccountButton!!.setOnClickListener(mAccountDeleteButtonListener)
         ProgressKeeper.addTaskCountListener(mProgressLayout)
 
+        //Pixelmon sttuf
         ExtraCore.addExtraListener(ExtraConstants.ALERT_DIALOG_DOWNLOAD, mDialogAlertDownload)
+
+        ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.MOVING_FILES)
+
         ExtraCore.addExtraListener(ExtraConstants.BACK_PREFERENCE, mBackPreferenceListener)
         ExtraCore.addExtraListener(ExtraConstants.SELECT_AUTH_METHOD, mSelectAuthMethod)
         ExtraCore.addExtraListener(ExtraConstants.LAUNCH_GAME, mLaunchGameListener)

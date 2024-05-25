@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,8 +38,9 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
     public static final String INSTALL_MODPACK = "install_modpack";
     public static final String EXTRACT_COMPONENTS = "extract_components";
     public static final String EXTRACT_SINGLE_FILES = "extract_single_files";
+    public static final String MOVING_FILES = "moving_files";
 
-    //overloading c
+    //overloading constroctors
     public ProgressLayout(@NonNull Context context) {
         super(context);
         init();
@@ -57,11 +59,10 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
     }
 
     private final ArrayList<LayoutProgressListener> mMap = new ArrayList<>();
-    private LinearLayout mLinearLayout;
+
+    // pixelmon
+    private ProgressBar mProgressBarPixelmonHome;
     private TextView mTaskNumberDisplayer;
-    private ImageView mFlipArrow;
-
-
 
     public void observe(String progressKey){
         mMap.add(new LayoutProgressListener(progressKey));
@@ -82,12 +83,11 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
      * Applying styles to the progress viewer
      */
     private void init(){
-        inflate(getContext(), R.layout.view_progress, this);
-        mLinearLayout = findViewById(R.id.progress_linear_layout);
-        mTaskNumberDisplayer = findViewById(R.id.progress_textview);
-        mFlipArrow = findViewById(R.id.progress_flip_arrow);
-        setBackgroundColor(getResources().getColor(R.color.background_bottom_bar));
-        setOnClickListener(this);
+        // eu vou precisar mudar o layout autal eu preciso fazer com que o layout de mudança de progresso seja colocado como o container dentro de um fragment
+        // para que eu possa exportar o layout para esse arquivo daqui
+        inflate(getContext(), R.layout.fragment_pixelmon_progress_bar, this);
+        mTaskNumberDisplayer = findViewById(R.id.tv_progress_text);
+        mProgressBarPixelmonHome = findViewById(R.id.progress_bar_pixelmon_home);
     }
 
 
@@ -113,14 +113,17 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
 
     /**
      * change the visibility of the view, when you click in the bottom with pixelated arrow
-     * @param v The view that was clicked.
+     *  não faz sentido para o pixelmon
      */
-    @Override
-    public void onClick(View v) {
-        mLinearLayout.setVisibility(mLinearLayout.getVisibility() == GONE ? VISIBLE : GONE);
-        mFlipArrow.setRotation(mLinearLayout.getVisibility() == GONE? 0 : 180);
-    }
+//    @Override
+//    public void onClick(View v) {
+//        mLinearLayout.setVisibility(mLinearLayout.getVisibility() == GONE ? VISIBLE : GONE);
+//        mFlipArrow.setRotation(mLinearLayout.getVisibility() == GONE? 0 : 180);
+//    }
 
+    /**
+     * Preciso saber como eu posso adaptar isso daqui
+     */
     @Override
     public void onUpdateTaskCount(int tc) {
         post(()->{
@@ -132,29 +135,36 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
         });
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
+
 
     class LayoutProgressListener implements ProgressListener {
         final String progressKey;
-        final TextProgressBar textView;
-        final LinearLayout.LayoutParams params;
+        final ProgressBar progressBarPixelmon;
         public LayoutProgressListener(String progressKey) {
             this.progressKey = progressKey;
-            textView = new TextProgressBar(getContext());
-            textView.setTextPadding(getContext().getResources().getDimensionPixelOffset(R.dimen._6sdp));
-            params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, getResources().getDimensionPixelOffset(R.dimen._20sdp));
-            params.bottomMargin = getResources().getDimensionPixelOffset(R.dimen._6sdp);
+            // ele cria aqui o TextProgressBar e seta o que precisa para ele funcionar
+            progressBarPixelmon = mProgressBarPixelmonHome;
+//            progressBarPixelmon.setTextPadding(getContext().getResources().getDimensionPixelOffset(R.dimen._6sdp));
             ProgressKeeper.addListener(progressKey, this);
         }
+        // Aqui dentro ele precisa mudar o view que vai estar aparecendo na home do pixelmon
+        // ele precisa da um trigger dentro do app todo para mudança de layout
+        // Onde é que começa tudo relacionado ao layout de progressso?
         @Override
         public void onProgressStarted() {
             post(()-> {
                 Log.i("ProgressLayout", "onProgressStarted");
-                mLinearLayout.addView(textView, params);
+//                mLinearLayout.addView(progressBarPixelmon, params);
             });
         }
 
         /**
-         * O texto da questão do progresso da barra é colocado aqui, texto da barra de progresso
+         * O textViw é uma palavra ruim para se referenciar ao progresslayout com o um text view
+         * da questão do progresso da barra é colocado aqui, texto da barra de progresso
          * @param progress
          * @param resid
          * @param va
@@ -162,18 +172,20 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
         @Override
         public void onProgressUpdated(int progress, int resid, Object... va) {
             // isso é o texto interno ou externo da barra de progresso ?
+            // precisa tirar parte do texto dentro do progress layout
             post(()-> {
-                textView.setProgress(progress);
-                if(resid != -1) textView.setText(getContext().getString(resid, va));
-                else if(va.length > 0 && va[0] != null) textView.setText((String)va[0]);
-                else textView.setText("");
+                // aqui ve qual vai ser o comportamento caso você coloque o progress layout que voce criou
+                progressBarPixelmon.setProgress(progress);
+//                if(resid != -1) progressBarPixelmon.setText(getContext().getString(resid, va));
+//                else if(va.length > 0 && va[0] != null) progressBarPixelmon.setText((String)va[0]);
+//                else progressBarPixelmon.setText("");
             });
         }
 
         @Override
         public void onProgressEnded() {
             post(()-> {
-                mLinearLayout.removeView(textView);
+                Log.d("ProgressLayout", "onProgressEnded");
             });
         }
     }

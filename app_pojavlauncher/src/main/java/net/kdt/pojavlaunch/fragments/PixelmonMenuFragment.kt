@@ -14,9 +14,14 @@ import net.kdt.pojavlaunch.LauncherActivity
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.databinding.PixelmonHomeBinding
+import net.kdt.pojavlaunch.extra.ExtraConstants
+import net.kdt.pojavlaunch.extra.ExtraCore
+import net.kdt.pojavlaunch.extra.ExtraListener
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.prefs.screens.LauncherPreferenceFragment
+import pixelmon.LoadingType
 import pixelmon.SocialMedia
+import pixelmon.TransitionsViews
 import pixelmon.forge.ForgerDownload
 
 class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
@@ -61,7 +66,28 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         ).commit()
     }
 
+    private val mLoadingInternalListener = ExtraListener { key: String?, value: LoadingType ->
+        when(value) {
+            LoadingType.MOVING_FILES -> {
+                Log.d(TAG, "try to make a transiotion for progress bar")
+                b.playAndProgressLayout.transitionName = TransitionsViews.PIXELMON_PROGRESS_BAR.fragment
+            }
+            LoadingType.DOWNLOAD_MOD_ONE_DOT_TWELVE -> TODO()
+            LoadingType.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> TODO()
+            LoadingType.DOWNLOAD_ONE_DOT_SIXTEEN -> TODO()
+            LoadingType.SHOW_PLAY_BUTTON -> {
+                Log.d(TAG, "try to make a trasnsition for play button")
+                b.playAndProgressLayout.transitionName = TransitionsViews.PIXELMON_PLAY_BUTTON.fragment
+            }
+        }
+        false
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        // handle changes between button play and progress bar
+        ExtraCore.addExtraListener(ExtraConstants.LOADING_INTERNAL, mLoadingInternalListener)
+        ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.MOVING_FILES)
         // Handle the first fragment to show
         LauncherPreferences.loadPreferences(requireContext())
         val firsInstallation = LauncherPreferences.PREF_FIRST_INSTALLATION
@@ -76,20 +102,7 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
             )
         }
 
-        val progressBar = b.progressBarPixelmonHome
-        val handler = Handler(Looper.getMainLooper())
-        handler.post(object : Runnable {
-            override fun run() {
-                if (progressBar.progress < 100) {
-                    Log.d(TAG, "progress: ${progressBar.progress}")
-                    progressBar.progress += 10
-                    handler.postDelayed(this, 100)
-                } else {
-                    progressBar.progress = 0
-                    handler.postDelayed(this, 100)
-                }
-            }
-        })
+
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.install_one_dot_sixteen)
             setMessage(R.string.description_install_one_dot_sixteen)
@@ -122,20 +135,24 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
             )
         }
         b.btnOpenSelectVersion.apply {
-            text =
-                if (LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE) getString(R.string.pixelmon_1_12_2) else getString(
-                    R.string.pixelmon_1_16_5
-                )
-            setOnClickListener {
-                b.radioGroupSelectVersion.visibility =
-                    if (b.radioGroupSelectVersion.visibility == View.GONE) {
-                        toggleArrowIcon()
-                        View.VISIBLE
-                    } else {
-                        toggleArrowIcon()
-                        View.GONE
-                    }
-            }
+//            text =
+//                if (LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE) getString(R.string.pixelmon_1_12_2) else getString(
+//                    R.string.pixelmon_1_16_5
+//                )
+//            setOnClickListener {
+//                b.radioGroupSelectVersion.visibility =
+//                    if (b.radioGroupSelectVersion.visibility == View.GONE) {
+//                        toggleArrowIcon()
+//                        View.VISIBLE
+//                    } else {
+//                        toggleArrowIcon()
+//                        View.GONE
+//                    }
+//            }
+            ExtraCore.setValue(
+                ExtraConstants.LOADING_INTERNAL,
+                LoadingType.SHOW_PLAY_BUTTON
+            )
         }
 
         b.btnDiscord.setOnClickListener {

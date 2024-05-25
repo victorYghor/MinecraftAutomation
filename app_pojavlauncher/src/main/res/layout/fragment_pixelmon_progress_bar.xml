@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.PixelmonProgressBar"
+    android:orientation="vertical"
+    android:layout_gravity="center">
+        <TextView
+            android:layout_gravity="center"
+            android:text="testando"
+            android:id="@+id/tv_progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="1dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/progress_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="4dp"/>
+
+        <!-- progress layout-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress_layout"
+            >
+
+            <View
+                android:id="@+id/view_background_progress"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="@drawable/pixelmon_wrapper_loading_progress"
+                android:elevation="10dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ProgressBar
+                android:elevation="1dp"
+                android:id="@+id/progress_bar_pixelmon_home"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:progressDrawable="@drawable/pixelmon_home_progress_bar"
+                android:layout_marginHorizontal="28dp"
+                app:layout_constraintBottom_toBottomOf="@+id/view_background_progress"
+                app:layout_constraintEnd_toEndOf="@id/view_background_progress"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/view_background_progress"
+                app:layout_constraintTop_toTopOf="@+id/view_background_progress"
+                app:layout_constraintVertical_bias="0.5" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

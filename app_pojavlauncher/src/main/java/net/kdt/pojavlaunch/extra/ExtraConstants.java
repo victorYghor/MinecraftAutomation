@@ -2,9 +2,10 @@ package net.kdt.pojavlaunch.extra;
 
 public class ExtraConstants {
     // pixelmon
-    /** ExtraCore constant: a HashMap for converting values such as latest-snapshot or latest-release to actual game version names */
-    /** for trigger the alert dialog about some download problem */
+    /* ExtraCore constant: a HashMap for converting values such as latest-snapshot or latest-release to actual game version names */
+    /** for trigger the alert dialog about some download problem **/
     public static final String ALERT_DIALOG_DOWNLOAD = "alert_dialog_download";
+    public static final String LOADING_INTERNAL = "loading_internal";
     public static final String ONE_DOT_SIXTEEN_DOWNLOAD_RESULT  = "one_dot_sixteen_download_result";
     public static final String RELEASE_TABLE = "release_table";
     /** ExtraCore constant: Serpent's back button tracking thing */

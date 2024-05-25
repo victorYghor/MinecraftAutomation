@@ -65,6 +65,7 @@ public class MinecraftDownloader {
             }catch (Exception e) {
                 listener.onDownloadFailed(e);
             }
+            // limpa o progresso do minecraft
             ProgressLayout.clearProgress(ProgressLayout.DOWNLOAD_MINECRAFT);
         });
     }

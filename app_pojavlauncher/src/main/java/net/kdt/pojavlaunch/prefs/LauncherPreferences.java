@@ -24,7 +24,7 @@ public class LauncherPreferences {
 
     public static SharedPreferences DEFAULT_PREF;
     // pixelmon preferences
-    public static boolean DOWNLOAD_FORGE_LIBRARIES;
+    public static boolean GET_ONE_DOT_TWELVE;
     public static boolean DOWNLOAD_MOD_ONE_DOT_TWELVE;
     public static boolean DOWNLOAD_MOD_ONE_DOT_SIXTEEN;
     public static boolean DOWNLOAD_ONE_DOT_SIXTEEN;
@@ -91,7 +91,7 @@ public class LauncherPreferences {
         PREF_BUTTONSIZE = DEFAULT_PREF.getInt("buttonscale", 100);
         PREF_MOUSESCALE = DEFAULT_PREF.getInt("mousescale", 100);
         //pixelmon preferences
-        DOWNLOAD_FORGE_LIBRARIES = DEFAULT_PREF.getBoolean("download_forge_libraries", false);
+        GET_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("get_one_dot_twelve", false);
         DOWNLOAD_MOD_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("download_mod_one_dot_twelve", false);
         DOWNLOAD_MOD_ONE_DOT_SIXTEEN = DEFAULT_PREF.getBoolean("download_one_dot_sixteen", false);
         SELECT_VERSION_IS_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("select_version_is_one_dot_twelve", true);
