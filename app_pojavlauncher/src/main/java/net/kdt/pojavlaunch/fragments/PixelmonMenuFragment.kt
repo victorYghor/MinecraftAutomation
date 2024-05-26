@@ -122,22 +122,17 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
                     R.string.pixelmon_1_16_5
                 )
         }
+
+        // temp way to create a progress bar
+//        ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.MOVING_FILES)
         b.btnOpenSelectVersion.setOnClickListener {
             b.radioGroupSelectVersion.visibility =
                 if (b.radioGroupSelectVersion.visibility == View.GONE) {
                     toggleArrowIcon()
-                    ExtraCore.setValue(
-                        ExtraConstants.LOADING_INTERNAL,
-                        LoadingType.MOVING_FILES
-                    )
 
                     View.VISIBLE
                 } else {
                     toggleArrowIcon()
-                    ExtraCore.setValue(
-                        ExtraConstants.LOADING_INTERNAL,
-                        LoadingType.SHOW_PLAY_BUTTON
-                    )
 
                     View.GONE
                 }

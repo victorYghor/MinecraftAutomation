@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.databinding.FragmentPixelmonProgressBarBinding
 
@@ -31,15 +32,17 @@ class PixelmonProgressBar : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val progressBar = b.progressBarPixelmonHome
+        createTimelaspProgressBar(progressBar, durantion = 3_000)
+    }
+
+    private fun createTimelaspProgressBar(progressBar: ProgressBar, durantion: Long) {
         val handler = Handler(Looper.getMainLooper())
+        val interactionTime = durantion / 100L
         handler.post(object : Runnable {
             override fun run() {
                 if (progressBar.progress < 100) {
-                    progressBar.progress += 10
-                    handler.postDelayed(this, 100)
-                } else {
-                    progressBar.progress = 0
-                    handler.postDelayed(this, 100)
+                    progressBar.progress += 1
+                    handler.postDelayed(this, interactionTime)
                 }
             }
         })
