@@ -21,12 +21,14 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import com.kdt.mcgui.ProgressLayout
 import com.kdt.mcgui.mcAccountSpinner
+import net.kdt.pojavlaunch.Tools.swapPlayAndProgressLayout
 import net.kdt.pojavlaunch.contracts.OpenDocumentWithExtension
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.extra.ExtraListener
 import net.kdt.pojavlaunch.fragments.MainMenuFragment
 import net.kdt.pojavlaunch.fragments.MicrosoftLoginFragment
+import net.kdt.pojavlaunch.fragments.PixelmonMenuFragment
 import net.kdt.pojavlaunch.fragments.PixelmonPlayButton
 import net.kdt.pojavlaunch.fragments.PixelmonProgressBar
 import net.kdt.pojavlaunch.fragments.SelectAuthFragment
@@ -47,8 +49,10 @@ import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
 import pixelmon.LoadingType
 import pixelmon.MinecraftAssets
+import pixelmon.Pixelmon
 import pixelmon.Tools.DownloadResult
 import pixelmon.Tools.informativeAlertDialog
+import pixelmon.TransitionsViews
 import java.lang.ref.WeakReference
 
 class LauncherActivity : BaseActivity() {
@@ -83,7 +87,27 @@ class LauncherActivity : BaseActivity() {
         }
 
     //Pixelmon stuff
+    private val mLoadingInternalListener = ExtraListener { key: String?, value: LoadingType ->
+        when(value) {
+            LoadingType.MOVING_FILES -> {
+                Log.d(TAG, "try to make a transiotion for progress bar")
+                swapPlayAndProgressLayout(
+                    this, PixelmonProgressBar::class.java, PixelmonProgressBar.TAG, true, null
+                )
 
+            }
+            LoadingType.DOWNLOAD_MOD_ONE_DOT_TWELVE -> TODO()
+            LoadingType.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> TODO()
+            LoadingType.DOWNLOAD_ONE_DOT_SIXTEEN -> TODO()
+            LoadingType.SHOW_PLAY_BUTTON -> {
+                Log.d(PixelmonMenuFragment.TAG, "try to make a trasnsition for play button")
+                swapPlayAndProgressLayout(
+                    this, PixelmonPlayButton::class.java, TAG, true, null
+                )
+            }
+        }
+        false
+    }
 
     /**
      * @param value in this list you put the string resource for title for index 0 and the string
@@ -217,6 +241,7 @@ class LauncherActivity : BaseActivity() {
         Log.e(TAG, "Hey I am LauncherActivity.kt")
         setContentView(R.layout.activity_pojav_launcher)
         IconCacheJanitor.runJanitor()
+        // pixelmon
 
         mRequestNotificationPermissionLauncher = registerForActivityResult(
             RequestPermission()
@@ -241,6 +266,7 @@ class LauncherActivity : BaseActivity() {
 
         //Pixelmon sttuf
         ExtraCore.addExtraListener(ExtraConstants.ALERT_DIALOG_DOWNLOAD, mDialogAlertDownload)
+        ExtraCore.addExtraListener(ExtraConstants.LOADING_INTERNAL, mLoadingInternalListener)
 
         ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.MOVING_FILES)
 
