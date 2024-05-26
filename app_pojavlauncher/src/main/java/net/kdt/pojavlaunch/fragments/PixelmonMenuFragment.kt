@@ -84,6 +84,13 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
             )
         }
 
+        b.btnTest.setOnClickListener {
+            if(ExtraCore.getValue(ExtraConstants.LOADING_INTERNAL) == LoadingType.MOVING_FILES) {
+                ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.SHOW_PLAY_BUTTON)
+            } else {
+                ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.MOVING_FILES)
+            }
+        }
 
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.install_one_dot_sixteen)

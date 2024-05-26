@@ -17,9 +17,9 @@ enum class ModVersion {
     OneDotTwelve,
     OneDotSixteen
 }
-class ModDownloader(private val context: Context) {
+class Downloader(private val context: Context) {
     companion object {
-        private val TAG = "ModDownloader"
+        private val TAG = "Downloader"
     }
     val modsOneDotTwelve =
         Tools.GLOBAL_GSON.fromJson(
@@ -30,13 +30,14 @@ class ModDownloader(private val context: Context) {
         read(context.assets.open("mods-1.16.json")),
         ModFile::class.java
     ).mods
-    private val downloadManager = context.getSystemService(DownloadManager::class.java)
     private val pixelmonTexture = Texture(
         url = "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/files/resourcepacks/Texturas.zip",
         fileName = "Texturas.zip",
         name = "Textura do pixelmon Brasil"
     )
-    fun download(mod: Mod): Long {
+
+    private val downloadManager = context.getSystemService(DownloadManager::class.java)
+    fun downloadMod(mod: Mod): Long {
         Log.d(TAG, "Try to download mod ${mod.name}")
         val title = "Baixando o mod ${mod.name}"
         File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
@@ -71,7 +72,7 @@ class ModDownloader(private val context: Context) {
                 modsOneDotTwelve.toList()
             }
             mods.forEach{
-                download(it)
+                downloadMod(it)
             }
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
             Pixelmon.state = State.PLAY
@@ -101,7 +102,7 @@ class ModDownloader(private val context: Context) {
             Pixelmon.state = State.DOWNLOAD_MODS
             val essentialMods = listOf("MultiplayerMode", "lazydfu", "pixelmon")
             val mods = modsOneDotSixteen.filter { essentialMods.contains(it.name) }
-            mods.forEach { download(it) }
+            mods.forEach { downloadMod(it) }
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_sixteen", true).commit()
             Pixelmon.state = State.PLAY
         }

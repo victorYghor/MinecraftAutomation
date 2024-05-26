@@ -91,12 +91,19 @@ class LauncherActivity : BaseActivity() {
         when(value) {
             LoadingType.MOVING_FILES -> {
                 Log.d(TAG, "try to make a transiotion for progress bar")
+                PixelmonProgressBar.apply {
+                    currentProcessName = LoadingType.MOVING_FILES
+                    duration = 3_000L
+                }
                 swapPlayAndProgressLayout(
                     this, PixelmonProgressBar::class.java, PixelmonProgressBar.TAG, true, null
                 )
 
             }
-            LoadingType.DOWNLOAD_MOD_ONE_DOT_TWELVE -> TODO()
+            LoadingType.DOWNLOAD_MOD_ONE_DOT_TWELVE ->  {
+                // começar o download dos mods da 1.12
+
+            }
             LoadingType.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> TODO()
             LoadingType.DOWNLOAD_ONE_DOT_SIXTEEN -> TODO()
             LoadingType.SHOW_PLAY_BUTTON -> {

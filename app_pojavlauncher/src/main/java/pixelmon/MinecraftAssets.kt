@@ -4,13 +4,7 @@ import android.content.Context
 import android.content.res.AssetManager
 import android.util.Log
 import kotlinx.coroutines.Runnable
-import net.kdt.pojavlaunch.utils.ZipUtils
-import pixelmon.mods.ModDownloader
 import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.security.MessageDigest
-import java.util.zip.ZipFile
 
 class MinecraftAssets(val context: Context): Runnable {
     private val directoryTreeFile = File(context.getExternalFilesDir(null), "directoryTree.txt")
