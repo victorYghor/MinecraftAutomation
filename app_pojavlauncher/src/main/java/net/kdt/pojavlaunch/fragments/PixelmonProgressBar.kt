@@ -13,14 +13,16 @@ import android.widget.Toast
 import net.kdt.pojavlaunch.databinding.FragmentPixelmonProgressBarBinding
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
-import pixelmon.LoadingType
+import pixelmon.Loading
+import java.lang.Thread.sleep
+import kotlin.concurrent.thread
 
 class PixelmonProgressBar : Fragment() {
     companion object {
         const val TAG = "PixelmonProgressBar"
 
         @JvmStatic
-        var currentProcessName: LoadingType? = null
+        var currentProcess: Loading? = null
         @JvmStatic
         var duration: Long? = null
     }
@@ -41,15 +43,16 @@ class PixelmonProgressBar : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val progressBar = b.progressBarPixelmonHome
-        if(duration != null && currentProcessName != null) {
-            createTimelaspProgressBar(progressBar, duration!!, currentProcessName!!)
+        Log.d(TAG, "duration: $duration, currentProcess: $currentProcess")
+        if(duration != null && currentProcess != null) {
+                createTimelaspProgressBar(progressBar, duration!!, currentProcess!!)
         } else {
             Log.d(TAG, "Ocorreu um erro ao tentar criar a barra de progresso")
             Toast.makeText(requireContext(), "Ocorreu um erro ao tentar criar a barra de progresso", Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun createTimelaspProgressBar(progressBar: ProgressBar, durantion: Long, process: LoadingType) {
+    private fun createTimelaspProgressBar(progressBar: ProgressBar, durantion: Long, process: Loading) {
         val handler = Handler(Looper.getMainLooper())
         val interactionTime = durantion / 100L
         handler.post(object : Runnable {
@@ -59,18 +62,18 @@ class PixelmonProgressBar : Fragment() {
                     handler.postDelayed(this, interactionTime)
                 } else {
                     try {
-                        Toast.makeText(requireContext(), "O app completou de ${process.name}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), "O app completou de ${process.messageLoading}", Toast.LENGTH_LONG).show()
                     } catch (e: Exception) {
                         Log.e(TAG, "Erro ao tentar mostrar a mensagem de conclusão do processo")
                     }
-
+                    Log.e(TAG, "finish of the download process")
                     // handle when the process is finished
                     when {
-                        process == LoadingType.MOVING_FILES ->  {
-                            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.DOWNLOAD_MOD_ONE_DOT_TWELVE)
+                        process == Loading.MOVING_FILES ->  {
+                            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
                         }
-                        process == LoadingType.DOWNLOAD_ONE_DOT_SIXTEEN ->  {
-                            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.DOWNLOAD_MOD_ONE_DOT_SIXTEEN)
+                        process == Loading.DOWNLOAD_ONE_DOT_SIXTEEN ->  {
+                            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN)
                         }
                     }
                 }

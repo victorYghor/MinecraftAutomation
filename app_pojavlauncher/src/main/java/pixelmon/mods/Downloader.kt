@@ -77,7 +77,7 @@ class Downloader(private val context: Context) {
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
             Pixelmon.state = State.PLAY
         }
-        Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity(ModVersion.OneDotTwelve)}")
+//        Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity(ModVersion.OneDotTwelve)}")
     }
 
     private fun checkModsIntegrity(modVersion: ModVersion): Boolean {
@@ -97,7 +97,7 @@ class Downloader(private val context: Context) {
 
     fun downloadModOneDotSixteen() {
         Log.i(TAG, "the mods 1.16 will strat")
-        Log.i(TAG, "The value of checkFilesInregrity is ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
+//        Log.i(TAG, "The value of checkFilesInregrity is ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
         if(!LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_SIXTEEN) {
             Pixelmon.state = State.DOWNLOAD_MODS
             val essentialMods = listOf("MultiplayerMode", "lazydfu", "pixelmon")
@@ -106,6 +106,6 @@ class Downloader(private val context: Context) {
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_sixteen", true).commit()
             Pixelmon.state = State.PLAY
         }
-        Log.i(TAG, "checkFilesIntegrity = ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
+//        Log.i(TAG, "checkFilesIntegrity = ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
     }
 }

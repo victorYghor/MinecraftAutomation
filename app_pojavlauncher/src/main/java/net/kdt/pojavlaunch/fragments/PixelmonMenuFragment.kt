@@ -1,9 +1,6 @@
 package net.kdt.pojavlaunch.fragments
 
-import android.opengl.Visibility
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,12 +13,10 @@ import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.databinding.PixelmonHomeBinding
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
-import net.kdt.pojavlaunch.extra.ExtraListener
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.prefs.screens.LauncherPreferenceFragment
-import pixelmon.LoadingType
+import pixelmon.Loading
 import pixelmon.SocialMedia
-import pixelmon.TransitionsViews
 import pixelmon.forge.ForgerDownload
 
 class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
@@ -72,24 +67,15 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         // handle changes between button play and progress bar
         // Handle the first fragment to show
         LauncherPreferences.loadPreferences(requireContext())
-        val firsInstallation = LauncherPreferences.PREF_FIRST_INSTALLATION
-        Log.d(TAG, "the first installation is $firsInstallation")
-        if (firsInstallation) {
-            Tools.swapFragment(
-                requireActivity(),
-                PixelmonWelcomeScreen::class.java,
-                PixelmonWelcomeScreen.TAG,
-                false,
-                null
-            )
-        }
-
-        b.btnTest.setOnClickListener {
-            if(ExtraCore.getValue(ExtraConstants.LOADING_INTERNAL) == LoadingType.MOVING_FILES) {
-                ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.SHOW_PLAY_BUTTON)
+        if (LauncherPreferences.GET_ONE_DOT_TWELVE) {
+            Log.d(TAG, "the value of get_one_dot_twelve is ${LauncherPreferences.GET_ONE_DOT_TWELVE}")
+            if (LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE) {
+                // aqui não precisa fazer nada
             } else {
-                ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.MOVING_FILES)
+                ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
             }
+        } else {
+            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.MOVING_FILES)
         }
 
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {

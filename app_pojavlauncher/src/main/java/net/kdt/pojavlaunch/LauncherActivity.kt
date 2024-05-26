@@ -31,6 +31,7 @@ import net.kdt.pojavlaunch.fragments.MicrosoftLoginFragment
 import net.kdt.pojavlaunch.fragments.PixelmonMenuFragment
 import net.kdt.pojavlaunch.fragments.PixelmonPlayButton
 import net.kdt.pojavlaunch.fragments.PixelmonProgressBar
+import net.kdt.pojavlaunch.fragments.PixelmonWelcomeScreen
 import net.kdt.pojavlaunch.fragments.SelectAuthFragment
 import net.kdt.pojavlaunch.lifecycle.ContextAwareDoneListener
 import net.kdt.pojavlaunch.lifecycle.ContextExecutor
@@ -47,12 +48,11 @@ import net.kdt.pojavlaunch.tasks.MinecraftDownloader
 import net.kdt.pojavlaunch.utils.NotificationUtils
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
-import pixelmon.LoadingType
+import pixelmon.Loading
 import pixelmon.MinecraftAssets
-import pixelmon.Pixelmon
 import pixelmon.Tools.DownloadResult
 import pixelmon.Tools.informativeAlertDialog
-import pixelmon.TransitionsViews
+import pixelmon.mods.Downloader
 import java.lang.ref.WeakReference
 
 class LauncherActivity : BaseActivity() {
@@ -64,6 +64,7 @@ class LauncherActivity : BaseActivity() {
                 data
             )
         }
+    private lateinit var mDownloader: Downloader
     private var mAccountSpinner: mcAccountSpinner? = null
     private var mFragmentView: FragmentContainerView? = null
     private var mSettingsButton: ImageButton? = null
@@ -87,26 +88,36 @@ class LauncherActivity : BaseActivity() {
         }
 
     //Pixelmon stuff
-    private val mLoadingInternalListener = ExtraListener { key: String?, value: LoadingType ->
+    private val mLoadingInternalListener = ExtraListener { key: String?, value: Loading ->
         when(value) {
-            LoadingType.MOVING_FILES -> {
+            Loading.MOVING_FILES -> {
                 Log.d(TAG, "try to make a transiotion for progress bar")
                 PixelmonProgressBar.apply {
-                    currentProcessName = LoadingType.MOVING_FILES
+                    currentProcess = Loading.MOVING_FILES
                     duration = 3_000L
                 }
+                // caso ideal
+                LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true)
+                ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
                 swapPlayAndProgressLayout(
                     this, PixelmonProgressBar::class.java, PixelmonProgressBar.TAG, true, null
                 )
 
             }
-            LoadingType.DOWNLOAD_MOD_ONE_DOT_TWELVE ->  {
+            Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE ->  {
                 // começar o download dos mods da 1.12
-
+                Log.d(TAG, "start the download of mods 1.12")
+                mDownloader.downloadModsOneDotTwelve()
+                PixelmonProgressBar.apply {
+                    currentProcess = Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE
+                    duration = 3_600_000L
+                }
+                // caso ideal
+                LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
             }
-            LoadingType.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> TODO()
-            LoadingType.DOWNLOAD_ONE_DOT_SIXTEEN -> TODO()
-            LoadingType.SHOW_PLAY_BUTTON -> {
+            Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> TODO()
+            Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> TODO()
+            Loading.SHOW_PLAY_BUTTON -> {
                 Log.d(PixelmonMenuFragment.TAG, "try to make a trasnsition for play button")
                 swapPlayAndProgressLayout(
                     this, PixelmonPlayButton::class.java, TAG, true, null
@@ -245,6 +256,19 @@ class LauncherActivity : BaseActivity() {
     private var mRequestNotificationPermissionRunnable: WeakReference<Runnable>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        LauncherPreferences.loadPreferences(this)
+        val firsInstallation = LauncherPreferences.PREF_FIRST_INSTALLATION
+        Log.d(PixelmonMenuFragment.TAG, "the first installation is $firsInstallation")
+        if (firsInstallation) {
+            Tools.swapFragment(
+                this,
+                PixelmonWelcomeScreen::class.java,
+                PixelmonWelcomeScreen.TAG,
+                false,
+                null
+            )
+        }
+        mDownloader = Downloader(this)
         Log.e(TAG, "Hey I am LauncherActivity.kt")
         setContentView(R.layout.activity_pojav_launcher)
         IconCacheJanitor.runJanitor()
@@ -275,7 +299,6 @@ class LauncherActivity : BaseActivity() {
         ExtraCore.addExtraListener(ExtraConstants.ALERT_DIALOG_DOWNLOAD, mDialogAlertDownload)
         ExtraCore.addExtraListener(ExtraConstants.LOADING_INTERNAL, mLoadingInternalListener)
 
-        ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.MOVING_FILES)
 
         ExtraCore.addExtraListener(ExtraConstants.BACK_PREFERENCE, mBackPreferenceListener)
         ExtraCore.addExtraListener(ExtraConstants.SELECT_AUTH_METHOD, mSelectAuthMethod)
