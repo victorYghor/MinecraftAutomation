@@ -109,66 +109,16 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+
     <!--Here you change between play button and progress bar-->
     <androidx.fragment.app.FragmentContainerView
-        android:elevation="6dp"
-        android:layout_marginBottom="8dp"
         android:id="@+id/play_and_progress_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btn_tiktok"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-
-    <ImageButton
-        android:id="@+id/btn_official_site"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/pixelmon_clicked_aperence_button_social_media"
-        android:src="@drawable/pixelmon_official_site"
+        android:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_discord"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageButton
-        android:id="@+id/btn_discord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/pixelmon_clicked_aperence_button_social_media"
-        android:src="@drawable/pixelmon_discord"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_tiktok"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_official_site" />
-
-    <ImageButton
-        android:id="@+id/btn_tiktok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/pixelmon_clicked_aperence_button_social_media"
-        android:src="@drawable/pixelmon_tik_tok"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_settings"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_discord" />
-
-    <ImageButton
-        android:id="@+id/btn_settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/pixelmon_clicked_aperence_button_social_media"
-        android:src="@drawable/pixelmon_settings"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_tiktok" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

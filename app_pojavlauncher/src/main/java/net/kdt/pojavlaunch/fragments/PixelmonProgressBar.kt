@@ -42,43 +42,35 @@ class PixelmonProgressBar : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val progressBar = b.progressBarPixelmonHome
-        Log.d(TAG, "duration: $duration, currentProcess: $currentProcess")
-        if(duration != null && currentProcess != null) {
-                createTimelaspProgressBar(progressBar, duration!!, currentProcess!!)
-        } else {
-            Log.d(TAG, "Ocorreu um erro ao tentar criar a barra de progresso")
-            Toast.makeText(requireContext(), "Ocorreu um erro ao tentar criar a barra de progresso", Toast.LENGTH_LONG).show()
-        }
     }
 
-    private fun createTimelaspProgressBar(progressBar: ProgressBar, durantion: Long, process: Loading) {
-        val handler = Handler(Looper.getMainLooper())
-        val interactionTime = durantion / 100L
-        handler.post(object : Runnable {
-            override fun run() {
-                if (progressBar.progress < 100) {
-                    progressBar.progress += 1
-                    handler.postDelayed(this, interactionTime)
-                } else {
-                    try {
-                        Toast.makeText(requireContext(), "O app completou de ${process.messageLoading}", Toast.LENGTH_LONG).show()
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Erro ao tentar mostrar a mensagem de conclusão do processo")
-                    }
-                    Log.e(TAG, "finish of the download process")
-                    // handle when the process is finished
-                    when {
-                        process == Loading.MOVING_FILES ->  {
-                            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
-                        }
-                        process == Loading.DOWNLOAD_ONE_DOT_SIXTEEN ->  {
-                            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN)
-                        }
-                    }
-                }
-            }
-        })
-    }
+//    private fun createTimelaspProgressBar(progressBar: ProgressBar, durantion: Long, process: Loading) {
+//        val handler = Handler(Looper.getMainLooper())
+//        val interactionTime = durantion / 100L
+//        handler.post(object : Runnable {
+//            override fun run() {
+//                if (progressBar.progress < 100) {
+//                    progressBar.progress += 1
+//                    handler.postDelayed(this, interactionTime)
+//                } else {
+//                    try {
+//                        Toast.makeText(requireContext(), "O app completou de ${process.messageLoading}", Toast.LENGTH_LONG).show()
+//                    } catch (e: Exception) {
+//                        Log.e(TAG, "Erro ao tentar mostrar a mensagem de conclusão do processo")
+//                    }
+//                    Log.e(TAG, "finish of the download process")
+//                    // handle when the process is finished
+//                    when {
+//                        process == Loading.MOVING_FILES ->  {
+//                            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
+//                        }
+//                        process == Loading.DOWNLOAD_ONE_DOT_SIXTEEN ->  {
+//                            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN)
+//                        }
+//                    }
+//                }
+//            }
+//        })
+//    }
 
 }

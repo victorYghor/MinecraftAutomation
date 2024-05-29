@@ -1,12 +1,17 @@
 package net.kdt.pojavlaunch.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.kdt.mcgui.ProgressLayout
 import net.kdt.pojavlaunch.LauncherActivity
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
@@ -67,16 +72,23 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         // handle changes between button play and progress bar
         // Handle the first fragment to show
         LauncherPreferences.loadPreferences(requireContext())
-        if (LauncherPreferences.GET_ONE_DOT_TWELVE) {
-            Log.d(TAG, "the value of get_one_dot_twelve is ${LauncherPreferences.GET_ONE_DOT_TWELVE}")
-            if (LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE) {
-                // aqui não precisa fazer nada
-            } else {
-                ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
-            }
-        } else {
-            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.MOVING_FILES)
-        }
+        ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.SHOW_PLAY_BUTTON)
+
+//        ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 0);
+//        var progress = 0
+//        val handler = Handler(Looper.getMainLooper())
+//        handler.post(object : Runnable {
+//            override fun run() {
+//                if(progress >= 100) return
+//                Log.d(TAG, "progress is $progress")
+//                handler.postDelayed(this, 100L)
+//                ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, ++progress)
+//            }
+//        })
+
+//        val pixelmonProgressBar = view.findViewById<ProgressBar>(R.id.progress_bar_pixelmon_home)
+//        pixelmonProgressBar.setProgress(100)
+
 
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.install_one_dot_sixteen)
@@ -131,24 +143,7 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
                 }
         }
 
-        b.btnDiscord.setOnClickListener {
-            startActivity(SocialMedia.DISCORD.open)
-        }
-        b.btnOfficialSite.setOnClickListener {
-            startActivity(SocialMedia.OFFICIAL_SITE.open)
-        }
-        b.btnTiktok.setOnClickListener {
-            startActivity(SocialMedia.TIK_TOK.open)
-        }
-        b.btnSettings.setOnClickListener {
-            Tools.swapFragment(
-                requireActivity(),
-                LauncherPreferenceFragment::class.java,
-                LauncherActivity.SETTING_FRAGMENT_TAG,
-                true,
-                null
-            )
-        }
+
         super.onViewCreated(view, savedInstanceState)
     }
 

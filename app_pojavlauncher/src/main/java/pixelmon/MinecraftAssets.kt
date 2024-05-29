@@ -48,7 +48,7 @@ class MinecraftAssets(val context: Context): Runnable {
     private fun putFilesInData(name: String, assets: AssetManager) {
         val outFile = File(context.getExternalFilesDir(null), "." + name)
         filesCount.add(outFile.exists())
-        Log.d(TAG, "Attempting to write to: " + outFile.absolutePath)
+//        Log.d(TAG, "Attempting to write to: " + outFile.absolutePath)
         val copiedFile = assets.open(name)
         outFile.writeBytes(copiedFile.readBytes())
         copiedFile.close()
@@ -64,7 +64,7 @@ class MinecraftAssets(val context: Context): Runnable {
         try {
             if(directoryTreeFile.exists() && directoryTreeFile.readBytes()
                     .contentEquals(context.assets.open("directoryTree.txt").readBytes())) {
-                Log.i(TAG, "All files was transferred")
+//                Log.i(TAG, "All files was transferred")
             } else {
                 directoryTreeFile.writeText("")
                 // Por garantia muda o estado para dizer que ele vai mover os assets
@@ -73,7 +73,7 @@ class MinecraftAssets(val context: Context): Runnable {
                 moveFiles("minecraft")
             }
             Pixelmon.state = State.PLAY
-            Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
+//            Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
         } catch(e: Exception) {
             e.printStackTrace()
         }

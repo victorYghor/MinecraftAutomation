@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -50,6 +51,7 @@ import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
 import pixelmon.Loading
 import pixelmon.MinecraftAssets
+import pixelmon.SocialMedia
 import pixelmon.Tools.DownloadResult
 import pixelmon.Tools.informativeAlertDialog
 import pixelmon.mods.Downloader
@@ -67,25 +69,15 @@ class LauncherActivity : BaseActivity() {
     private lateinit var mDownloader: Downloader
     private var mAccountSpinner: mcAccountSpinner? = null
     private var mFragmentView: FragmentContainerView? = null
-    private var mSettingsButton: ImageButton? = null
-    private var mDeleteAccountButton: ImageButton? = null
     private var mProgressLayout: ProgressLayout? = null
     private var mProgressServiceKeeper: ProgressServiceKeeper? = null
     private var mInstallTracker: ModloaderInstallTracker? = null
     private var mNotificationManager: NotificationManager? = null
+    private var btnDiscord: ImageButton? = null
+    private var btnOfficialSite: ImageButton? = null
+    private var btnTiktok: ImageButton? = null
+    private var btnSettings: ImageButton? = null
 
-    /* Allows to switch from one button "type" to another */
-    private val mFragmentCallbackListener: FragmentManager.FragmentLifecycleCallbacks =
-        object : FragmentManager.FragmentLifecycleCallbacks() {
-            override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
-                mSettingsButton!!.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        baseContext,
-                        if (f is MainMenuFragment) R.drawable.ic_menu_settings else R.drawable.ic_menu_home
-                    )
-                )
-            }
-        }
 
     //Pixelmon stuff
     private val mLoadingInternalListener = ExtraListener { key: String?, value: Loading ->
@@ -99,9 +91,6 @@ class LauncherActivity : BaseActivity() {
                 // caso ideal
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true)
                 ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
-                swapPlayAndProgressLayout(
-                    this, PixelmonProgressBar::class.java, PixelmonProgressBar.TAG, true, null
-                )
 
             }
             Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE ->  {
@@ -270,9 +259,28 @@ class LauncherActivity : BaseActivity() {
         }
         mDownloader = Downloader(this)
         Log.e(TAG, "Hey I am LauncherActivity.kt")
-        setContentView(R.layout.activity_pojav_launcher)
+        setContentView(R.layout.pixelmon_main_activity)
         IconCacheJanitor.runJanitor()
-        // pixelmon
+
+        // pixelmon buttons
+        btnDiscord?.setOnClickListener {
+            startActivity(SocialMedia.DISCORD.open)
+        }
+        btnOfficialSite?.setOnClickListener {
+            startActivity(SocialMedia.OFFICIAL_SITE.open)
+        }
+        btnTiktok?.setOnClickListener {
+            startActivity(SocialMedia.TIK_TOK.open)
+        }
+        btnSettings?.setOnClickListener {
+            Tools.swapFragment(
+                this,
+                LauncherPreferenceFragment::class.java,
+                LauncherActivity.SETTING_FRAGMENT_TAG,
+                true,
+                null
+            )
+        }
 
         mRequestNotificationPermissionLauncher = registerForActivityResult(
             RequestPermission()
@@ -291,8 +299,6 @@ class LauncherActivity : BaseActivity() {
         ProgressKeeper.addTaskCountListener(ProgressServiceKeeper(this).also {
             mProgressServiceKeeper = it
         })
-        mSettingsButton!!.setOnClickListener(mSettingButtonListener)
-        mDeleteAccountButton!!.setOnClickListener(mAccountDeleteButtonListener)
         ProgressKeeper.addTaskCountListener(mProgressLayout)
 
         //Pixelmon sttuf
@@ -359,7 +365,6 @@ class LauncherActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        supportFragmentManager.registerFragmentLifecycleCallbacks(mFragmentCallbackListener, true)
     }
 
     override fun onDestroy() {
@@ -373,7 +378,6 @@ class LauncherActivity : BaseActivity() {
         )
         ExtraCore.removeExtraListenerFromValue(ExtraConstants.SELECT_AUTH_METHOD, mSelectAuthMethod)
         ExtraCore.removeExtraListenerFromValue(ExtraConstants.LAUNCH_GAME, mLaunchGameListener)
-        supportFragmentManager.unregisterFragmentLifecycleCallbacks(mFragmentCallbackListener)
     }
 
     /** Custom implementation to feel more natural when a backstack isn't present  */
@@ -463,10 +467,14 @@ class LauncherActivity : BaseActivity() {
     /** Stuff all the view boilerplate here  */
     private fun bindViews() {
         mFragmentView = findViewById(R.id.container_fragment)
-        mSettingsButton = findViewById(R.id.setting_button)
-        mDeleteAccountButton = findViewById(R.id.delete_account_button)
         mAccountSpinner = findViewById(R.id.account_spinner)
         mProgressLayout = findViewById(R.id.progress_layout)
+
+        // pixelmon buttons
+        btnDiscord = findViewById(R.id.btn_discord)
+        btnSettings = findViewById(R.id.btn_settings)
+        btnTiktok = findViewById(R.id.btn_tiktok)
+        btnOfficialSite = findViewById(R.id.btn_official_site)
     }
 
     companion object {
