@@ -325,6 +325,10 @@
     <string name="newdl_downloading_metadata">Baixando metadados do jogo (%s)</string>
 
     <!-- pixelmon strings-->
+
+    <!-- loading internal things -->
+    <string name="moving_files">Movendo arquivos</string>
+
     <string name="welcome_pixelmon_brazil">BEM-VINDO AO PIXELMON BRASIL</string>
     <string name="pixelmon_btn_continue">Continuar</string>
     <string name="welcome_pixelmon_message">Explore um mundo incrível, faça amizades, colecione pokémons raros, treine e dispute duelos emocionantes para se tornar o campeão supremo!</string>
