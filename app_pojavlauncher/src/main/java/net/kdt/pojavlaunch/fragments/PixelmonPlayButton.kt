@@ -14,6 +14,9 @@ import net.kdt.pojavlaunch.databinding.FragmentPixelmonPlayButtonBinding
  *
  */
 class PixelmonPlayButton : Fragment() {
+    companion object {
+        const val TAG = "PixelmonPlayButton"
+    }
     var _binding: FragmentPixelmonPlayButtonBinding? = null
     val b get() = _binding!!
 

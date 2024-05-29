@@ -295,7 +295,6 @@ class LauncherActivity : BaseActivity() {
                 null
             )
         }
-        ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 50)
 
 
         checkNotificationPermission()

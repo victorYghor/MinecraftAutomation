@@ -14,12 +14,17 @@ public class ProgressKeeper {
     private static final HashMap<String, ProgressState> sProgressStates = new HashMap<>();
     private static final List<TaskCountListener> sTaskCountListeners = new ArrayList<>();
 
-    // o que siginifica progressRecord?
-    // What's means the type of progressRecord?
+    /**
+     * This is the mediator for the LayoutProgress Listener to update the progress
+     * @param progressRecord
+     * @param progress
+     * @param resid
+     * @param va
+     */
     public static synchronized void submitProgress(String progressRecord, int progress, int resid, Object... va) {
         ProgressState progressState = sProgressStates.get(progressRecord);
         boolean shouldCallStarted = progressState == null;
-        boolean shouldCallEnded = resid == -1 && progress == -1;
+        boolean shouldCallEnded = (resid == -1 && progress == -1) || progress >= 100;
         if (shouldCallEnded) {
             shouldCallStarted = false;
             sProgressStates.remove(progressRecord);

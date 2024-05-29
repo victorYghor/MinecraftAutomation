@@ -5,6 +5,10 @@ public class ExtraConstants {
     /* ExtraCore constant: a HashMap for converting values such as latest-snapshot or latest-release to actual game version names */
     /** for trigger the alert dialog about some download problem **/
     public static final String ALERT_DIALOG_DOWNLOAD = "alert_dialog_download";
+    /**
+     * Every time when the PixelmonMenuFragment is created him will check this ExtraConstant and
+     * then update the ui when needed for the play button
+     */
     public static final String LOADING_INTERNAL = "loading_internal";
     public static final String ONE_DOT_SIXTEEN_DOWNLOAD_RESULT  = "one_dot_sixteen_download_result";
     public static final String RELEASE_TABLE = "release_table";

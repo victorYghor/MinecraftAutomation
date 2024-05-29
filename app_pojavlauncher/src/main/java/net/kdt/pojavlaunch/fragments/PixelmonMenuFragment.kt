@@ -72,10 +72,16 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         // handle changes between button play and progress bar
         // Handle the first fragment to show
         LauncherPreferences.loadPreferences(requireContext())
+        when(ExtraCore.getValue(ExtraConstants.LOADING_INTERNAL)) {
+            Loading.SHOW_PLAY_BUTTON -> {
+                Tools.swapPlayAndProgressLayout(
+                    requireActivity(), PixelmonPlayButton::class.java, PixelmonPlayButton.TAG, true, null
+                )
+            }
+            else -> {
 
-
-//        val pixelmonProgressBar = view.findViewById<ProgressBar>(R.id.progress_bar_pixelmon_home)
-//        pixelmonProgressBar.setProgress(100)
+            }
+        }
 
 
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {

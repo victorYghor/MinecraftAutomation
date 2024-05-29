@@ -4,6 +4,7 @@ package com.kdt.mcgui;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -13,11 +14,15 @@ import androidx.annotation.StringRes;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import net.kdt.pojavlaunch.R;
+import net.kdt.pojavlaunch.extra.ExtraConstants;
+import net.kdt.pojavlaunch.extra.ExtraCore;
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
 import net.kdt.pojavlaunch.progresskeeper.ProgressListener;
 import net.kdt.pojavlaunch.progresskeeper.TaskCountListener;
 
 import java.util.ArrayList;
+
+import pixelmon.Loading;
 
 
 /** This is a custom layout created with pure java code to show the progress of the app
@@ -96,6 +101,7 @@ public class ProgressLayout extends ConstraintLayout implements TaskCountListene
 //        mTaskNumberDisplayer = findViewById(R.id.tv_progress_text);
         mProgressBarPixelmonHome = findViewById(R.id.progress_bar_pixelmon_home);
         mTextLoading = findViewById(R.id.tv_progress_text);
+        setVisibility(View.GONE);
     }
 
 
@@ -108,15 +114,13 @@ public class ProgressLayout extends ConstraintLayout implements TaskCountListene
 
         ProgressKeeper.submitProgress(progressKey, progress, -1, (Object)null);
     }
-
-    /** Update the text and progress content */
-    public static void setProgress(String progressKey, int progress, @StringRes int resource, Object... message){
-        ProgressKeeper.submitProgress(progressKey, progress, resource, message);
-    }
-
     /** Update the text and progress content */
     public static void setProgress(String progressKey, int progress, String message){
         setProgress(progressKey,progress, -1, message);
+    }
+    /** Update the text and progress content */
+    public static void setProgress(String progressKey, int progress, @StringRes int resource, Object... message){
+            ProgressKeeper.submitProgress(progressKey, progress, resource, message);
     }
 
     /** Update the text and progress content */
@@ -153,6 +157,7 @@ public class ProgressLayout extends ConstraintLayout implements TaskCountListene
         @Override
         public void onProgressStarted() {
             post(()-> {
+                setVisibility(View.VISIBLE);
                 Log.i("ProgressLayout", "onProgressStarted");
             });
         }
@@ -176,6 +181,11 @@ public class ProgressLayout extends ConstraintLayout implements TaskCountListene
         public void onProgressEnded() {
             post(()-> {
                 Log.d("ProgressLayout", "onProgressEnded");
+                setVisibility(View.GONE);
+                // call some function or class that trigger change in the layout for another progress or button like button play
+                // I can do this here or inside the ProgressKeeper
+                // temporary
+                ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.SHOW_PLAY_BUTTON);
             });
         }
     }
