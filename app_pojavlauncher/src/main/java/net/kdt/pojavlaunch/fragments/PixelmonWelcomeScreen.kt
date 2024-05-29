@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.kdt.mcgui.ProgressLayout
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.databinding.FragmentPixelmonWelcomeScreenBinding
@@ -25,6 +26,7 @@ class PixelmonWelcomeScreen : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val loading: ProgressLayout
         b.btnContinue.setOnClickListener {
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
             Tools.swapFragment(

@@ -72,16 +72,7 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         // handle changes between button play and progress bar
         // Handle the first fragment to show
         LauncherPreferences.loadPreferences(requireContext())
-        when(ExtraCore.getValue(ExtraConstants.LOADING_INTERNAL)) {
-            Loading.SHOW_PLAY_BUTTON -> {
-                Tools.swapPlayAndProgressLayout(
-                    requireActivity(), PixelmonPlayButton::class.java, PixelmonPlayButton.TAG, true, null
-                )
-            }
-            else -> {
-
-            }
-        }
+        setupPixelmonLoading()
 
 
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
@@ -144,5 +135,15 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupPixelmonLoading() {
+        val getOneDotTwelve = LauncherPreferences.GET_ONE_DOT_TWELVE
+        Log.d(TAG, "the value of getOneDotTwelve is $getOneDotTwelve")
+        if(getOneDotTwelve) {
+            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.SHOW_PLAY_BUTTON)
+        } else {
+            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.MOVING_FILES)
+        }
     }
 }

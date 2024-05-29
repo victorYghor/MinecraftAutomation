@@ -22,7 +22,6 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import com.kdt.mcgui.ProgressLayout
 import com.kdt.mcgui.mcAccountSpinner
-import net.kdt.pojavlaunch.Tools.swapPlayAndProgressLayout
 import net.kdt.pojavlaunch.contracts.OpenDocumentWithExtension
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
@@ -101,10 +100,8 @@ class LauncherActivity : BaseActivity() {
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> TODO()
             Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> TODO()
             Loading.SHOW_PLAY_BUTTON -> {
+
                 Log.d(PixelmonMenuFragment.TAG, "try to make a trasnsition for play button")
-                swapPlayAndProgressLayout(
-                    this, PixelmonPlayButton::class.java, TAG, true, null
-                )
             }
         }
         false
@@ -330,7 +327,6 @@ class LauncherActivity : BaseActivity() {
         mProgressLayout!!.observe(ProgressLayout.MOVING_FILES)
 
         LauncherPreferences.loadPreferences(this)
-        setupPixelmonLoading()
         insertProfiles()
     }
 
@@ -480,13 +476,4 @@ class LauncherActivity : BaseActivity() {
         private const val TAG = "LauncherActivity.java"
     }
 
-    private fun setupPixelmonLoading() {
-        val getOneDotTwelve = LauncherPreferences.GET_ONE_DOT_TWELVE
-        Log.d(TAG, "the value of getOneDotTwelve is $getOneDotTwelve")
-        if(getOneDotTwelve) {
-            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.SHOW_PLAY_BUTTON)
-        } else {
-            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.MOVING_FILES)
-        }
-    }
 }

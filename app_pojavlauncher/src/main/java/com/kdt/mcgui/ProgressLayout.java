@@ -157,6 +157,7 @@ public class ProgressLayout extends ConstraintLayout implements TaskCountListene
         @Override
         public void onProgressStarted() {
             post(()-> {
+
                 setVisibility(View.VISIBLE);
                 Log.i("ProgressLayout", "onProgressStarted");
             });

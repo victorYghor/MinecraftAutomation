@@ -988,15 +988,7 @@ public final class Tools {
         transaction.commit();
     }
 
-    public static void swapPlayAndProgressLayout(FragmentActivity fragmentActivity, Class<? extends Fragment> fragmentClass,
-                                                 @Nullable String fragmentTag, boolean addCurrentToBackstack, @Nullable Bundle bundle) {
 
-        FragmentTransaction transaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
-        transaction.setReorderingAllowed(true);
-        transaction.replace(R.id.play_and_progress_layout, fragmentClass, bundle, fragmentTag);
-
-        transaction.commit();
-    }
 
     /**
      * Remove the current fragment
