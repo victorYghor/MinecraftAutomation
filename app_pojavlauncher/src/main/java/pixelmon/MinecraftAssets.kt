@@ -3,6 +3,7 @@ package pixelmon
 import android.content.Context
 import android.content.res.AssetManager
 import android.util.Log
+import com.kdt.mcgui.ProgressLayout
 import kotlinx.coroutines.Runnable
 import java.io.File
 
@@ -48,7 +49,9 @@ class MinecraftAssets(val context: Context): Runnable {
     private fun putFilesInData(name: String, assets: AssetManager) {
         val outFile = File(context.getExternalFilesDir(null), "." + name)
         filesCount.add(outFile.exists())
-//        Log.d(TAG, "Attempting to write to: " + outFile.absolutePath)
+        // set the progress when moving files
+        val progress = (filesCount.size * 100) / 2928
+        ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, progress, Loading.MOVING_FILES.messageLoading)
         val copiedFile = assets.open(name)
         outFile.writeBytes(copiedFile.readBytes())
         copiedFile.close()

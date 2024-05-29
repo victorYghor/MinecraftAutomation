@@ -1,7 +1,10 @@
 package pixelmon.mods
 
-import android.content.Context
 import android.app.DownloadManager
+import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import androidx.core.net.toUri
 import net.kdt.pojavlaunch.Tools
@@ -12,12 +15,18 @@ import pixelmon.State
 import pixelmon.Texture
 import pixelmon.Tools.checkFileIntegrity
 import java.io.File
+import java.util.concurrent.Executors
+
 
 enum class ModVersion {
     OneDotTwelve,
     OneDotSixteen
 }
 class Downloader(private val context: Context) {
+    private val downloadManager = context.getSystemService(DownloadManager::class.java)
+
+
+
     companion object {
         private val TAG = "Downloader"
     }
@@ -36,7 +45,7 @@ class Downloader(private val context: Context) {
         name = "Textura do pixelmon Brasil"
     )
 
-    private val downloadManager = context.getSystemService(DownloadManager::class.java)
+
     fun downloadMod(mod: Mod): Long {
         Log.d(TAG, "Try to download mod ${mod.name}")
         val title = "Baixando o mod ${mod.name}"

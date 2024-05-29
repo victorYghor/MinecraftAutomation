@@ -83,25 +83,18 @@ class LauncherActivity : BaseActivity() {
     private val mLoadingInternalListener = ExtraListener { key: String?, value: Loading ->
         when(value) {
             Loading.MOVING_FILES -> {
-                Log.d(TAG, "try to make a transiotion for progress bar")
-//                PixelmonProgressBar.apply {
-//                    currentProcess = Loading.MOVING_FILES
-//                    duration = 3_000L
-//                }
-//                ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 10)
-                // caso ideal
-                LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true)
-                ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
-
+                Log.d(TAG, "Moving files loading")
+                LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true).commit()
+                Thread {
+                    ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 0, Loading.MOVING_FILES.messageLoading);
+                    MinecraftAssets(this).run()
+                    ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
+                }.start()
             }
             Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE ->  {
                 // começar o download dos mods da 1.12
                 Log.d(TAG, "start the download of mods 1.12")
                 mDownloader.downloadModsOneDotTwelve()
-                PixelmonProgressBar.apply {
-                    currentProcess = Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE
-                    duration = 3_600_000L
-                }
                 // caso ideal
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
             }
@@ -337,18 +330,9 @@ class LauncherActivity : BaseActivity() {
         mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_VERSION_LIST)
         mProgressLayout!!.observe(ProgressLayout.MOVING_FILES)
 
-        Thread {
-            MinecraftAssets(this).run()
-        }.start()
+        LauncherPreferences.loadPreferences(this)
+        setupPixelmonLoading()
         insertProfiles()
-        if (mAccountSpinner == null) {
-            Log.w(TAG, "Account spiner is null")
-        } else {
-            mAccountSpinner!!.reloadAccounts(false, mAccountSpinner!!.mAccountList.size - 1)
-            if (mAccountSpinner!!.selectedAccount == null) {
-                ExtraCore.setValue(ExtraConstants.SELECT_AUTH_METHOD, true)
-            }
-        }
     }
 
     fun insertProfiles() {
@@ -495,5 +479,15 @@ class LauncherActivity : BaseActivity() {
     companion object {
         const val SETTING_FRAGMENT_TAG = "SETTINGS_FRAGMENT"
         private const val TAG = "LauncherActivity.java"
+    }
+
+    private fun setupPixelmonLoading() {
+        val getOneDotTwelve = LauncherPreferences.GET_ONE_DOT_TWELVE
+        Log.d(TAG, "the value of getOneDotTwelve is $getOneDotTwelve")
+        if(getOneDotTwelve) {
+            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.SHOW_PLAY_BUTTON)
+        } else {
+            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.MOVING_FILES)
+        }
     }
 }

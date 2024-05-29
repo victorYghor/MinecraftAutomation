@@ -346,4 +346,9 @@
     <string name="ok">OK</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movendo_arquivos_para_o_minecreaft_1_12">movendo arquivos para o minecreaft 1.12...</string>
+    <string name="baixando_os_mods_da_1_12">baixando os mods da 1.12...</string>
+    <string name="baixando_os_mods_da_1_16">baixando os mods da 1.16...</string>
+    <string name="baixando_o_minecraft_1_16">baixando o minecraft 1.16...</string>
+    <string name="mostrando_o_bot_o_de_jogar">mostrando o botão de jogar...</string>
 </resources>
