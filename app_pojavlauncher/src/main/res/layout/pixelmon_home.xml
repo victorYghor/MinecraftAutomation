@@ -45,9 +45,9 @@
                 <RadioButton
                     android:id="@+id/radio_btn_version_1_12"
                     style="@style/MyRadioButtonStyle"
-                    android:layout_gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:buttonTint="@color/white"
                     android:outlineSpotShadowColor="@color/white"
                     android:text="@string/pixelmon_1_12_2" />
@@ -115,10 +115,12 @@
         android:id="@+id/play_and_progress_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
         android:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_view_version_selector" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

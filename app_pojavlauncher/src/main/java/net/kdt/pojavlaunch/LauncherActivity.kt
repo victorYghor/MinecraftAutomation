@@ -84,10 +84,11 @@ class LauncherActivity : BaseActivity() {
         when(value) {
             Loading.MOVING_FILES -> {
                 Log.d(TAG, "try to make a transiotion for progress bar")
-                PixelmonProgressBar.apply {
-                    currentProcess = Loading.MOVING_FILES
-                    duration = 3_000L
-                }
+//                PixelmonProgressBar.apply {
+//                    currentProcess = Loading.MOVING_FILES
+//                    duration = 3_000L
+//                }
+//                ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 10)
                 // caso ideal
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true)
                 ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
@@ -249,10 +250,19 @@ class LauncherActivity : BaseActivity() {
         val firsInstallation = LauncherPreferences.PREF_FIRST_INSTALLATION
         Log.d(PixelmonMenuFragment.TAG, "the first installation is $firsInstallation")
         if (firsInstallation) {
+            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
             Tools.swapFragment(
                 this,
                 PixelmonWelcomeScreen::class.java,
                 PixelmonWelcomeScreen.TAG,
+                false,
+                null
+            )
+        } else {
+            Tools.swapFragment(
+                this,
+                PixelmonMenuFragment::class.java,
+                PixelmonMenuFragment.TAG,
                 false,
                 null
             )
@@ -262,10 +272,21 @@ class LauncherActivity : BaseActivity() {
         setContentView(R.layout.pixelmon_main_activity)
         IconCacheJanitor.runJanitor()
 
+
+        mRequestNotificationPermissionLauncher = registerForActivityResult(
+            RequestPermission()
+        ) { isAllowed: Boolean? ->
+            if (!isAllowed!!) handleNoNotificationPermission() else {
+                val runnable = Tools.getWeakReference(mRequestNotificationPermissionRunnable)
+                runnable?.run()
+            }
+        }
+        window.setBackgroundDrawable(null)
+        bindViews()
         // pixelmon buttons
         btnDiscord?.setOnClickListener {
             startActivity(SocialMedia.DISCORD.open)
-        }
+        } ?: Log.d(TAG, "btnDiscord is null")
         btnOfficialSite?.setOnClickListener {
             startActivity(SocialMedia.OFFICIAL_SITE.open)
         }
@@ -281,17 +302,9 @@ class LauncherActivity : BaseActivity() {
                 null
             )
         }
+        ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 50)
 
-        mRequestNotificationPermissionLauncher = registerForActivityResult(
-            RequestPermission()
-        ) { isAllowed: Boolean? ->
-            if (!isAllowed!!) handleNoNotificationPermission() else {
-                val runnable = Tools.getWeakReference(mRequestNotificationPermissionRunnable)
-                runnable?.run()
-            }
-        }
-        window.setBackgroundDrawable(null)
-        bindViews()
+
         checkNotificationPermission()
         // place for putting extra listener
         mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -322,6 +335,8 @@ class LauncherActivity : BaseActivity() {
         mProgressLayout!!.observe(ProgressLayout.INSTALL_MODPACK)
         mProgressLayout!!.observe(ProgressLayout.AUTHENTICATE_MICROSOFT)
         mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_VERSION_LIST)
+        mProgressLayout!!.observe(ProgressLayout.MOVING_FILES)
+
         Thread {
             MinecraftAssets(this).run()
         }.start()

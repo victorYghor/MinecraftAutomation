@@ -4,9 +4,6 @@ package com.kdt.mcgui;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -28,8 +25,9 @@ import java.util.ArrayList;
  * Since progress is posted in a specific way, The packing/unpacking is handheld by the class
  *
  * This class relies on ExtraCore for its behavior.
+ * You need a listener with you want update the progress bar
  */
-public class ProgressLayout extends ConstraintLayout implements View.OnClickListener, TaskCountListener{
+public class ProgressLayout extends ConstraintLayout implements TaskCountListener{
     // aqui é basicamento o tipo de carregamento que existe dentro do app
     // Vê se ficar muito complexo essa parte de carregamento o que pode fazer é fazer um carregamento fake
 
@@ -68,8 +66,8 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
 
     // pixelmon
     private ProgressBar mProgressBarPixelmonHome;
-    private TextView mTaskNumberDisplayer;
-    private View root;
+//    private TextView mTaskNumberDisplayer;
+    private TextView mTextLoading;
 
     /**
      * Aqui ele coloca as strings do inicio da classe
@@ -95,8 +93,9 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
      */
     private void init(){
         inflate(getContext(), R.layout.fragment_pixelmon_progress_bar, this);
-        mTaskNumberDisplayer = findViewById(R.id.tv_progress_text);
+//        mTaskNumberDisplayer = findViewById(R.id.tv_progress_text);
         mProgressBarPixelmonHome = findViewById(R.id.progress_bar_pixelmon_home);
+        mTextLoading = findViewById(R.id.tv_progress_text);
     }
 
 
@@ -106,6 +105,7 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
      * @param progress the progress of the bar
      * */
     public static void setProgress(String progressKey, int progress){
+
         ProgressKeeper.submitProgress(progressKey, progress, -1, (Object)null);
     }
 
@@ -130,17 +130,7 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
     @Override
     public void onUpdateTaskCount(int tc) {
         post(()->{
-            if(tc > 0) {
-                mTaskNumberDisplayer.setText(getContext().getString(R.string.progresslayout_tasks_in_progress, tc));
-                setVisibility(VISIBLE);
-            }else
-                setVisibility(GONE);
         });
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 
     /**
@@ -152,21 +142,18 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
          */
         final String progressKey;
         final ProgressBar progressBarPixelmon;
+        final TextView textLoading;
         public LayoutProgressListener(String progressKey) {
             this.progressKey = progressKey;
-            // ele cria aqui o TextProgressBar e seta o que precisa para ele funcionar
             progressBarPixelmon = mProgressBarPixelmonHome;
-//            progressBarPixelmon.setTextPadding(getContext().getResources().getDimensionPixelOffset(R.dimen._6sdp));
+            textLoading = mTextLoading;
             ProgressKeeper.addListener(progressKey, this);
         }
-        // Aqui dentro ele precisa mudar o view que vai estar aparecendo na home do pixelmon
-        // ele precisa da um trigger dentro do app todo para mudança de layout
-        // Onde é que começa tudo relacionado ao layout de progressso?
+
         @Override
         public void onProgressStarted() {
             post(()-> {
                 Log.i("ProgressLayout", "onProgressStarted");
-                progressBarPixelmon.setProgress(50);
             });
         }
 
@@ -179,14 +166,9 @@ public class ProgressLayout extends ConstraintLayout implements View.OnClickList
          */
         @Override
         public void onProgressUpdated(int progress, int resid, Object... va) {
-            // isso é o texto interno ou externo da barra de progresso ?
-            // precisa tirar parte do texto dentro do progress layout
             post(()-> {
-                // aqui ve qual vai ser o comportamento caso você coloque o progress layout que voce criou
                 progressBarPixelmon.setProgress(progress);
-//                if(resid != -1) progressBarPixelmon.setText(getContext().getString(resid, va));
-//                else if(va.length > 0 && va[0] != null) progressBarPixelmon.setText((String)va[0]);
-//                else progressBarPixelmon.setText("");
+                textLoading.setText(resid == -1 ? "" : getContext().getString(resid, va));
             });
         }
 

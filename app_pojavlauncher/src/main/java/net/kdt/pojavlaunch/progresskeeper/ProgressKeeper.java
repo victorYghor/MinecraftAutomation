@@ -34,6 +34,7 @@ public class ProgressKeeper {
             progressState.varArg = va;
         }
 
+        // Apenas usando o listeners voce consegue dar um update no progresso da barra
         List<ProgressListener> progressListeners = sProgressListeners.get(progressRecord);
         if (progressListeners != null)
             for (ProgressListener listener : progressListeners) {

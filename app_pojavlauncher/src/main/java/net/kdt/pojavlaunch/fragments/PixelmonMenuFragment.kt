@@ -72,19 +72,18 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         // handle changes between button play and progress bar
         // Handle the first fragment to show
         LauncherPreferences.loadPreferences(requireContext())
-        ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.SHOW_PLAY_BUTTON)
 
-//        ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 0);
-//        var progress = 0
-//        val handler = Handler(Looper.getMainLooper())
-//        handler.post(object : Runnable {
-//            override fun run() {
-//                if(progress >= 100) return
-//                Log.d(TAG, "progress is $progress")
-//                handler.postDelayed(this, 100L)
-//                ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, ++progress)
-//            }
-//        })
+        ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 0, R.string.moving_files);
+        var progress = 0
+        val handler = Handler(Looper.getMainLooper())
+        handler.post(object : Runnable {
+            override fun run() {
+                if(progress >= 100) return
+                Log.d(TAG, "progress is $progress")
+                handler.postDelayed(this, 100L)
+                ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, ++progress, R.string.moving_files)
+            }
+        })
 
 //        val pixelmonProgressBar = view.findViewById<ProgressBar>(R.id.progress_bar_pixelmon_home)
 //        pixelmonProgressBar.setProgress(100)
