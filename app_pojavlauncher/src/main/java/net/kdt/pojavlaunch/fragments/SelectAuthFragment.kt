@@ -23,7 +23,7 @@ class SelectAuthFragment : Fragment(R.layout.fragment_select_auth_method) {
             startActivity(SocialMedia.DISCORD.open)
         }
         mMicrosoftButton.setOnClickListener {
-            Tools.swapFragment(
+            Tools.swapWelcomeFragment(
                 requireActivity(),
                 MicrosoftLoginFragment::class.java,
                 MicrosoftLoginFragment.TAG,
@@ -32,7 +32,7 @@ class SelectAuthFragment : Fragment(R.layout.fragment_select_auth_method) {
             )
         }
         mLocalButton.setOnClickListener {
-            Tools.swapFragment(
+            Tools.swapWelcomeFragment(
                 requireActivity(),
                 LocalLoginFragment::class.java,
                 LocalLoginFragment.TAG,

@@ -3,13 +3,13 @@ package net.kdt.pojavlaunch
 import android.Manifest
 import android.app.NotificationManager
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -19,19 +19,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.FragmentManager
 import com.kdt.mcgui.ProgressLayout
 import com.kdt.mcgui.mcAccountSpinner
 import net.kdt.pojavlaunch.contracts.OpenDocumentWithExtension
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.extra.ExtraListener
-import net.kdt.pojavlaunch.fragments.MainMenuFragment
 import net.kdt.pojavlaunch.fragments.MicrosoftLoginFragment
 import net.kdt.pojavlaunch.fragments.PixelmonMenuFragment
-import net.kdt.pojavlaunch.fragments.PixelmonPlayButton
-import net.kdt.pojavlaunch.fragments.PixelmonProgressBar
-import net.kdt.pojavlaunch.fragments.PixelmonWelcomeScreen
 import net.kdt.pojavlaunch.fragments.SelectAuthFragment
 import net.kdt.pojavlaunch.lifecycle.ContextAwareDoneListener
 import net.kdt.pojavlaunch.lifecycle.ContextExecutor
@@ -139,7 +134,7 @@ class LauncherActivity : BaseActivity() {
     private val mSelectAuthMethod = ExtraListener { key: String?, value: Boolean? ->
         val fragment = supportFragmentManager.findFragmentById(
             mFragmentView!!.id
-        ) as? MainMenuFragment ?: return@ExtraListener false
+        ) as? PixelmonMenuFragment ?: return@ExtraListener false
         // Allow starting the add account only from the main menu, should it be moved to fragment itself ?
         Tools.swapFragment(this, SelectAuthFragment::class.java, SelectAuthFragment.TAG, true, null)
         false
@@ -150,7 +145,7 @@ class LauncherActivity : BaseActivity() {
         val fragment = supportFragmentManager.findFragmentById(
             mFragmentView!!.id
         )
-        if (fragment is MainMenuFragment) {
+        if (fragment is PixelmonMenuFragment) {
             Tools.swapFragment(
                 this,
                 LauncherPreferenceFragment::class.java,
@@ -160,7 +155,7 @@ class LauncherActivity : BaseActivity() {
             )
         } else {
             // The setting button doubles as a home button now
-            while (supportFragmentManager.findFragmentById(mFragmentView!!.id) !is MainMenuFragment) {
+            while (supportFragmentManager.findFragmentById(mFragmentView!!.id) !is PixelmonMenuFragment) {
                 supportFragmentManager.popBackStackImmediate()
             }
         }
@@ -208,6 +203,7 @@ class LauncherActivity : BaseActivity() {
             Toast.makeText(this, R.string.error_no_version, Toast.LENGTH_LONG).show()
             return@ExtraListener false
         }
+
         if (mAccountSpinner!!.selectedAccount == null) {
             Toast.makeText(this, R.string.no_saved_accounts, Toast.LENGTH_LONG).show()
             ExtraCore.setValue(ExtraConstants.SELECT_AUTH_METHOD, true)
@@ -241,13 +237,8 @@ class LauncherActivity : BaseActivity() {
         Log.d(PixelmonMenuFragment.TAG, "the first installation is $firsInstallation")
         if (firsInstallation) {
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
-            Tools.swapFragment(
-                this,
-                PixelmonWelcomeScreen::class.java,
-                PixelmonWelcomeScreen.TAG,
-                false,
-                null
-            )
+            val startLaunch = Intent(this, WelcomePixelmonActivity::class.java)
+            startActivity(startLaunch)
         } else {
             Tools.swapFragment(
                 this,

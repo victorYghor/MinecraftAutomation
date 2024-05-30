@@ -29,7 +29,7 @@ class PixelmonWelcomeScreen : Fragment() {
         val loading: ProgressLayout
         b.btnContinue.setOnClickListener {
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
-            Tools.swapFragment(
+            Tools.swapWelcomeFragment(
                 requireActivity(),
                 SelectAuthFragment::class.java,
                 SelectAuthFragment.TAG,

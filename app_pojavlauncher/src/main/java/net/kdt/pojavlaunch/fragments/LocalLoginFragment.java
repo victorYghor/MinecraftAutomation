@@ -1,5 +1,6 @@
 package net.kdt.pojavlaunch.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import net.kdt.pojavlaunch.LauncherActivity;
 import net.kdt.pojavlaunch.R;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.extra.ExtraConstants;
@@ -33,7 +35,9 @@ public class LocalLoginFragment extends Fragment {
             ExtraCore.setValue(ExtraConstants.MOJANG_LOGIN_TODO, new String[]{
                     mUsernameEditText.getText().toString(), "" });
             Log.e(TAG, "Hey LocalLoginFragment.java");
-            Tools.swapFragment(requireActivity(), PixelmonMenuFragment.class, PixelmonMenuFragment.TAG, false, null);
+
+            Intent startLaunch = new Intent(requireContext(), LauncherActivity.class);
+            startActivity(startLaunch);
         });
     }
 

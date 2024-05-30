@@ -988,6 +988,21 @@ public final class Tools {
         transaction.commit();
     }
 
+    /**
+     * Swap the main fragment with another
+     */
+    public static void swapWelcomeFragment(FragmentActivity fragmentActivity, Class<? extends Fragment> fragmentClass,
+                                    @Nullable String fragmentTag, boolean addCurrentToBackstack, @Nullable Bundle bundle) {
+        // When people tab out, it might happen
+        //TODO handle custom animations
+        FragmentTransaction transaction = fragmentActivity.getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.container_welcome_fragment, fragmentClass, bundle, fragmentTag);
+        if (addCurrentToBackstack) transaction.addToBackStack(null);
+
+        transaction.commit();
+    }
+
 
 
     /**
