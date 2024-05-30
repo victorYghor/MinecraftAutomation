@@ -124,7 +124,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             />
-
         <provider
             android:name=".scoped.FolderProvider"
             android:authorities="@string/storageProviderAuthorities"

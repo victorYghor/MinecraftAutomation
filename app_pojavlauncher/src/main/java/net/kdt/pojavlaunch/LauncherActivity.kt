@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -71,13 +72,14 @@ class LauncherActivity : BaseActivity() {
     private var btnOfficialSite: ImageButton? = null
     private var btnTiktok: ImageButton? = null
     private var btnSettings: ImageButton? = null
-
+    private lateinit var btnPlay: Button
 
     //Pixelmon stuff
     private val mLoadingInternalListener = ExtraListener { key: String?, value: Loading ->
         when(value) {
             Loading.MOVING_FILES -> {
-                Log.d(TAG, "Moving files loading")
+                btnPlay.visibility = View.GONE
+
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true).commit()
                 Thread {
                     ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 0, Loading.MOVING_FILES.messageLoading);
@@ -86,17 +88,25 @@ class LauncherActivity : BaseActivity() {
                 }.start()
             }
             Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE ->  {
+                btnPlay.visibility = View.GONE
+
                 // começar o download dos mods da 1.12
                 Log.d(TAG, "start the download of mods 1.12")
                 mDownloader.downloadModsOneDotTwelve()
                 // caso ideal
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
             }
-            Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> TODO()
-            Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> TODO()
-            Loading.SHOW_PLAY_BUTTON -> {
+            Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
+                btnPlay.visibility = View.GONE
 
-                Log.d(PixelmonMenuFragment.TAG, "try to make a trasnsition for play button")
+            }
+            Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> {
+                btnPlay.visibility = View.GONE
+
+            }
+            Loading.SHOW_PLAY_BUTTON -> {
+                btnPlay.visibility = View.VISIBLE
+
             }
         }
         false
@@ -249,10 +259,8 @@ class LauncherActivity : BaseActivity() {
             )
         }
         mDownloader = Downloader(this)
-        Log.e(TAG, "Hey I am LauncherActivity.kt")
         setContentView(R.layout.pixelmon_main_activity)
         IconCacheJanitor.runJanitor()
-
 
         mRequestNotificationPermissionLauncher = registerForActivityResult(
             RequestPermission()
@@ -264,6 +272,8 @@ class LauncherActivity : BaseActivity() {
         }
         window.setBackgroundDrawable(null)
         bindViews()
+
+
         // pixelmon buttons
         btnDiscord?.setOnClickListener {
             startActivity(SocialMedia.DISCORD.open)
@@ -283,7 +293,6 @@ class LauncherActivity : BaseActivity() {
                 null
             )
         }
-
 
         checkNotificationPermission()
         // place for putting extra listener
@@ -460,6 +469,7 @@ class LauncherActivity : BaseActivity() {
         btnSettings = findViewById(R.id.btn_settings)
         btnTiktok = findViewById(R.id.btn_tiktok)
         btnOfficialSite = findViewById(R.id.btn_official_site)
+        btnPlay = findViewById(R.id.btn_play)
     }
 
     companion object {
