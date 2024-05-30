@@ -86,13 +86,12 @@ class LauncherActivity : BaseActivity() {
     private val mLoadingInternalListener = ExtraListener { key: String?, value: Loading ->
         when(value) {
             Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE ->  {
-
                 // começar o download dos mods da 1.12
                 Log.d(TAG, "start the download of mods 1.12")
                 mDownloader.downloadModsOneDotTwelve()
                 // caso ideal
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
-                return@ExtraListener false
+
             }
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
 
@@ -107,7 +106,6 @@ class LauncherActivity : BaseActivity() {
                     MinecraftAssets(this).run()
                 }.start()
                 ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
-                return@ExtraListener false
             }
             Loading.SHOW_PLAY_BUTTON -> {
                 ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
