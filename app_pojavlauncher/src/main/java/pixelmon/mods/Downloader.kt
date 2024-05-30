@@ -1,7 +1,9 @@
 package pixelmon.mods
 
+import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
@@ -15,17 +17,11 @@ import pixelmon.State
 import pixelmon.Texture
 import pixelmon.Tools.checkFileIntegrity
 import java.io.File
+import java.net.URI
 import java.util.concurrent.Executors
 
-
-enum class ModVersion {
-    OneDotTwelve,
-    OneDotSixteen
-}
 class Downloader(private val context: Context) {
     private val downloadManager = context.getSystemService(DownloadManager::class.java)
-
-
 
     companion object {
         private val TAG = "Downloader"
@@ -45,29 +41,84 @@ class Downloader(private val context: Context) {
         name = "Textura do pixelmon Brasil"
     )
 
+    /** Indicate that we would like to update download progress */
+    private val UPDATE_DOWNLOAD_PROGRESS = 1
+    /** Use a background thread to check the progress of downloading */
+    private val executor = Executors.newFixedThreadPool(1)
+    /** Use a handler to update progress bar on the main thread */
+    private val mainHandler: Handler = Handler(Looper.getMainLooper()) { msg ->
+        if (msg.what == UPDATE_DOWNLOAD_PROGRESS) {
+            val downloadProgress: Int = msg.arg1
+
+            // Update your progress bar here.
+            Log.d(TAG, "Download progress: $downloadProgress")
+        }
+        true
+    }
+
+    /**
+     * Central function to download files in the app
+     */
+    @SuppressLint("Range")
+    fun download(uri: Uri, url: String, title: String): Long {
+        val request = DownloadManager.Request(uri)
+            .setMimeType("application/gzip")
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setTitle(title)
+            .setDestinationInExternalFilesDir(context, null, ".minecraft/mods/$url")
+        val id = downloadManager.enqueue(request)
+
+//        executor.execute {
+//            var progress = 0
+//            var isDownloadFinished = false
+//            while (!isDownloadFinished) {
+//                val cursor = downloadManager!!.query(
+//                    DownloadManager.Query().setFilterById(id)
+//                )
+//                if (cursor.moveToFirst()) {
+//                    val downloadStatus =
+//                        cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
+//                    when (downloadStatus) {
+//                        DownloadManager.STATUS_RUNNING -> {
+//                            val totalBytes =
+//                                cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
+//                            if (totalBytes > 0) {
+//                                val downloadedBytes =
+//                                    cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
+//                                progress = (downloadedBytes * 100 / totalBytes).toInt()
+//                                Log.d(TAG, "the progress download is $progress")
+//                            }
+//                        }
+//                        DownloadManager.STATUS_SUCCESSFUL -> {
+//                            progress = 100
+//                            isDownloadFinished = true
+//                        }
+//
+//                        DownloadManager.STATUS_PAUSED, DownloadManager.STATUS_PENDING -> {}
+//                        DownloadManager.STATUS_FAILED -> isDownloadFinished = true
+//                    }
+//                    val message: Message = Message.obtain()
+//                    message.what = UPDATE_DOWNLOAD_PROGRESS
+//                    message.arg1 = progress
+//                    mainHandler.sendMessage(message)
+//                }
+//            }
+//        }
+        return id
+    }
 
     fun downloadMod(mod: Mod): Long {
         Log.d(TAG, "Try to download mod ${mod.name}")
         val title = "Baixando o mod ${mod.name}"
         File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
-        val request = DownloadManager.Request(mod.artifact.url.toUri())
-            .setMimeType("application/gzip")
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            .setTitle(title)
-            .setDestinationInExternalFilesDir(context, null, ".minecraft/mods/${mod.artifact.fileName}")
-        return downloadManager.enqueue(request)
+        return download(uri = mod.artifact.url.toUri(), url = mod.artifact.fileName, title = title)
     }
 
     fun downloadTexture(texture: Texture): Long {
         Log.d(TAG, "Straing downloading texture ${texture.name}")
         val title = "Baixando ${texture.name}"
         File(context.getExternalFilesDir(null), ".minecraft/resourcepacks").mkdirs()
-        val request = DownloadManager.Request(texture.url.toUri())
-            .setTitle(title)
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            .setMimeType("application/gzip")
-            .setDestinationInExternalFilesDir(context, null, ".minecraft/resourcepacks/${texture.fileName}")
-        return downloadManager.enqueue(request)
+        return download(uri = texture.url.toUri(), url = texture.fileName, title = title)
     }
 
     fun downloadModsOneDotTwelve(exclude:List<String> = listOf()) {
@@ -75,14 +126,12 @@ class Downloader(private val context: Context) {
         if(!LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE) {
             Pixelmon.state = State.DOWNLOAD_MODS
 
-            var mods = if(exclude.isNotEmpty()) {
+            val mods = if(exclude.isNotEmpty()) {
                 modsOneDotSixteen.filter { !exclude.contains(it.name) }
             } else {
                 modsOneDotTwelve.toList()
             }
-            mods.forEach{
-                downloadMod(it)
-            }
+            downloadMod(mods.first())
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
             Pixelmon.state = State.PLAY
         }

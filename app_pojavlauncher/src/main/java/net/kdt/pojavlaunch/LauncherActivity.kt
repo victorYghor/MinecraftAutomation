@@ -85,14 +85,6 @@ class LauncherActivity : BaseActivity() {
     }
     private val mLoadingInternalListener = ExtraListener { key: String?, value: Loading ->
         when(value) {
-            Loading.MOVING_FILES -> {
-                LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true).commit()
-                Thread {
-                    ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 0, Loading.MOVING_FILES.messageLoading);
-                    MinecraftAssets(this).run()
-                    ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
-                }.start()
-            }
             Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE ->  {
 
                 // começar o download dos mods da 1.12
@@ -100,12 +92,22 @@ class LauncherActivity : BaseActivity() {
                 mDownloader.downloadModsOneDotTwelve()
                 // caso ideal
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
+                return@ExtraListener false
             }
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
 
             }
             Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> {
 
+            }
+            Loading.MOVING_FILES -> {
+                LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true).commit()
+                Thread {
+                    ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 0, Loading.MOVING_FILES.messageLoading);
+                    MinecraftAssets(this).run()
+                }.start()
+                ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
+                return@ExtraListener false
             }
             Loading.SHOW_PLAY_BUTTON -> {
                 ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)

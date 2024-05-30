@@ -36,7 +36,7 @@ class Pixelmon(
             last used: ${profile.lastUsed}
         """.trimIndent()
         )
-        val modDownloader = Downloader(context)
+//        val modDownloader = Downloader(context)
 //        modDownloader.downloadModOneDotSixteen()
 //        modDownloader.downloadModsOneDotTwelve(exclude = listOf("Pixelmon"))
         val forgerDownload = ForgerDownload(context)
