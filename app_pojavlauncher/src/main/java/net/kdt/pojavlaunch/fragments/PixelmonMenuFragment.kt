@@ -68,12 +68,10 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         // handle changes between button play and progress bar
         // Handle the first fragment to show
         LauncherPreferences.loadPreferences(requireContext())
         setupPixelmonLoading()
-
 
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.install_one_dot_sixteen)
@@ -128,8 +126,17 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
                 }
         }
 
-
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun setupPixelmonLoading() {
+        val getOneDotTwelve = LauncherPreferences.GET_ONE_DOT_TWELVE
+        Log.d(PixelmonMenuFragment.TAG, "the value of getOneDotTwelve is $getOneDotTwelve")
+        if(getOneDotTwelve) {
+            ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
+        } else {
+            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.MOVING_FILES)
+        }
     }
 
     override fun onDestroyView() {
@@ -137,13 +144,5 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         _binding = null
     }
 
-    private fun setupPixelmonLoading() {
-        val getOneDotTwelve = LauncherPreferences.GET_ONE_DOT_TWELVE
-        Log.d(TAG, "the value of getOneDotTwelve is $getOneDotTwelve")
-        if(getOneDotTwelve) {
-            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.SHOW_PLAY_BUTTON)
-        } else {
-            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.MOVING_FILES)
-        }
-    }
+
 }

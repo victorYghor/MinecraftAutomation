@@ -153,11 +153,10 @@ public class ProgressLayout extends ConstraintLayout implements TaskCountListene
             textLoading = mTextLoading;
             ProgressKeeper.addListener(progressKey, this);
         }
-
         @Override
         public void onProgressStarted() {
             post(()-> {
-
+                ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, false);
                 setVisibility(View.VISIBLE);
                 Log.i("ProgressLayout", "onProgressStarted");
             });
@@ -186,7 +185,7 @@ public class ProgressLayout extends ConstraintLayout implements TaskCountListene
                 // call some function or class that trigger change in the layout for another progress or button like button play
                 // I can do this here or inside the ProgressKeeper
                 // temporary
-                ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.SHOW_PLAY_BUTTON);
+                ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true);
             });
         }
     }

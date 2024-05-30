@@ -75,11 +75,17 @@ class LauncherActivity : BaseActivity() {
     private lateinit var btnPlay: Button
 
     //Pixelmon stuff
+    private val mShowPlayButtonListener = ExtraListener { key: String?, value: Boolean ->
+        if(value) {
+            btnPlay.visibility = View.VISIBLE
+        } else {
+            btnPlay.visibility = View.GONE
+        }
+        false
+    }
     private val mLoadingInternalListener = ExtraListener { key: String?, value: Loading ->
         when(value) {
             Loading.MOVING_FILES -> {
-                btnPlay.visibility = View.GONE
-
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true).commit()
                 Thread {
                     ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 0, Loading.MOVING_FILES.messageLoading);
@@ -88,7 +94,6 @@ class LauncherActivity : BaseActivity() {
                 }.start()
             }
             Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE ->  {
-                btnPlay.visibility = View.GONE
 
                 // começar o download dos mods da 1.12
                 Log.d(TAG, "start the download of mods 1.12")
@@ -97,15 +102,15 @@ class LauncherActivity : BaseActivity() {
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
             }
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
-                btnPlay.visibility = View.GONE
 
             }
             Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> {
-                btnPlay.visibility = View.GONE
 
             }
             Loading.SHOW_PLAY_BUTTON -> {
-                btnPlay.visibility = View.VISIBLE
+                ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
+            }
+            Loading.DOWNLOAD_TEXTURE -> {
 
             }
         }
@@ -274,6 +279,7 @@ class LauncherActivity : BaseActivity() {
         bindViews()
 
 
+
         // pixelmon buttons
         btnDiscord?.setOnClickListener {
             startActivity(SocialMedia.DISCORD.open)
@@ -306,7 +312,7 @@ class LauncherActivity : BaseActivity() {
         //Pixelmon sttuf
         ExtraCore.addExtraListener(ExtraConstants.ALERT_DIALOG_DOWNLOAD, mDialogAlertDownload)
         ExtraCore.addExtraListener(ExtraConstants.LOADING_INTERNAL, mLoadingInternalListener)
-
+        ExtraCore.addExtraListener(ExtraConstants.SHOW_PLAY_BUTTON, mShowPlayButtonListener)
 
         ExtraCore.addExtraListener(ExtraConstants.BACK_PREFERENCE, mBackPreferenceListener)
         ExtraCore.addExtraListener(ExtraConstants.SELECT_AUTH_METHOD, mSelectAuthMethod)
@@ -327,6 +333,7 @@ class LauncherActivity : BaseActivity() {
         mProgressLayout!!.observe(ProgressLayout.MOVING_FILES)
 
         LauncherPreferences.loadPreferences(this)
+
         insertProfiles()
     }
 
@@ -471,6 +478,7 @@ class LauncherActivity : BaseActivity() {
         btnOfficialSite = findViewById(R.id.btn_official_site)
         btnPlay = findViewById(R.id.btn_play)
     }
+
 
     companion object {
         const val SETTING_FRAGMENT_TAG = "SETTINGS_FRAGMENT"

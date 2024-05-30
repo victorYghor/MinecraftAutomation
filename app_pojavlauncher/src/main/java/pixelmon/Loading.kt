@@ -1,6 +1,5 @@
 package pixelmon
 
-import androidx.annotation.StringRes
 import net.kdt.pojavlaunch.R
 
 enum class Loading(val messageLoading: Int) {
@@ -8,5 +7,6 @@ enum class Loading(val messageLoading: Int) {
     DOWNLOAD_MOD_ONE_DOT_TWELVE(messageLoading = R.string.baixando_os_mods_da_1_12),
     DOWNLOAD_MOD_ONE_DOT_SIXTEEN(messageLoading = R.string.baixando_os_mods_da_1_16),
     DOWNLOAD_ONE_DOT_SIXTEEN(messageLoading = R.string.baixando_o_minecraft_1_16),
-    SHOW_PLAY_BUTTON(messageLoading = R.string.mostrando_o_bot_o_de_jogar)
+    SHOW_PLAY_BUTTON(messageLoading = R.string.mostrando_o_bot_o_de_jogar),
+    DOWNLOAD_TEXTURE(messageLoading = R.string.baixando_a_textura_do_pixelmon);
 }

@@ -3,6 +3,8 @@ package net.kdt.pojavlaunch.extra;
 public class ExtraConstants {
     // pixelmon
     /* ExtraCore constant: a HashMap for converting values such as latest-snapshot or latest-release to actual game version names */
+
+    public static final String SHOW_PLAY_BUTTON = "show_play_button";
     /** for trigger the alert dialog about some download problem **/
     public static final String ALERT_DIALOG_DOWNLOAD = "alert_dialog_download";
     /**
