@@ -8,7 +8,6 @@ import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import pixelmon.forge.ForgerDownload
-import pixelmon.mods.Downloader
 
 class Pixelmon(
     private val context: Context,
@@ -16,8 +15,6 @@ class Pixelmon(
     popStack: () -> Boolean
 ) {
     companion object {
-        @JvmStatic
-        var state = State.MOVING_FILES
         @JvmStatic
         private val TAG = "Pixelmon.kt"
         fun launchGame() {

@@ -11,8 +11,11 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.kdt.mcgui.ProgressLayout
 import net.kdt.pojavlaunch.LauncherActivity
+import net.kdt.pojavlaunch.LauncherViewModel
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.databinding.PixelmonHomeBinding
@@ -31,7 +34,6 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
 
     var _binding: PixelmonHomeBinding? = null
     val b get() = _binding!!
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,10 +70,17 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         // handle changes between button play and progress bar
         // Handle the first fragment to show
+        val viewModel by viewModels<LauncherViewModel>()
         LauncherPreferences.loadPreferences(requireContext())
-        setupPixelmonLoading()
+        setupPixelmonLoading(viewModel)
+
+        val loadingStateObserver = Observer<Loading> { newLoading ->
+            viewModel.setLoadingState(newLoading, requireContext())
+        }
+        viewModel.loadingState.observe(this, loadingStateObserver)
 
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.install_one_dot_sixteen)
@@ -121,24 +130,20 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
                     View.VISIBLE
                 } else {
                     toggleArrowIcon()
-
                     View.GONE
                 }
         }
 
-        super.onViewCreated(view, savedInstanceState)
     }
-
-    private fun setupPixelmonLoading() {
+    private fun setupPixelmonLoading(viewModel: LauncherViewModel) {
         val getOneDotTwelve = LauncherPreferences.GET_ONE_DOT_TWELVE
         Log.d(PixelmonMenuFragment.TAG, "the value of getOneDotTwelve is $getOneDotTwelve")
         if(getOneDotTwelve) {
             ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
         } else {
-            ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.MOVING_FILES)
+            viewModel.loadingState.value = Loading.MOVING_FILES
         }
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

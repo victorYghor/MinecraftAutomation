@@ -1,4 +1,4 @@
-package pixelmon.mods
+package pixelmon.download
 
 import android.annotation.SuppressLint
 import android.app.DownloadManager
