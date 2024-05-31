@@ -1,4 +1,4 @@
-package pixelmon.mods
+package pixelmon.download
 
 import android.annotation.SuppressLint
 import android.app.DownloadManager
@@ -6,18 +6,17 @@ import android.content.Context
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
-import android.os.Message
 import android.util.Log
 import androidx.core.net.toUri
 import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.Tools.read
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
-import pixelmon.Pixelmon
-import pixelmon.State
 import pixelmon.Texture
 import pixelmon.Tools.checkFileIntegrity
+import pixelmon.mods.Mod
+import pixelmon.mods.ModFile
+import pixelmon.mods.ModVersion
 import java.io.File
-import java.net.URI
 import java.util.concurrent.Executors
 
 class Downloader(private val context: Context) {
@@ -124,7 +123,6 @@ class Downloader(private val context: Context) {
     fun downloadModsOneDotTwelve(exclude:List<String> = listOf()) {
         Log.d(TAG, "the mods downloads start")
         if(!LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE) {
-            Pixelmon.state = State.DOWNLOAD_MODS
 
             val mods = if(exclude.isNotEmpty()) {
                 modsOneDotSixteen.filter { !exclude.contains(it.name) }
@@ -133,7 +131,6 @@ class Downloader(private val context: Context) {
             }
             downloadMod(mods.first())
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
-            Pixelmon.state = State.PLAY
         }
 //        Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity(ModVersion.OneDotTwelve)}")
     }
@@ -157,12 +154,10 @@ class Downloader(private val context: Context) {
         Log.i(TAG, "the mods 1.16 will strat")
 //        Log.i(TAG, "The value of checkFilesInregrity is ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
         if(!LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_SIXTEEN) {
-            Pixelmon.state = State.DOWNLOAD_MODS
             val essentialMods = listOf("MultiplayerMode", "lazydfu", "pixelmon")
             val mods = modsOneDotSixteen.filter { essentialMods.contains(it.name) }
             mods.forEach { downloadMod(it) }
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_sixteen", true).commit()
-            Pixelmon.state = State.PLAY
         }
 //        Log.i(TAG, "checkFilesIntegrity = ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
     }

@@ -15,11 +15,14 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.kdt.mcgui.ProgressLayout
 import com.kdt.mcgui.mcAccountSpinner
 import net.kdt.pojavlaunch.contracts.OpenDocumentWithExtension
@@ -49,7 +52,6 @@ import pixelmon.MinecraftAssets
 import pixelmon.SocialMedia
 import pixelmon.Tools.DownloadResult
 import pixelmon.Tools.informativeAlertDialog
-import pixelmon.mods.Downloader
 import java.lang.ref.WeakReference
 
 class LauncherActivity : BaseActivity() {
@@ -61,7 +63,6 @@ class LauncherActivity : BaseActivity() {
                 data
             )
         }
-    private lateinit var mDownloader: Downloader
     private var mAccountSpinner: mcAccountSpinner? = null
     private var mFragmentView: FragmentContainerView? = null
     private var mProgressLayout: ProgressLayout? = null
@@ -74,45 +75,13 @@ class LauncherActivity : BaseActivity() {
     private var btnSettings: ImageButton? = null
     private lateinit var btnPlay: Button
 
+
     //Pixelmon stuff
     private val mShowPlayButtonListener = ExtraListener { key: String?, value: Boolean ->
         if(value) {
             btnPlay.visibility = View.VISIBLE
         } else {
             btnPlay.visibility = View.GONE
-        }
-        false
-    }
-    private val mLoadingInternalListener = ExtraListener { key: String?, value: Loading ->
-        when(value) {
-            Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE ->  {
-                // começar o download dos mods da 1.12
-                Log.d(TAG, "start the download of mods 1.12")
-                mDownloader.downloadModsOneDotTwelve()
-                // caso ideal
-                LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
-
-            }
-            Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
-
-            }
-            Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> {
-
-            }
-            Loading.MOVING_FILES -> {
-                LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true).commit()
-                Thread {
-                    ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 0, Loading.MOVING_FILES.messageLoading);
-                    MinecraftAssets(this).run()
-                }.start()
-                ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
-            }
-            Loading.SHOW_PLAY_BUTTON -> {
-                ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
-            }
-            Loading.DOWNLOAD_TEXTURE -> {
-
-            }
         }
         false
     }
@@ -247,6 +216,12 @@ class LauncherActivity : BaseActivity() {
     private var mRequestNotificationPermissionRunnable: WeakReference<Runnable>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val viewModel by viewModels<LauncherViewModel>()
+        val loadingStateObserver = Observer<Loading> {newLoading ->
+            viewModel.setLoadingState(newLoading, this)
+        }
+        viewModel.loadingState.observe(this, loadingStateObserver)
+
         LauncherPreferences.loadPreferences(this)
         val firsInstallation = LauncherPreferences.PREF_FIRST_INSTALLATION
         Log.d(PixelmonMenuFragment.TAG, "the first installation is $firsInstallation")
@@ -263,7 +238,6 @@ class LauncherActivity : BaseActivity() {
                 null
             )
         }
-        mDownloader = Downloader(this)
         setContentView(R.layout.pixelmon_main_activity)
         IconCacheJanitor.runJanitor()
 
@@ -311,7 +285,6 @@ class LauncherActivity : BaseActivity() {
 
         //Pixelmon sttuf
         ExtraCore.addExtraListener(ExtraConstants.ALERT_DIALOG_DOWNLOAD, mDialogAlertDownload)
-        ExtraCore.addExtraListener(ExtraConstants.LOADING_INTERNAL, mLoadingInternalListener)
         ExtraCore.addExtraListener(ExtraConstants.SHOW_PLAY_BUTTON, mShowPlayButtonListener)
 
         ExtraCore.addExtraListener(ExtraConstants.BACK_PREFERENCE, mBackPreferenceListener)

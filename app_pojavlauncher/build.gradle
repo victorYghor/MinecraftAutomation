@@ -224,7 +224,8 @@ dependencies {
     implementation 'com.github.PojavLauncherTeam:exp4j:60eaec6f78'
     implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.6.1'
     implementation 'com.bytedance:bytehook:1.0.9'
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
+
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
 
     // implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.7.0'
 
