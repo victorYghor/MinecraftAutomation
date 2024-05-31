@@ -1,13 +1,18 @@
 package pixelmon
 
 import android.content.Context
+import androidx.activity.viewModels
+
 import android.content.res.AssetManager
 import android.util.Log
 import com.kdt.mcgui.ProgressLayout
 import kotlinx.coroutines.Runnable
+import net.kdt.pojavlaunch.BaseActivity
+import net.kdt.pojavlaunch.LauncherViewModel
 import java.io.File
 
-class MinecraftAssets(val context: Context): Runnable {
+class MinecraftAssets(val context: Context): Runnable, BaseActivity() {
+    val viewModel:LauncherViewModel by viewModels<LauncherViewModel>()
     private val directoryTreeFile = File(context.getExternalFilesDir(null), "directoryTree.txt")
     companion object {
         val TAG = "MinecraftAssets.kt"
