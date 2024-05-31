@@ -6,6 +6,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.os.Message
 import android.util.Log
 import androidx.core.net.toUri
 import net.kdt.pojavlaunch.Tools
@@ -50,7 +51,7 @@ class Downloader(private val context: Context) {
             val downloadProgress: Int = msg.arg1
 
             // Update your progress bar here.
-            Log.d(TAG, "Download progress: $downloadProgress")
+            Log.d(TAG, "Download progressBar: $downloadProgress")
         }
         true
     }
@@ -67,42 +68,42 @@ class Downloader(private val context: Context) {
             .setDestinationInExternalFilesDir(context, null, ".minecraft/mods/$url")
         val id = downloadManager.enqueue(request)
 
-//        executor.execute {
-//            var progress = 0
-//            var isDownloadFinished = false
-//            while (!isDownloadFinished) {
-//                val cursor = downloadManager!!.query(
-//                    DownloadManager.Query().setFilterById(id)
-//                )
-//                if (cursor.moveToFirst()) {
-//                    val downloadStatus =
-//                        cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
-//                    when (downloadStatus) {
-//                        DownloadManager.STATUS_RUNNING -> {
-//                            val totalBytes =
-//                                cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
-//                            if (totalBytes > 0) {
-//                                val downloadedBytes =
-//                                    cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
-//                                progress = (downloadedBytes * 100 / totalBytes).toInt()
-//                                Log.d(TAG, "the progress download is $progress")
-//                            }
-//                        }
-//                        DownloadManager.STATUS_SUCCESSFUL -> {
-//                            progress = 100
-//                            isDownloadFinished = true
-//                        }
-//
-//                        DownloadManager.STATUS_PAUSED, DownloadManager.STATUS_PENDING -> {}
-//                        DownloadManager.STATUS_FAILED -> isDownloadFinished = true
-//                    }
-//                    val message: Message = Message.obtain()
-//                    message.what = UPDATE_DOWNLOAD_PROGRESS
-//                    message.arg1 = progress
-//                    mainHandler.sendMessage(message)
-//                }
-//            }
-//        }
+        executor.execute {
+            var progress = 0
+            var isDownloadFinished = false
+            while (!isDownloadFinished) {
+                val cursor = downloadManager!!.query(
+                    DownloadManager.Query().setFilterById(id)
+                )
+                if (cursor.moveToFirst()) {
+                    val downloadStatus =
+                        cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
+                    when (downloadStatus) {
+                        DownloadManager.STATUS_RUNNING -> {
+                            val totalBytes =
+                                cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
+                            if (totalBytes > 0) {
+                                val downloadedBytes =
+                                    cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
+                                progress = (downloadedBytes * 100 / totalBytes).toInt()
+                                Log.d(TAG, "the progress download is $progress")
+                            }
+                        }
+                        DownloadManager.STATUS_SUCCESSFUL -> {
+                            progress = 100
+                            isDownloadFinished = true
+                        }
+
+                        DownloadManager.STATUS_PAUSED, DownloadManager.STATUS_PENDING -> {}
+                        DownloadManager.STATUS_FAILED -> isDownloadFinished = true
+                    }
+                    val message: Message = Message.obtain()
+                    message.what = UPDATE_DOWNLOAD_PROGRESS
+                    message.arg1 = progress
+                    mainHandler.sendMessage(message)
+                }
+            }
+        }
         return id
     }
 

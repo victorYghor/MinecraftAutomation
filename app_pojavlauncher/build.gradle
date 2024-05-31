@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application' version '7.4.2' apply true
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 static def getDate() { return new Date().format('yyyyMMdd') }
@@ -150,6 +152,7 @@ android {
             resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder'
             resValue 'string', 'application_package', 'net.kdt.pojavlaunch'
         }
+
         gplay {
             initWith release
             signingConfig signingConfigs.googlePlayBuild
@@ -190,6 +193,10 @@ android {
     buildToolsVersion = '33.0.2'
 }
 
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
+}
 dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
     //for use kotlin
@@ -226,7 +233,8 @@ dependencies {
     implementation 'com.bytedance:bytehook:1.0.9'
 
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
-
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
     // implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.7.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])

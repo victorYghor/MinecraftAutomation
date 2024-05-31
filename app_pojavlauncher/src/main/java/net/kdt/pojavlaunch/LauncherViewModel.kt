@@ -39,7 +39,6 @@ class LauncherViewModel():  ViewModel(){
                     ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 0, Loading.MOVING_FILES.messageLoading);
                     MinecraftAssets(context).run()
                 }.start()
-                loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE
                 return
             }
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> TODO()
