@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -73,14 +74,12 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         super.onViewCreated(view, savedInstanceState)
         // handle changes between button play and progress bar
         // Handle the first fragment to show
-        val viewModel by viewModels<LauncherViewModel>()
+        val viewModel by viewModels<LauncherViewModel>{
+            LauncherViewModel.provideFactory(requireContext(), this)
+        }
         LauncherPreferences.loadPreferences(requireContext())
         setupPixelmonLoading(viewModel)
 
-        val loadingStateObserver = Observer<Loading> { newLoading ->
-            viewModel.setLoadingState(newLoading, requireContext())
-        }
-        viewModel.loadingState.observe(this, loadingStateObserver)
 
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.install_one_dot_sixteen)

@@ -1,18 +1,18 @@
 package pixelmon
 
 import android.content.Context
-import androidx.activity.viewModels
 
 import android.content.res.AssetManager
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.kdt.mcgui.ProgressLayout
-import kotlinx.coroutines.Runnable
-import net.kdt.pojavlaunch.BaseActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.kdt.pojavlaunch.LauncherViewModel
 import java.io.File
 
-class MinecraftAssets(val context: Context): Runnable, BaseActivity() {
-    val viewModel:LauncherViewModel by viewModels<LauncherViewModel>()
+class MinecraftAssets(val context: Context, val viewModel: LauncherViewModel) {
     private val directoryTreeFile = File(context.getExternalFilesDir(null), "directoryTree.txt")
     companion object {
         val TAG = "MinecraftAssets.kt"
@@ -68,19 +68,24 @@ class MinecraftAssets(val context: Context): Runnable, BaseActivity() {
 //        }
 //    }
 
-    override fun run() {
+    fun moveImportantAssets() {
         try {
             if(directoryTreeFile.exists() && directoryTreeFile.readBytes()
                     .contentEquals(context.assets.open("directoryTree.txt").readBytes())) {
 //                Log.i(TAG, "All files was transferred")
             } else {
                 directoryTreeFile.writeText("")
-                // Por garantia muda o estado para dizer que ele vai mover os assets
                 File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
                 moveFiles("minecraft")
+                viewModel.viewModelScope.launch {
+                    withContext(Dispatchers.Main) {
+                        viewModel.loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE
+                    }
+                }
             }
 //            Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
         } catch(e: Exception) {
+            Log.e(TAG, e.message.toString())
             e.printStackTrace()
         }
     }
