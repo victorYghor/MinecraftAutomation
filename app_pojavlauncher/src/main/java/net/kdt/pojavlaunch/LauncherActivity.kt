@@ -21,8 +21,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.kdt.mcgui.ProgressLayout
 import com.kdt.mcgui.mcAccountSpinner
 import net.kdt.pojavlaunch.contracts.OpenDocumentWithExtension
@@ -47,8 +45,6 @@ import net.kdt.pojavlaunch.tasks.MinecraftDownloader
 import net.kdt.pojavlaunch.utils.NotificationUtils
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
-import pixelmon.Loading
-import pixelmon.MinecraftAssets
 import pixelmon.SocialMedia
 import pixelmon.Tools.DownloadResult
 import pixelmon.Tools.informativeAlertDialog
@@ -216,11 +212,9 @@ class LauncherActivity : BaseActivity() {
     private var mRequestNotificationPermissionRunnable: WeakReference<Runnable>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModel by viewModels<LauncherViewModel>()
-        val loadingStateObserver = Observer<Loading> {newLoading ->
-            viewModel.setLoadingState(newLoading, this)
+        val viewModel by viewModels<LauncherViewModel>{
+            LauncherViewModel.provideFactory(this, this)
         }
-        viewModel.loadingState.observe(this, loadingStateObserver)
 
         LauncherPreferences.loadPreferences(this)
         val firsInstallation = LauncherPreferences.PREF_FIRST_INSTALLATION
@@ -304,7 +298,7 @@ class LauncherActivity : BaseActivity() {
         mProgressLayout!!.observe(ProgressLayout.AUTHENTICATE_MICROSOFT)
         mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_VERSION_LIST)
         mProgressLayout!!.observe(ProgressLayout.MOVING_FILES)
-
+        mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE)
         LauncherPreferences.loadPreferences(this)
 
         insertProfiles()
