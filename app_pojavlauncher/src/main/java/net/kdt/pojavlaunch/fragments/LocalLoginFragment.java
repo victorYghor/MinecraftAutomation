@@ -37,6 +37,7 @@ public class LocalLoginFragment extends Fragment {
             Log.e(TAG, "Hey LocalLoginFragment.java");
 
             Intent startLaunch = new Intent(requireContext(), LauncherActivity.class);
+            startLaunch.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(startLaunch);
         });
     }
