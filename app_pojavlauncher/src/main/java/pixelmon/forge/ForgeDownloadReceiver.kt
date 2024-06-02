@@ -18,6 +18,7 @@ import pixelmon.Tools.checkFileIntegrity
 import pixelmon.Tools.md5
 import java.io.File
 
+// Essa classe tambem esta sendo avisada quando o download completa
 class ForgeDownloadReceiver : BroadcastReceiver() {
     private val TAG = "ForgeDownloadReceiver.kt"
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -54,11 +55,6 @@ class ForgeDownloadReceiver : BroadcastReceiver() {
                     //
                     deleteDirecoty(File(context?.getExternalFilesDir(null), ".minecraft/libraries"))
                     ForgerDownload(context!!).unpackLibraries(librariesZipFile)
-                    // this seems do not start the game
-                    ExtraCore.setValue(
-                        ExtraConstants.LAUNCH_GAME,
-                        true
-                    )
                 }
             }
         } ?: Log.d(TAG, "the download manager is null something is wrong")
