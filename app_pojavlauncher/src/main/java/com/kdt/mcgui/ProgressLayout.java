@@ -22,8 +22,6 @@ import net.kdt.pojavlaunch.progresskeeper.TaskCountListener;
 
 import java.util.ArrayList;
 
-import pixelmon.Loading;
-
 
 /** This is a custom layout created with pure java code to show the progress of the app
  * Class staring at specific values and automatically show something if the progress is present
@@ -45,6 +43,8 @@ public class ProgressLayout extends ConstraintLayout implements TaskCountListene
     public static final String EXTRACT_COMPONENTS = "extract_components";
     public static final String EXTRACT_SINGLE_FILES = "extract_single_files";
     public static final String MOVING_FILES = "moving_files";
+
+    public static final String DOWNLOAD_MOD_ONE_DOT_TWELVE = "download_mods";
 
     //overloading constroctors
     public ProgressLayout(@NonNull Context context) {
@@ -111,7 +111,6 @@ public class ProgressLayout extends ConstraintLayout implements TaskCountListene
      * @param progress the progress of the bar
      * */
     public static void setProgress(String progressKey, int progress){
-
         ProgressKeeper.submitProgress(progressKey, progress, -1, (Object)null);
     }
     /** Update the text and progress content */
