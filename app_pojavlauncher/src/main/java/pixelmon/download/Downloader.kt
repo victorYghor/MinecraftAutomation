@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.kdt.mcgui.ProgressLayout
@@ -54,12 +55,19 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
 
     /**
      * Central function to download files in the app
+     * @param quantity for pixelmon need to be 0, of mods if you have more that one mod to download the progress bar is work differently
+     *
      */
     @SuppressLint("Range")
-    fun download(uri: Uri, url: String, title: String): Long {
+    fun download(
+        uri: Uri,
+        url: String,
+        @StringRes title: Int,
+        quantity: Int = 0,
+    ): Long {
         val request = DownloadManager.Request(uri).setMimeType("application/gzip")
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            .setTitle(title).setDestinationInExternalFilesDir(context, null, ".minecraft/mods/$url")
+            .setTitle(context.getString(title)).setDestinationInExternalFilesDir(context, null, ".minecraft/mods/$url")
         val id = downloadManager.enqueue(request)
 
         val downloadScope = CoroutineScope(Dispatchers.IO)
@@ -87,17 +95,18 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                                         ProgressLayout.setProgress(
                                             ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
                                             progress,
-                                            Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE.messageLoading
+                                            title
                                         )
                                     }
                                 }
                                 DownloadManager.STATUS_SUCCESSFUL -> {
+//                                    Log.d("Downloader", "Download finished with success $title")
                                     progress = 100
                                     isDownloadFinished = true
                                     ProgressLayout.setProgress(
                                         ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
                                         progress,
-                                        Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE.messageLoading
+                                        title
                                     )
                                 }
 
@@ -120,7 +129,19 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
         Log.d(TAG, "Try to download mod ${mod.name}")
         val title = "Baixando o mod ${mod.name}"
         File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
-        return download(uri = mod.artifact.url.toUri(), url = mod.artifact.fileName, title = title)
+        return if(mod.name == "Pixelmon") {
+            download(
+                uri = mod.artifact.url.toUri(),
+                url = mod.artifact.fileName,
+                title = title,
+            )
+        } else {
+            download(
+                uri = mod.artifact.url.toUri(),
+                url = mod.artifact.fileName,
+                title = title,
+            )
+        }
     }
 
     fun downloadTexture(texture: Texture): Long {
