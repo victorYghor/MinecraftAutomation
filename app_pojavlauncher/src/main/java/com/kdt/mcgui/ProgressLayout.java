@@ -182,14 +182,14 @@ public class ProgressLayout extends ConstraintLayout implements TaskCountListene
          * da questão do progresso da barra é colocado aqui, texto da barra de progresso
          *
          * @param progress
-         * @param resid
+         * @param message
          * @param va
          */
         @Override
-        public void onProgressUpdated(int progress, int resid, Object... va) {
+        public void onProgressUpdated(int progress, String message, Object... va) {
             post(() -> {
                 progressBarPixelmon.setProgress(progress);
-                textLoading.setText(resid == -1 ? "" : getContext().getString(resid, va));
+                textLoading.setText(message);
             });
         }
 

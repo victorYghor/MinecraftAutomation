@@ -18,13 +18,13 @@ public class ProgressKeeper {
      * This is the mediator for the LayoutProgress Listener to update the progress
      * @param progressRecord
      * @param progress
-     * @param resid
+     * @param message
      * @param va
      */
-    public static synchronized void submitProgress(String progressRecord, int progress, int resid, Object... va) {
+    public static synchronized void submitProgress(String progressRecord, int progress, String message, Object... va) {
         ProgressState progressState = sProgressStates.get(progressRecord);
         boolean shouldCallStarted = progressState == null;
-        boolean shouldCallEnded = (resid == -1 && progress == -1) || progress >= 100;
+        boolean shouldCallEnded = (progress == -1) || progress >= 100;
         if (shouldCallEnded) {
             shouldCallStarted = false;
             sProgressStates.remove(progressRecord);
@@ -35,7 +35,7 @@ public class ProgressKeeper {
         }
         if (progressState != null) {
             progressState.progress = progress;
-            progressState.resid = resid;
+            progressState.message = message;
             progressState.varArg = va;
         }
 
@@ -45,7 +45,7 @@ public class ProgressKeeper {
             for (ProgressListener listener : progressListeners) {
                 if (shouldCallStarted) listener.onProgressStarted();
                 else if (shouldCallEnded) listener.onProgressEnded();
-                else listener.onProgressUpdated(progress, resid, va);
+                else listener.onProgressUpdated(progress, message, va);
             }
     }
 
@@ -58,9 +58,9 @@ public class ProgressKeeper {
 
     public static synchronized void addListener(String progressRecord, ProgressListener listener) {
         ProgressState state = sProgressStates.get(progressRecord);
-        if (state != null && (state.resid != -1 || state.progress != -1)) {
+        if (state != null && (state.progress != -1)) {
             listener.onProgressStarted();
-            listener.onProgressUpdated(state.progress, state.resid, state.varArg);
+            listener.onProgressUpdated(state.progress, state.message, state.varArg);
         } else {
             listener.onProgressEnded();
         }
