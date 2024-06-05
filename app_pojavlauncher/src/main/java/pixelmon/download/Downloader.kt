@@ -4,34 +4,38 @@ import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.util.Log
-import androidx.annotation.StringRes
 import androidx.core.net.toUri
-import androidx.lifecycle.viewModelScope
 import com.kdt.mcgui.ProgressLayout
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import net.kdt.pojavlaunch.LauncherViewModel
 import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.Tools.read
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
-import pixelmon.Loading
 import pixelmon.Texture
 import pixelmon.Tools.checkFileIntegrity
 import pixelmon.mods.Mod
 import pixelmon.mods.ModFile
 import pixelmon.mods.ModVersion
 import java.io.File
-import java.util.concurrent.Executors
+import kotlin.math.ceil
 
 class Downloader(private val context: Context, val viewModel: LauncherViewModel) {
     private val downloadManager = context.getSystemService(DownloadManager::class.java)
+    private var currentProgress = 0.0
+
+    /**
+     * Convert to the largest Int
+     */
+    fun Double.toCeilInt() = ceil(this).toInt()
 
     companion object {
         private val TAG = "Downloader"
@@ -62,18 +66,27 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
     fun download(
         uri: Uri,
         url: String,
-        @StringRes title: Int,
+        title: String,
         quantity: Int = 0,
     ): Long {
         val request = DownloadManager.Request(uri).setMimeType("application/gzip")
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            .setTitle(context.getString(title)).setDestinationInExternalFilesDir(context, null, ".minecraft/mods/$url")
+            .setTitle(title).setDestinationInExternalFilesDir(context, null, ".minecraft/mods/$url")
         val id = downloadManager.enqueue(request)
+        updateDownloadProgress(id, title, quantity)
 
+        return id
+    }
+
+    @SuppressLint("Range")
+    private fun updateDownloadProgress(
+        id: Long,
+        title: String,
+        quantity: Int = 0
+    ) {
         val downloadScope = CoroutineScope(Dispatchers.IO)
         downloadScope.launch {
             withContext(Dispatchers.Default) {
-                var progress = 0
                 var isDownloadFinished = false
                 while (!isDownloadFinished) {
                     delay(800)
@@ -90,24 +103,49 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                                     if (totalBytes > 0) {
                                         val downloadedBytes =
                                             cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
-                                        progress = (downloadedBytes * 100 / totalBytes).toInt()
-                                        Log.d(TAG, "the progress download is $progress")
-                                        ProgressLayout.setProgress(
-                                            ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
-                                            progress,
-                                            title
-                                        )
+
+                                        // It is just a bigger download
+                                        if(quantity == 0) {
+                                            (downloadedBytes * 100 / totalBytes).toInt()
+                                            Log.d(TAG, "the progress download is $currentProgress")
+                                            ProgressLayout.setProgress(
+                                                ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
+                                                currentProgress.toCeilInt(),
+                                                title
+                                            )
+                                        }
                                     }
                                 }
+
                                 DownloadManager.STATUS_SUCCESSFUL -> {
 //                                    Log.d("Downloader", "Download finished with success $title")
-                                    progress = 100
-                                    isDownloadFinished = true
-                                    ProgressLayout.setProgress(
-                                        ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
-                                        progress,
-                                        title
-                                    )
+                                    // um download grande como pixelmon
+                                    if(quantity == 0) {
+                                        currentProgress = 100.0
+                                        isDownloadFinished = true
+                                        ProgressLayout.setProgress(
+                                            ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
+                                            currentProgress.toCeilInt(),
+                                            title
+                                        )
+                                        currentProgress = 0.0
+                                    } else {
+                                        if(currentProgress == 0.0) {
+                                            currentProgress = 100.0 / quantity
+                                        } else {
+                                            // increase in one the number of mods downloaded
+                                            currentProgress = ((currentProgress * quantity + 100) / 100) * 100 / quantity
+                                        }
+                                        isDownloadFinished = true
+                                        ProgressLayout.setProgress(
+                                            ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
+                                            currentProgress.toCeilInt(),
+                                            title
+                                        )
+                                        if(currentProgress == 100.0) {
+                                            currentProgress = 0.0
+                                        }
+                                    }
                                 }
 
                                 DownloadManager.STATUS_PAUSED, DownloadManager.STATUS_PENDING -> {}
@@ -121,25 +159,19 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                 }
             }
         }
-
-        return id
     }
 
-    fun downloadMod(mod: Mod): Long {
+    fun downloadMod(mod: Mod, quantity: Int = 0): Deferred<Long> {
+        val downloadScope = CoroutineScope(Dispatchers.Default)
         Log.d(TAG, "Try to download mod ${mod.name}")
         val title = "Baixando o mod ${mod.name}"
         File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
-        return if(mod.name == "Pixelmon") {
+        return downloadScope.async(start = CoroutineStart.LAZY) {
             download(
                 uri = mod.artifact.url.toUri(),
                 url = mod.artifact.fileName,
                 title = title,
-            )
-        } else {
-            download(
-                uri = mod.artifact.url.toUri(),
-                url = mod.artifact.fileName,
-                title = title,
+                quantity = quantity
             )
         }
     }
@@ -154,13 +186,20 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
     fun downloadModsOneDotTwelve(exclude: List<String> = listOf()) {
         Log.d(TAG, "the mods downloads start")
         if (!LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE) {
-
             val mods = if (exclude.isNotEmpty()) {
                 modsOneDotSixteen.filter { !exclude.contains(it.name) }
             } else {
                 modsOneDotTwelve.toList()
             }
-            downloadMod(mods.first())
+            runBlocking {
+                for (mod in mods) {
+                    if(mod.name == "Pixelmon") {
+                        downloadMod(mod).await()
+                    } else {
+                        downloadMod(mod, mods.size - 1).await()
+                    }
+                }
+            }
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true)
                 .commit()
         }

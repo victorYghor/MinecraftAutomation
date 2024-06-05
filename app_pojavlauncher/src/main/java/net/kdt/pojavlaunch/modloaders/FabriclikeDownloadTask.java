@@ -32,7 +32,8 @@ public class FabriclikeDownloadTask implements Runnable, Tools.DownloaderFeedbac
 
     @Override
     public void run() {
-        ProgressKeeper.submitProgress(ProgressLayout.INSTALL_MODPACK, 0, R.string.fabric_dl_progress);
+        // disable the passed use of the progress bar
+//        ProgressKeeper.submitProgress(ProgressLayout.INSTALL_MODPACK, 0, R.string.fabric_dl_progress);
         try {
             if(runCatching()) mModloaderDownloadListener.onDownloadFinished(null);
             else mModloaderDownloadListener.onDataNotAvailable();
@@ -71,6 +72,7 @@ public class FabriclikeDownloadTask implements Runnable, Tools.DownloaderFeedbac
     @Override
     public void updateProgress(int curr, int max) {
         int progress100 = (int)(((float)curr / (float)max)*100f);
-        ProgressKeeper.submitProgress(ProgressLayout.INSTALL_MODPACK, progress100, R.string.fabric_dl_progress, mUtils.getName());
+        //
+//        ProgressKeeper.submitProgress(ProgressLayout.INSTALL_MODPACK, progress100, R.string.fabric_dl_progress, mUtils.getName());
     }
 }

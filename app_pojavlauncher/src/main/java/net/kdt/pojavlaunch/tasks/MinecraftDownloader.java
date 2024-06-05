@@ -80,7 +80,7 @@ public class MinecraftDownloader {
     private void downloadGame(Activity activity, JMinecraftVersionList.Version verInfo, String versionName) throws Exception {
         // Put up a dummy progress line, for the activity to start the service and do all the other necessary
         // work to keep the launcher alive. We will replace this line when we will start downloading stuff.
-        ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MINECRAFT, 0, R.string.newdl_starting);
+//        ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MINECRAFT, 0, R.string.newdl_starting);
 
         mTargetJarFile = createGameJarPath(versionName);
         mScheduledDownloadTasks = new ArrayList<>();
@@ -108,7 +108,7 @@ public class MinecraftDownloader {
                 long dlFileCounter = mDownloadFileCounter.get();
                 int progress = (int)((dlFileCounter * 100L) / mDownloadFileCount);
                 ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MINECRAFT, progress,
-                        R.string.newdl_downloading_game_files, dlFileCounter,
+                        "Baixando arquivos do jogo… (%d/%d, %.2f MB)", dlFileCounter,
                         mDownloadFileCount, (double)mDownloadSizeCounter.get() / (1024d * 1024d));
             }
             Exception thrownException = mDownloaderThreadException.get();
@@ -154,7 +154,7 @@ public class MinecraftDownloader {
         try {
             DownloadUtils.ensureSha1(targetFile, LauncherPreferences.PREF_VERIFY_MANIFEST ? verInfo.sha1 : null, () -> {
                 ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MINECRAFT, 0,
-                        R.string.newdl_downloading_metadata, targetFile.getName());
+                        "Baixando metadados do jogo (%s)", targetFile.getName());
                 DownloadMirror.downloadFileMirrored(DownloadMirror.DOWNLOAD_CLASS_METADATA, verInfo.url, targetFile);
                 return null;
             });
@@ -172,7 +172,7 @@ public class MinecraftDownloader {
         FileUtils.ensureParentDirectory(targetFile);
         DownloadUtils.ensureSha1(targetFile, assetIndex.sha1, ()-> {
             ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MINECRAFT, 0,
-                    R.string.newdl_downloading_metadata, targetFile.getName());
+                    "Baixando metadados do jogo (%s)", targetFile.getName());
             DownloadMirror.downloadFileMirrored(DownloadMirror.DOWNLOAD_CLASS_METADATA, assetIndex.url, targetFile);
             return null;
         });

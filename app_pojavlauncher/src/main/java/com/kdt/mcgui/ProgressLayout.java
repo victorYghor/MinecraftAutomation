@@ -117,28 +117,28 @@ public class ProgressLayout extends ConstraintLayout implements TaskCountListene
      * @param progress    the progress of the bar
      */
     public static void setProgress(String progressKey, int progress) {
-        ProgressKeeper.submitProgress(progressKey, progress, -1, (Object) null);
+        ProgressKeeper.submitProgress(progressKey, progress, "", (Object) null);
     }
 
     /**
      * Update the text and progress content
      */
     public static void setProgress(String progressKey, int progress, String message) {
-        setProgress(progressKey, progress, -1, message);
+        setProgress(progressKey, progress,  message, "");
     }
 
     /**
      * Update the text and progress content
      */
-    public static void setProgress(String progressKey, int progress, @StringRes int resource, Object... message) {
-        ProgressKeeper.submitProgress(progressKey, progress, resource, message);
+    public static void setProgress(String progressKey, int progress, String messageString, Object... message) {
+        ProgressKeeper.submitProgress(progressKey, progress, messageString, message);
     }
 
     /**
      * Update the text and progress content
      */
     public static void clearProgress(String progressKey) {
-        setProgress(progressKey, -1, -1);
+        setProgress(progressKey, 0, "");
     }
 
     /**
