@@ -35,6 +35,6 @@ public class DownloaderProgressWrapper implements Tools.DownloaderFeedback {
             va[1] = max/BYTE_TO_MB;
         }
         // the allocations are fine because thats how java implements variadic arguments in bytecode: an array of whatever
-        ProgressKeeper.submitProgress(mProgressRecord, (int) Math.max((float)curr/max*100,0), mProgressString, va);
+//        ProgressKeeper.submitProgress(mProgressRecord, (int) Math.max((float)curr/max*100,0), mProgressString, va);
     }
 }

@@ -179,9 +179,9 @@ public class CurseforgeApi implements ModpackApi{
                     return new ModDownloader.FileInfo(url, FileUtils.getFileName(url), getDownloadSha1(curseFile.projectID, curseFile.fileID));
                 });
             }
-            modDownloader.awaitFinish((c,m)->
-                    ProgressKeeper.submitProgress(ProgressLayout.INSTALL_MODPACK, (int) Math.max((float)c/m*100,0), R.string.modpack_download_downloading_mods_fc, c, m)
-            );
+//            modDownloader.awaitFinish((c,m)-> (
+//                    ProgressKeeper.submitProgress(ProgressLayout.INSTALL_MODPACK, (int) Math.max((float)c/m*100,0), R.string.modpack_download_downloading_mods_fc, c, m)
+//            );
             String overridesDir = "overrides";
             if(curseManifest.overrides != null) overridesDir = curseManifest.overrides;
             ZipUtils.zipExtract(modpackZipFile, overridesDir, instanceDestination);
