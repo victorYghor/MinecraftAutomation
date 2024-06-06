@@ -25,6 +25,7 @@ import pixelmon.Tools.checkFileIntegrity
 import pixelmon.mods.Mod
 import pixelmon.mods.ModFile
 import pixelmon.mods.ModVersion
+import timber.log.Timber
 import java.io.File
 import kotlin.math.ceil
 
@@ -63,19 +64,38 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
      *
      */
     @SuppressLint("Range")
-    fun download(
+    suspend fun download(
         uri: Uri,
         url: String,
         title: String,
         quantity: Int = 0,
-    ): Long {
+    ): Deferred<Long> {
         val request = DownloadManager.Request(uri).setMimeType("application/gzip")
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setTitle(title).setDestinationInExternalFilesDir(context, null, ".minecraft/mods/$url")
         val id = downloadManager.enqueue(request)
         updateDownloadProgress(id, title, quantity)
 
-        return id
+        return CoroutineScope(Dispatchers.IO).async(start = CoroutineStart.LAZY) {
+            var isDownloadFinished = false
+            // only send the id when the download finishes
+            while (!isDownloadFinished) {
+                delay(500)
+                downloadManager.query(DownloadManager.Query().setFilterById(id)).use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        when (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))) {
+                            DownloadManager.STATUS_FAILED -> {
+                                isDownloadFinished = true
+                            }
+                            DownloadManager.STATUS_SUCCESSFUL -> {
+                                isDownloadFinished = true
+                            }
+                        }
+                    }
+                }
+            }
+            id
+        }
     }
 
     @SuppressLint("Range")
@@ -86,7 +106,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
     ) {
         val downloadScope = CoroutineScope(Dispatchers.IO)
         downloadScope.launch {
-            withContext(Dispatchers.Default) {
+            withContext(Dispatchers.IO) {
                 var isDownloadFinished = false
                 while (!isDownloadFinished) {
                     delay(800)
@@ -94,9 +114,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                         DownloadManager.Query().setFilterById(id)
                     ).use { cursor ->
                         if (cursor.moveToFirst()) {
-                            val downloadStatus =
-                                cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
-                            when (downloadStatus) {
+                            when (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))) {
                                 DownloadManager.STATUS_RUNNING -> {
                                     val totalBytes =
                                         cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
@@ -105,14 +123,16 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                                             cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
 
                                         // It is just a bigger download
-                                        if(quantity == 0) {
-                                            (downloadedBytes * 100 / totalBytes).toInt()
-                                            Log.d(TAG, "the progress download is $currentProgress")
+                                        if (quantity == 0) {
+                                            currentProgress = (downloadedBytes * 100.0 / totalBytes)
+                                            Timber.d("the progress download is " + currentProgress)
                                             ProgressLayout.setProgress(
                                                 ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
                                                 currentProgress.toCeilInt(),
                                                 title
                                             )
+                                        } else {
+
                                         }
                                     }
                                 }
@@ -120,7 +140,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                                 DownloadManager.STATUS_SUCCESSFUL -> {
 //                                    Log.d("Downloader", "Download finished with success $title")
                                     // um download grande como pixelmon
-                                    if(quantity == 0) {
+                                    if (quantity == 0) {
                                         currentProgress = 100.0
                                         isDownloadFinished = true
                                         ProgressLayout.setProgress(
@@ -130,11 +150,12 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                                         )
                                         currentProgress = 0.0
                                     } else {
-                                        if(currentProgress == 0.0) {
+                                        if (currentProgress == 0.0) {
                                             currentProgress = 100.0 / quantity
                                         } else {
                                             // increase in one the number of mods downloaded
-                                            currentProgress = ((currentProgress * quantity + 100) / 100) * 100 / quantity
+                                            currentProgress =
+                                                ((currentProgress * quantity + 100) / 100) * 100 / quantity
                                         }
                                         isDownloadFinished = true
                                         ProgressLayout.setProgress(
@@ -142,7 +163,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                                             currentProgress.toCeilInt(),
                                             title
                                         )
-                                        if(currentProgress == 100.0) {
+                                        if (currentProgress == 100.0) {
                                             currentProgress = 0.0
                                         }
                                     }
@@ -161,39 +182,37 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
         }
     }
 
-    fun downloadMod(mod: Mod, quantity: Int = 0): Deferred<Long> {
-        val downloadScope = CoroutineScope(Dispatchers.Default)
-        Log.d(TAG, "Try to download mod ${mod.name}")
+    private suspend fun downloadMod(mod: Mod, quantity: Int = 0): Deferred<Long> {
+        val downloadScope = CoroutineScope(Dispatchers.IO)
+        Timber.d("Try to download mod %s", mod.name)
         val title = "Baixando o mod ${mod.name}"
         File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
-        return downloadScope.async(start = CoroutineStart.LAZY) {
-            download(
+        return download(
                 uri = mod.artifact.url.toUri(),
                 url = mod.artifact.fileName,
                 title = title,
                 quantity = quantity
             )
-        }
     }
 
-    fun downloadTexture(texture: Texture): Long {
-        Log.d(TAG, "Straing downloading texture ${texture.name}")
+    suspend fun downloadTexture(texture: Texture): Deferred<Long> {
+        Timber.d("Straing downloading texture " + texture.name)
         val title = "Baixando ${texture.name}"
         File(context.getExternalFilesDir(null), ".minecraft/resourcepacks").mkdirs()
         return download(uri = texture.url.toUri(), url = texture.fileName, title = title)
     }
 
-    fun downloadModsOneDotTwelve(exclude: List<String> = listOf()) {
-        Log.d(TAG, "the mods downloads start")
+    suspend fun downloadModsOneDotTwelve(exclude: List<String> = listOf()) {
+        Timber.d("the mods downloads start")
         if (!LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE) {
             val mods = if (exclude.isNotEmpty()) {
                 modsOneDotSixteen.filter { !exclude.contains(it.name) }
             } else {
                 modsOneDotTwelve.toList()
             }
-            runBlocking {
+             CoroutineScope(Dispatchers.Default).launch {
                 for (mod in mods) {
-                    if(mod.name == "Pixelmon") {
+                    if (mod.name == "Pixelmon") {
                         downloadMod(mod).await()
                     } else {
                         downloadMod(mod, mods.size - 1).await()
@@ -220,7 +239,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
         return true
     }
 
-    fun downloadModOneDotSixteen() {
+    suspend fun downloadModOneDotSixteen() {
         Log.i(TAG, "the mods 1.16 will strat")
 //        Log.i(TAG, "The value of checkFilesInregrity is ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
         if (!LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_SIXTEEN) {
