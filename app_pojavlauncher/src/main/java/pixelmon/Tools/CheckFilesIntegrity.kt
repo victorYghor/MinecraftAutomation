@@ -2,6 +2,7 @@ package pixelmon.Tools
 
 import android.content.Context
 import android.util.Log
+import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 import java.security.MessageDigest
@@ -22,12 +23,12 @@ fun checkFileIntegrity(context: Context, copyPath: String, originalMd5: String?)
     try {
         val copyFile = File(context.getExternalFilesDir(null), copyPath)
         if(originalMd5 == null) {
-            Log.i(TAG, "The copy file with this name was not found")
+            Timber.i("The copy file with this name was not found")
             return false
         }
         if(copyFile.md5() != originalMd5) return false
     } catch (e: FileNotFoundException) {
-        Log.e(TAG, "File Not found")
+        Timber.e("File Not found")
         e.printStackTrace()
         return false
     } catch(e: Exception) {

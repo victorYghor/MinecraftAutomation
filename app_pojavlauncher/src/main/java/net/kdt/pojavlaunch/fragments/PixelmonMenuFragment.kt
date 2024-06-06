@@ -27,6 +27,7 @@ import net.kdt.pojavlaunch.prefs.screens.LauncherPreferenceFragment
 import pixelmon.Loading
 import pixelmon.SocialMedia
 import pixelmon.forge.ForgerDownload
+import timber.log.Timber
 
 class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
     companion object {
@@ -100,17 +101,11 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         }
         b.radioBtnVersion112.setOnCheckedChangeListener { buttonView, checked ->
             toggleVersionSelectPreference(checked)
-            Log.d(
-                TAG,
-                "the select_version_is_one_dot_twelve preference is ${LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE}"
-            )
+            Timber.d("the select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
         }
         b.radioBtnVersion116.setOnCheckedChangeListener { buttonView, checked ->
             toggleVersionSelectPreference(!checked)
-            Log.d(
-                TAG,
-                "the select_version_is_one_dot_twelve preference is ${LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE}"
-            )
+            Timber.d("the select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
         }
         b.btnOpenSelectVersion.apply {
             text =
@@ -135,8 +130,8 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
 
     }
     private fun setupPixelmonLoading(viewModel: LauncherViewModel) {
-        val getOneDotTwelve = LauncherPreferences.GET_ONE_DOT_TWELVE
-        Log.d(PixelmonMenuFragment.TAG, "the value of getOneDotTwelve is $getOneDotTwelve")
+        val getOneDotTwelve = LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE
+        Timber.d("the value of getOneDotTwelve is " + getOneDotTwelve)
         if(getOneDotTwelve) {
             ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
         } else {

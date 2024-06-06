@@ -11,7 +11,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.savedstate.SavedStateRegistryOwner
 import com.kdt.mcgui.ProgressLayout
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.kdt.pojavlaunch.extra.ExtraConstants
@@ -61,9 +63,12 @@ class LauncherViewModel(
             Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE -> {
                 Log.d(TAG, "start the download of mods 1.12")
                 ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE, 0, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE.messageLoading)
-                mDownloader.value?.downloadModsOneDotTwelve()
-                LauncherPreferences.DEFAULT_PREF.edit()
-                    .putBoolean("download_mod_one_dot_twelve", true).commit()
+                val downloadScope = CoroutineScope(Dispatchers.Default)
+                downloadScope.launch {
+                    mDownloader.value?.downloadModsOneDotTwelve()
+                    LauncherPreferences.DEFAULT_PREF.edit()
+                        .putBoolean("download_mod_one_dot_twelve", true).commit()
+                }
                 return
             }
 
