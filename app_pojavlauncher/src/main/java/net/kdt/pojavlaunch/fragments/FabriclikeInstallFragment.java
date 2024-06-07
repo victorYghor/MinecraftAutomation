@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Future;
 
+import timber.log.Timber;
+
 public abstract class FabriclikeInstallFragment extends Fragment implements ModloaderDownloadListener, CompoundButton.OnCheckedChangeListener {
     private final FabriclikeUtils mFabriclikeUtils;
     private Spinner mGameVersionSpinner;
@@ -94,6 +96,7 @@ public abstract class FabriclikeInstallFragment extends Fragment implements Modl
 
     private void onClickStart(View v) {
         if(ProgressKeeper.hasOngoingTasks()) {
+            Log.d("FabriclikeInstallFragment", "tarefas em andamento");
             Toast.makeText(v.getContext(), R.string.tasks_ongoing, Toast.LENGTH_LONG).show();
             return;
         }

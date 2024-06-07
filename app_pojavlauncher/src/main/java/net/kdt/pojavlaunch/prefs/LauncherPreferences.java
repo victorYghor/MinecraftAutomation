@@ -26,6 +26,7 @@ public class LauncherPreferences {
     // pixelmon preferences
     public static boolean GET_ONE_DOT_TWELVE;
     public static boolean DOWNLOAD_MOD_ONE_DOT_TWELVE;
+    public static boolean DOWNLOAD_TEXTURE;
     public static boolean DOWNLOAD_MOD_ONE_DOT_SIXTEEN;
     public static boolean DOWNLOAD_ONE_DOT_SIXTEEN;
     /**
@@ -93,6 +94,7 @@ public class LauncherPreferences {
         //pixelmon preferences
         GET_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("get_one_dot_twelve", false);
         DOWNLOAD_MOD_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("download_mod_one_dot_twelve", false);
+        DOWNLOAD_TEXTURE = DEFAULT_PREF.getBoolean("download_texture", false);
         DOWNLOAD_MOD_ONE_DOT_SIXTEEN = DEFAULT_PREF.getBoolean("download_one_dot_sixteen", false);
         SELECT_VERSION_IS_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("select_version_is_one_dot_twelve", true);
         DOWNLOAD_ONE_DOT_SIXTEEN = DEFAULT_PREF.getBoolean("", false);

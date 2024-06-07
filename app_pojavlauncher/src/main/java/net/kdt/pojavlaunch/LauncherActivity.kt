@@ -48,6 +48,7 @@ import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
 import pixelmon.SocialMedia
 import pixelmon.Tools.DownloadResult
 import pixelmon.Tools.informativeAlertDialog
+import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class LauncherActivity : BaseActivity() {
@@ -155,10 +156,12 @@ class LauncherActivity : BaseActivity() {
      */
     private val mLaunchGameListener = ExtraListener { key: String?, value: Boolean? ->
         // logs para avisar que algo de errado esta acontecenod
-        if (mProgressLayout!!.hasProcesses()) {
-            Toast.makeText(this, R.string.tasks_ongoing, Toast.LENGTH_LONG).show()
-            return@ExtraListener false
-        }
+//        if (mProgressLayout!!.hasProcesses()) {
+//            Log.d("LauncherActivity", "tarefas em andamento")
+//            Toast.makeText(this, R.string.tasks_ongoing, Toast.LENGTH_LONG).show()
+//            return@ExtraListener false
+//        }
+        // o profile é como se fosse a versão do minecraft ou do forge que vai ser instalada aqui
         val selectedProfile = LauncherPreferences.DEFAULT_PREF.getString(
             LauncherPreferences.PREF_KEY_CURRENT_PROFILE,
             ""
@@ -267,6 +270,9 @@ class LauncherActivity : BaseActivity() {
                 null
             )
         }
+        btnPlay.setOnClickListener {
+            ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
+        }
 
         checkNotificationPermission()
         // place for putting extra listener
@@ -290,7 +296,7 @@ class LauncherActivity : BaseActivity() {
                 versions
             )
         }, false)
-        // progress layotu
+        // progressLayout
         mInstallTracker = ModloaderInstallTracker(this)
         mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_MINECRAFT)
         mProgressLayout!!.observe(ProgressLayout.UNPACK_RUNTIME)
