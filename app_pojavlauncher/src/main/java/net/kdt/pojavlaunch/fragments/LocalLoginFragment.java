@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import net.kdt.pojavlaunch.extra.ExtraConstants;
 import net.kdt.pojavlaunch.extra.ExtraCore;
 
 import java.io.File;
+import java.util.List;
 
 public class LocalLoginFragment extends Fragment {
     public static final String TAG = "LOCAL_LOGIN_FRAGMENT";
@@ -31,7 +33,10 @@ public class LocalLoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mUsernameEditText = view.findViewById(R.id.login_edit_email);
         view.findViewById(R.id.login_button).setOnClickListener(v -> {
-            if(!checkEditText()) return;
+            if(!checkEditText()) {
+                Toast.makeText(requireContext(), R.string.error_username, Toast.LENGTH_LONG).show();
+                return;
+            }
             ExtraCore.setValue(ExtraConstants.MOJANG_LOGIN_TODO, new String[]{
                     mUsernameEditText.getText().toString(), "" });
             Log.e(TAG, "Hey LocalLoginFragment.java");

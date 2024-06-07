@@ -22,6 +22,7 @@
     <string name="error_no_version">Nenhuma versão!</string>
     <string name="error_show_more">Mostrar mais</string>
     <string name="error_show_less">Mostrar menos</string>
+    <string name="error_username">Tem algum problema com o seu nome de usuário</string>
     <!-- Toast messages -->
     <string name="toast_permission_denied">É necessário conceder permissão para ler/modificar armazenamento!</string>
     <string name="toast_optifine_success">Instalação concluída</string>
