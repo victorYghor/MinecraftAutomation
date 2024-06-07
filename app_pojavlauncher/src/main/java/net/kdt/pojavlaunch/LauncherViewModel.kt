@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.savedstate.SavedStateRegistryOwner
 import com.kdt.mcgui.ProgressLayout
+import com.kdt.mcgui.mcAccountSpinner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -19,9 +20,13 @@ import kotlinx.coroutines.withContext
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
+import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import pixelmon.Loading
 import pixelmon.MinecraftAssets
+import pixelmon.Pixelmon
 import pixelmon.download.Downloader
+import pixelmon.idForgeOneDot12
+import pixelmon.idForgeOneDot16
 
 class LauncherViewModel(
     private val context: Context,
@@ -57,7 +62,6 @@ class LauncherViewModel(
                 }
             }
     }
-
     fun setLoadingState(loading: Loading) {
         when (loading) {
             Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE -> {
@@ -111,6 +115,18 @@ class LauncherViewModel(
             }
         }
 
+    }
+
+    fun changeProfile(ctx: Context, accountSpinner: mcAccountSpinner?) {
+        Log.w(TAG, "select the correct option")
+        LauncherPreferences.DEFAULT_PREF.edit()
+            .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, idForgeOneDot12)
+            .commit()
+        LauncherPreferences.loadPreferences(ctx)
+        val profile = LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "")
+        Log.w(TAG, "The current profile is $profile")
+
+        LauncherProfiles.load()
     }
 
     init {

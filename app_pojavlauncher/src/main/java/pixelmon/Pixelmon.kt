@@ -38,19 +38,5 @@ class Pixelmon(
 //        modDownloader.downloadModsOneDotTwelve(exclude = listOf("Pixelmon"))
         val forgerDownload = ForgerDownload(context)
         forgerDownload.run()
-        changeProfile()
-    }
-
-
-    fun changeProfile() {
-        Log.w(TAG, "select the correct option")
-        LauncherPreferences.DEFAULT_PREF.edit()
-            .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, idForgeOneDot16)
-            .commit()
-        LauncherPreferences.loadPreferences(context)
-        val profile = LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "")
-        Log.w(TAG, "The current profile is $profile")
-        versionSpinner.reloadProfiles()
-        LauncherProfiles.load()
     }
 }
