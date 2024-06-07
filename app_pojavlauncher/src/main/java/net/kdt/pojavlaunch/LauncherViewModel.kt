@@ -63,7 +63,7 @@ class LauncherViewModel(
             Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE -> {
                 Log.d(TAG, "start the download of mods 1.12")
                 ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE, 0, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE.messageLoading)
-                val downloadScope = CoroutineScope(Dispatchers.Default)
+                val downloadScope = CoroutineScope(Dispatchers.IO)
                 downloadScope.launch {
                     mDownloader.value?.downloadModsOneDotTwelve()
                     LauncherPreferences.DEFAULT_PREF.edit()

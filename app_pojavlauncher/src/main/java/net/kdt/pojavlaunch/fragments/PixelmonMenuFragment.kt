@@ -120,13 +120,13 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
             b.radioGroupSelectVersion.visibility =
                 if (b.radioGroupSelectVersion.visibility == View.GONE) {
                     toggleArrowIcon()
-
                     View.VISIBLE
                 } else {
                     toggleArrowIcon()
                     View.GONE
                 }
         }
+
 
     }
     private fun setupPixelmonLoading(viewModel: LauncherViewModel) {
