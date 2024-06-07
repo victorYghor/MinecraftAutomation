@@ -24,19 +24,7 @@ class DownloadReceiver : BroadcastReceiver() {
 
     @SuppressLint("Range")
     override fun onReceive(context: Context?, intent: Intent?) {
-        val scopeUpdateUI = CoroutineScope(Dispatchers.Main)
-        downloadManager = context?.getSystemService(DownloadManager::class.java)
-        if (intent?.action == "android.intent.action.DOWNLOAD_COMPLETE") {
-            val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L)
-            if (id != -1L) {
-                Log.i(TAG, "Download with Id $id finished!")
-                scopeUpdateUI.launch {
-                    ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE, 100)
-                }
-            } else {
-                //todo tell the user that download was not successful
-                ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE, 100)
-            }
-        }
+
+
     }
 }
