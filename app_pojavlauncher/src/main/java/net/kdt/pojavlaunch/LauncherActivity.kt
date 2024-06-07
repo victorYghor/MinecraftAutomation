@@ -45,9 +45,12 @@ import net.kdt.pojavlaunch.tasks.MinecraftDownloader
 import net.kdt.pojavlaunch.utils.NotificationUtils
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
+import pixelmon.Pixelmon
 import pixelmon.SocialMedia
 import pixelmon.Tools.DownloadResult
 import pixelmon.Tools.informativeAlertDialog
+import pixelmon.idForgeOneDot12
+import pixelmon.idForgeOneDot16
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
@@ -308,9 +311,10 @@ class LauncherActivity : BaseActivity() {
         LauncherPreferences.loadPreferences(this)
 
         insertProfiles()
+        viewModel.changeProfile(this)
     }
 
-    fun insertProfiles() {
+    private fun insertProfiles() {
         val profiles = this.assets.open("launcher_profiles.json").readBytes()
         Tools.write(
             Tools.DIR_GAME_NEW + "/" + "launcher_profiles.json", profiles
@@ -451,6 +455,7 @@ class LauncherActivity : BaseActivity() {
         btnOfficialSite = findViewById(R.id.btn_official_site)
         btnPlay = findViewById(R.id.btn_play)
     }
+
 
 
     companion object {
