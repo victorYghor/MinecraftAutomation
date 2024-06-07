@@ -62,12 +62,19 @@ class LauncherViewModel(
         when (loading) {
             Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE -> {
                 Log.d(TAG, "start the download of mods 1.12")
+
                 ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE, 0, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE.messageLoading)
                 val downloadScope = CoroutineScope(Dispatchers.IO)
                 downloadScope.launch {
-                    mDownloader.value?.downloadModsOneDotTwelve()
-                    LauncherPreferences.DEFAULT_PREF.edit()
-                        .putBoolean("download_mod_one_dot_twelve", true).commit()
+                    // espera ate que o download dos mods seja completo
+                    // para que a próxima parte do código começe a rodar
+                    mDownloader.value?.downloadModsOneDotTwelve()?.join()
+                    LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
+
+                    Log.d(TAG, "finish the download of mods 1.12")
+                    withContext(Dispatchers.Main) {
+                        loadingState.value = Loading.DOWNLOAD_TEXTURE
+                    }
                 }
                 return
             }
@@ -95,7 +102,13 @@ class LauncherViewModel(
                 ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
             }
 
-            Loading.DOWNLOAD_TEXTURE -> TODO()
+            Loading.DOWNLOAD_TEXTURE -> {
+                CoroutineScope(Dispatchers.Default).launch {
+                    mDownloader.value?.downloadTexture()?.await()
+                    LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_texture", true).commit()
+                }
+                return
+            }
         }
 
     }

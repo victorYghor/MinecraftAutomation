@@ -8,7 +8,7 @@ public class ProgressKeeper {
     private static final HashMap<String, List<ProgressListener>> sProgressListeners = new HashMap<>();
     /**
      * Isso daqui serve para linkar o nome do tipo de progress com o estado
-     * do progresso, aqui quarda ele como um hashmap em que a chave é o nome
+     * do progresso, aqui guarda ele como um hashmap em que a chave é o nome
      * do tipo de progressso e o valor é o estado do progresso
      **/
     private static final HashMap<String, ProgressState> sProgressStates = new HashMap<>();

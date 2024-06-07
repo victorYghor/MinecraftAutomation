@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -167,22 +168,23 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
         )
     }
 
-    suspend fun downloadTexture(texture: Texture): Deferred<Long> {
+    suspend fun downloadTexture(): Deferred<Long> {
+        val texture = pixelmonTexture
         Timber.d("Straing downloading texture " + texture.name)
         val title = "Baixando ${texture.name}"
         File(context.getExternalFilesDir(null), ".minecraft/resourcepacks").mkdirs()
         return download(uri = texture.url.toUri(), url = texture.fileName, title = title)
     }
 
-    suspend fun downloadModsOneDotTwelve(exclude: List<String> = listOf()) {
+    suspend fun downloadModsOneDotTwelve(exclude: List<String> = listOf()): Job {
         Timber.d("the mods downloads start")
-        if (!LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE) {
+
             val mods = if (exclude.isNotEmpty()) {
                 modsOneDotSixteen.filter { !exclude.contains(it.name) }
             } else {
                 modsOneDotTwelve.toList()
             }
-            CoroutineScope(Dispatchers.Default).launch {
+            return CoroutineScope(Dispatchers.Default).launch {
                 for (mod in mods) {
                     if (mod.name == "Pixelmon") {
                         downloadMod(mod).await()
@@ -192,7 +194,6 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                 }
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
             }
-        }
 //        Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity(ModVersion.OneDotTwelve)}")
     }
 
