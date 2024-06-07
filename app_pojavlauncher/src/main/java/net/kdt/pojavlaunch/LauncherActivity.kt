@@ -190,7 +190,7 @@ class LauncherActivity : BaseActivity() {
             return@ExtraListener false
         }
 
-        if (mAccountSpinner!!.selectedAccount == null) {
+        if (mAccountSpinner?.selectedAccount == null) {
             Toast.makeText(this, R.string.no_saved_accounts, Toast.LENGTH_LONG).show()
             ExtraCore.setValue(ExtraConstants.SELECT_AUTH_METHOD, true)
             return@ExtraListener false
@@ -251,8 +251,6 @@ class LauncherActivity : BaseActivity() {
         }
         window.setBackgroundDrawable(null)
         bindViews()
-
-
 
         // pixelmon buttons
         btnDiscord?.setOnClickListener {

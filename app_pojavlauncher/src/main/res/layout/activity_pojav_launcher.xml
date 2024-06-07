@@ -6,14 +6,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
 
-    <com.kdt.mcgui.mcAccountSpinner
-        android:visibility="gone"
-        android:id="@+id/account_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_52sdp"
-        android:dropDownWidth="@dimen/_250sdp"
-        android:dropDownVerticalOffset="@dimen/_52sdp"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageButton
         android:visibility="gone"

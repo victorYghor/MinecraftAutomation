@@ -117,7 +117,7 @@ class LauncherViewModel(
 
     }
 
-    fun changeProfile(ctx: Context, accountSpinner: mcAccountSpinner?) {
+    fun changeProfile(ctx: Context) {
         Log.w(TAG, "select the correct option")
         LauncherPreferences.DEFAULT_PREF.edit()
             .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, idForgeOneDot12)
@@ -125,7 +125,6 @@ class LauncherViewModel(
         LauncherPreferences.loadPreferences(ctx)
         val profile = LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "")
         Log.w(TAG, "The current profile is $profile")
-
         LauncherProfiles.load()
     }
 
