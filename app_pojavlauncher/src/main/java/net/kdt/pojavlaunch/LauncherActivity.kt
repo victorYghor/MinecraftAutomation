@@ -3,7 +3,6 @@ package net.kdt.pojavlaunch
 import android.Manifest
 import android.app.NotificationManager
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -21,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.Observer
 import com.kdt.mcgui.ProgressLayout
 import com.kdt.mcgui.mcAccountSpinner
 import net.kdt.pojavlaunch.contracts.OpenDocumentWithExtension
@@ -29,6 +29,7 @@ import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.extra.ExtraListener
 import net.kdt.pojavlaunch.fragments.MicrosoftLoginFragment
 import net.kdt.pojavlaunch.fragments.PixelmonMenuFragment
+import net.kdt.pojavlaunch.fragments.PixelmonWelcomeScreen
 import net.kdt.pojavlaunch.fragments.SelectAuthFragment
 import net.kdt.pojavlaunch.lifecycle.ContextAwareDoneListener
 import net.kdt.pojavlaunch.lifecycle.ContextExecutor
@@ -45,13 +46,9 @@ import net.kdt.pojavlaunch.tasks.MinecraftDownloader
 import net.kdt.pojavlaunch.utils.NotificationUtils
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
-import pixelmon.Pixelmon
 import pixelmon.SocialMedia
 import pixelmon.Tools.DownloadResult
 import pixelmon.Tools.informativeAlertDialog
-import pixelmon.idForgeOneDot12
-import pixelmon.idForgeOneDot16
-import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class LauncherActivity : BaseActivity() {
@@ -221,23 +218,8 @@ class LauncherActivity : BaseActivity() {
         val viewModel by viewModels<LauncherViewModel>{
             LauncherViewModel.provideFactory(this, this)
         }
-
         LauncherPreferences.loadPreferences(this)
-        val firsInstallation = LauncherPreferences.PREF_FIRST_INSTALLATION
-        Log.d(PixelmonMenuFragment.TAG, "the first installation is $firsInstallation")
-        if (firsInstallation) {
-            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
-            val startLaunch = Intent(this, WelcomePixelmonActivity::class.java)
-            startActivity(startLaunch)
-        } else {
-            Tools.swapFragment(
-                this,
-                PixelmonMenuFragment::class.java,
-                PixelmonMenuFragment.TAG,
-                false,
-                null
-            )
-        }
+
         setContentView(R.layout.pixelmon_main_activity)
         IconCacheJanitor.runJanitor()
 
@@ -250,7 +232,39 @@ class LauncherActivity : BaseActivity() {
             }
         }
         window.setBackgroundDrawable(null)
+
+        // here you start the views stuff
         bindViews()
+        val firsInstallation = LauncherPreferences.PREF_FIRST_INSTALLATION
+        Log.d(PixelmonMenuFragment.TAG, "the first installation is $firsInstallation")
+        if (firsInstallation) {
+            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
+            // Aqui entra dentro da tela de boas vindas
+            setBottomButtonsVisibility(false)
+            Tools.swapFragment(
+                this,
+                PixelmonWelcomeScreen::class.java,
+                PixelmonWelcomeScreen.TAG,
+                false,
+                null
+            )
+        } else {
+            Tools.swapFragment(
+                this,
+                PixelmonMenuFragment::class.java,
+                PixelmonMenuFragment.TAG,
+                false,
+                null
+            )
+        }
+
+        // change the visibility of the buttons
+        val bottomButtonsVisibilityObserver = Observer<Boolean> { visible: Boolean ->
+            setBottomButtonsVisibility(visible)
+        }
+        viewModel.bottomButtonsVisible.observe(this, bottomButtonsVisibilityObserver)
+//        viewModel.bottomButtonsVisibility.value = true
+
 
         // pixelmon buttons
         btnDiscord?.setOnClickListener {
@@ -284,7 +298,7 @@ class LauncherActivity : BaseActivity() {
         })
         ProgressKeeper.addTaskCountListener(mProgressLayout)
 
-        //Pixelmon sttuf
+        //Pixelmon stuff
         ExtraCore.addExtraListener(ExtraConstants.ALERT_DIALOG_DOWNLOAD, mDialogAlertDownload)
         ExtraCore.addExtraListener(ExtraConstants.SHOW_PLAY_BUTTON, mShowPlayButtonListener)
 
@@ -453,8 +467,20 @@ class LauncherActivity : BaseActivity() {
         btnOfficialSite = findViewById(R.id.btn_official_site)
         btnPlay = findViewById(R.id.btn_play)
     }
-
-
+    fun setBottomButtonsVisibility(visible: Boolean) {
+        // The btnPlay and the ProgressLayout is set automatically
+        if(visible) {
+            btnDiscord?.visibility = View.VISIBLE
+            btnSettings?.visibility = View.VISIBLE
+            btnTiktok?.visibility = View.VISIBLE
+            btnOfficialSite?.visibility = View.VISIBLE
+        } else {
+            btnDiscord?.visibility = View.GONE
+            btnSettings?.visibility = View.GONE
+            btnTiktok?.visibility = View.GONE
+            btnOfficialSite?.visibility = View.GONE
+        }
+    }
 
     companion object {
         const val SETTING_FRAGMENT_TAG = "SETTINGS_FRAGMENT"

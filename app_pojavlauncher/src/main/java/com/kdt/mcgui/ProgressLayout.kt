@@ -141,6 +141,7 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
                 // call some function or class that trigger change in the layout for another progress or button like button play
                 // I can do this here or inside the ProgressKeeper
                 // temporary
+
                 ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
             }
         }

@@ -70,17 +70,21 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         ).commit()
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // handle changes between button play and progress bar
         // Handle the first fragment to show
-        val viewModel by viewModels<LauncherViewModel>{
+        val viewModel by viewModels<LauncherViewModel> {
             LauncherViewModel.provideFactory(requireContext(), this)
         }
+        val bottomButtonsVisibilityObserver = Observer<Boolean> { visible: Boolean ->
+            (activity as LauncherActivity).setBottomButtonsVisibility(visible)
+        }
+        viewModel.bottomButtonsVisible.observe(requireActivity(), bottomButtonsVisibilityObserver)
+        viewModel.bottomButtonsVisible.value = true
+
         LauncherPreferences.loadPreferences(requireContext())
         setupPixelmonLoading(viewModel)
-
 
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.install_one_dot_sixteen)
@@ -129,15 +133,17 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
 
 
     }
+
     private fun setupPixelmonLoading(viewModel: LauncherViewModel) {
         val getOneDotTwelve = LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE
         Timber.d("the value of getOneDotTwelve is " + getOneDotTwelve)
-        if(getOneDotTwelve) {
+        if (getOneDotTwelve) {
             ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
         } else {
             viewModel.loadingState.value = Loading.MOVING_FILES
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

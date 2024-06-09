@@ -235,7 +235,8 @@ public class MultiRTUtils {
 
             final String tarEntryName = tarEntry.getName();
             // publishProgress(null, "Unpacking " + tarEntry.getName());
-            ProgressLayout.setProgress(ProgressLayout.UNPACK_RUNTIME, 100, "Descompactando %s", tarEntryName);
+            // disable temporarily
+//            ProgressLayout.setProgress(ProgressLayout.UNPACK_RUNTIME, 100, "Descompactando %s", tarEntryName);
 
             File destPath = new File(dest, tarEntry.getName());
             net.kdt.pojavlaunch.utils.FileUtils.ensureParentDirectory(destPath);
