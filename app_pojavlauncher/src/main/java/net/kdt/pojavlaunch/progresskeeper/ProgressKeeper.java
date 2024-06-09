@@ -61,7 +61,7 @@ public class ProgressKeeper {
             listener.onProgressStarted();
             listener.onProgressUpdated(state.progress, state.message, state.varArg);
         } else {
-            listener.onProgressEnded();
+//            listener.onProgressEnded();
         }
         List<ProgressListener> listenerWeakReferenceList = sProgressListeners.get(progressRecord);
         if (listenerWeakReferenceList == null)

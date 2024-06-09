@@ -11,10 +11,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.savedstate.SavedStateRegistryOwner
 import com.kdt.mcgui.ProgressLayout
-import com.kdt.mcgui.mcAccountSpinner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.kdt.pojavlaunch.extra.ExtraConstants
@@ -23,20 +21,21 @@ import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import pixelmon.Loading
 import pixelmon.MinecraftAssets
-import pixelmon.Pixelmon
 import pixelmon.download.Downloader
 import pixelmon.idForgeOneDot12
-import pixelmon.idForgeOneDot16
 
 class LauncherViewModel(
     private val context: Context,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
     /**
      * Is not possible to modify inside the class because here I don't have a observe for call the
      * function setLoadingState
      */
     val loadingState = MutableLiveData<Loading>()
+
+    val bottomButtonsVisible = MutableLiveData<Boolean>()
     private val loadingStateObserver = Observer<Loading> { newLoading ->
         this.setLoadingState(newLoading)
     }
@@ -99,13 +98,11 @@ class LauncherViewModel(
                 }
                 return
             }
-
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> TODO()
             Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> TODO()
             Loading.SHOW_PLAY_BUTTON -> {
                 ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
             }
-
             Loading.DOWNLOAD_TEXTURE -> {
                 CoroutineScope(Dispatchers.Default).launch {
                     mDownloader.value?.downloadTexture()?.await()

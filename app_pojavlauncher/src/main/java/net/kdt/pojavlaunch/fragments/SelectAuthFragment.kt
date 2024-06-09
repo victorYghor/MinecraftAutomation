@@ -5,6 +5,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import net.kdt.pojavlaunch.LauncherViewModel
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
 import pixelmon.SocialMedia
@@ -14,6 +16,11 @@ import pixelmon.SocialMedia
  */
 class SelectAuthFragment : Fragment(R.layout.fragment_select_auth_method) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // Hide the bottom UI elements
+        val viewModel by viewModels<LauncherViewModel> {
+            LauncherViewModel.provideFactory(requireContext(), this)
+        }
+        viewModel.bottomButtonsVisible.value = false
 
         val mMicrosoftButton = view.findViewById<Button>(R.id.button_microsoft_authentication)
         val mLocalButton = view.findViewById<Button>(R.id.button_local_authentication)
@@ -23,7 +30,7 @@ class SelectAuthFragment : Fragment(R.layout.fragment_select_auth_method) {
             startActivity(SocialMedia.DISCORD.open)
         }
         mMicrosoftButton.setOnClickListener {
-            Tools.swapWelcomeFragment(
+            Tools.swapFragment(
                 requireActivity(),
                 MicrosoftLoginFragment::class.java,
                 MicrosoftLoginFragment.TAG,
@@ -32,7 +39,7 @@ class SelectAuthFragment : Fragment(R.layout.fragment_select_auth_method) {
             )
         }
         mLocalButton.setOnClickListener {
-            Tools.swapWelcomeFragment(
+            Tools.swapFragment(
                 requireActivity(),
                 LocalLoginFragment::class.java,
                 LocalLoginFragment.TAG,
