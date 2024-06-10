@@ -56,6 +56,11 @@ public class ProgressKeeper {
         }
     }
 
+    /**
+     *
+     * @param progressRecord this is like the id of the some progress state
+     * @param listener
+     */
     public static synchronized void addListener(String progressRecord, ProgressListener listener) {
         ProgressState state = sProgressStates.get(progressRecord);
         if (state != null && (state.progress != -1)) {

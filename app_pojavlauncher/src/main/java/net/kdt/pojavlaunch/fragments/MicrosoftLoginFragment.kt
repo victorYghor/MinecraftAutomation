@@ -14,6 +14,7 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import net.kdt.pojavlaunch.LauncherActivity
 import net.kdt.pojavlaunch.LauncherViewModel
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
@@ -27,6 +28,10 @@ class MicrosoftLoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as LauncherActivity).setBottomButtonsVisibility(false)
+
+
+
         mWebview = inflater.inflate(R.layout.fragment_microsoft_login, container, false) as WebView
         setWebViewSettings()
         val viewModel by viewModels<LauncherViewModel> {
