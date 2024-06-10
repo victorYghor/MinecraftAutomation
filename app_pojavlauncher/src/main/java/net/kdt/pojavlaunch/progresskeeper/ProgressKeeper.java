@@ -24,6 +24,7 @@ public class ProgressKeeper {
     public static synchronized void submitProgress(String progressRecord, int progress, String message, Object... va) {
         ProgressState progressState = sProgressStates.get(progressRecord);
         boolean shouldCallStarted = progressState == null;
+        // Comparado ao codigo original aqui tem o || ao inves de &&
         boolean shouldCallEnded = (progress == -1) || progress >= 100;
         if (shouldCallEnded) {
             shouldCallStarted = false;
@@ -61,7 +62,7 @@ public class ProgressKeeper {
             listener.onProgressStarted();
             listener.onProgressUpdated(state.progress, state.message, state.varArg);
         } else {
-//            listener.onProgressEnded();
+            listener.onProgressEnded();
         }
         List<ProgressListener> listenerWeakReferenceList = sProgressListeners.get(progressRecord);
         if (listenerWeakReferenceList == null)
