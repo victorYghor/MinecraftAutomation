@@ -197,7 +197,7 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
          */
         @JvmStatic
         fun clearProgress(progressKey: String?) {
-            setProgress(progressKey, 0, "")
+            setProgress(progressKey, 100, "")
         }
     }
 }

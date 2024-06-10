@@ -34,13 +34,13 @@ class LauncherViewModel(
      * function setLoadingState
      */
     val loadingState = MutableLiveData<Loading>()
-
     val bottomButtonsVisible = MutableLiveData<Boolean>()
-    private val loadingStateObserver = Observer<Loading> { newLoading ->
-        this.setLoadingState(newLoading)
-    }
+
     val mDownloader by lazy {
         MutableLiveData(Downloader(context, this))
+    }
+    private val loadingStateObserver = Observer<Loading> { newLoading ->
+        this.setLoadingState(newLoading)
     }
 
     companion object {
@@ -113,7 +113,6 @@ class LauncherViewModel(
         }
 
     }
-
     fun changeProfile(ctx: Context) {
         Log.w(TAG, "select the correct option")
         LauncherPreferences.DEFAULT_PREF.edit()

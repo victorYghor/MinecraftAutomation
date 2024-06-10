@@ -75,10 +75,15 @@ class LauncherActivity : BaseActivity() {
 
     //Pixelmon stuff
     private val mShowPlayButtonListener = ExtraListener { key: String?, value: Boolean ->
-        if(value) {
-            btnPlay.visibility = View.VISIBLE
-        } else {
-            btnPlay.visibility = View.GONE
+        // verificar qual o fragment atual na tela se não for PixelmonMenuFragment não mostrar o botão
+        val pixelmonMenuFragment: PixelmonMenuFragment? =
+            supportFragmentManager.findFragmentByTag("PixelmonMenuFragment") as PixelmonMenuFragment?
+        if (pixelmonMenuFragment != null && pixelmonMenuFragment.isVisible()) {
+            if(value) {
+                btnPlay.visibility = View.VISIBLE
+            } else {
+                btnPlay.visibility = View.GONE
+            }
         }
         false
     }
@@ -155,7 +160,7 @@ class LauncherActivity : BaseActivity() {
      * see for problems then start the minecraft game
      */
     private val mLaunchGameListener = ExtraListener { key: String?, value: Boolean? ->
-        //
+
         if (mProgressLayout!!.hasProcesses()) {
             Log.d("LauncherActivity", "tarefas em andamento")
             Toast.makeText(this, R.string.tasks_ongoing, Toast.LENGTH_LONG).show()
@@ -475,6 +480,7 @@ class LauncherActivity : BaseActivity() {
             btnTiktok?.visibility = View.VISIBLE
             btnOfficialSite?.visibility = View.VISIBLE
         } else {
+            ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, false)
             btnDiscord?.visibility = View.GONE
             btnSettings?.visibility = View.GONE
             btnTiktok?.visibility = View.GONE

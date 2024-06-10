@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import net.kdt.pojavlaunch.LauncherActivity
 import net.kdt.pojavlaunch.LauncherViewModel
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
@@ -18,10 +19,8 @@ import java.io.File
 class LocalLoginFragment : Fragment(R.layout.fragment_pixelmon_local_login) {
     private lateinit var mUsernameEditText: EditText
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val viewModel by viewModels<LauncherViewModel> {
-            LauncherViewModel.provideFactory(requireContext(), this)
-        }
-        viewModel.bottomButtonsVisible.value = false
+        // Hide the bottom UI elements
+        (activity as LauncherActivity).setBottomButtonsVisibility(false)
 
         mUsernameEditText = view.findViewById(R.id.login_edit_email)
         view.findViewById<View>(R.id.login_button).setOnClickListener { v: View? ->
