@@ -21,8 +21,8 @@ import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import pixelmon.Loading
 import pixelmon.MinecraftAssets
+import pixelmon.PixelmonProfile
 import pixelmon.download.Downloader
-import pixelmon.idForgeOneDot12
 
 class LauncherViewModel(
     private val context: Context,
@@ -113,10 +113,10 @@ class LauncherViewModel(
         }
 
     }
-    fun changeProfile(ctx: Context) {
+    fun changeProfile(ctx: Context, pixelmonProfile: PixelmonProfile) {
         Log.w(TAG, "select the correct option")
         LauncherPreferences.DEFAULT_PREF.edit()
-            .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, idForgeOneDot12)
+            .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, pixelmonProfile.key)
             .commit()
         LauncherPreferences.loadPreferences(ctx)
         val profile = LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "")
