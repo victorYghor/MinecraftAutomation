@@ -46,6 +46,7 @@ import net.kdt.pojavlaunch.tasks.MinecraftDownloader
 import net.kdt.pojavlaunch.utils.NotificationUtils
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
+import pixelmon.PixelmonProfile
 import pixelmon.SocialMedia
 import pixelmon.Tools.DownloadResult
 import pixelmon.Tools.informativeAlertDialog
@@ -328,7 +329,7 @@ class LauncherActivity : BaseActivity() {
         LauncherPreferences.loadPreferences(this)
 
         insertProfiles()
-        viewModel.changeProfile(this)
+        viewModel.changeProfile(this, PixelmonProfile.idForgeOneDot12)
     }
 
     private fun insertProfiles() {
