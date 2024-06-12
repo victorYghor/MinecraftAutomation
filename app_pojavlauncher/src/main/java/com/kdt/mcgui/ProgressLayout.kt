@@ -159,6 +159,9 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
         const val AUTHENTICATE_MICROSOFT = "authenticate_microsoft"
         const val INSTALL_MODPACK = "install_modpack"
         const val MOVING_FILES = "moving_files"
+        /**
+         * this is used for all the download in the app
+         */
         const val DOWNLOAD_MOD_ONE_DOT_TWELVE = "download_mods"
 
         /**

@@ -46,7 +46,9 @@ class LauncherViewModel(
     val bottomButtonsVisible = MutableLiveData<Boolean>()
     val callPixelmonLoading = MutableLiveData(false)
     /**
-     * this will be trigger when the app complete download the version 1.16 and then this will possible the user choose the version of forge that want to play
+     * this will be trigger when the app complete download the version 1.16 and then this will
+     * possible the user choose the version of forge that want to play
+     * this value need to be change insider the Discpatchers.Main
      */
     val downloadedOneDotSixteen = MutableLiveData(LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN)
 
@@ -112,6 +114,11 @@ class LauncherViewModel(
                 return
             }
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
+//                CoroutineScope(Dispatchers.IO).launch {
+//                    mDownloader.value?.downloadOneDotSixteen()?.await()
+//                    LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_sixteen", true).commit()
+//
+//                }
 
             }
             Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> {
@@ -119,7 +126,7 @@ class LauncherViewModel(
                         mDownloader.value?.downloadOneDotSixteen()?.await()
                         // tudo isso precisa ser feito quando o download for concluido
                         // aqui é necessário verificar integridade do download
-                        // se estiver tudo bem com o download ele deve continuar se não um pop up deve aparecer para visar isso ao usuário
+                        // se estiver tudo bem com o download ele deve continuar se não um pop up deve aparecer para avisar isso ao usuário
                         val librariesZipFile = File(context.getExternalFilesDir(null), ".minecraft/libraries.zip")
                         // pegando a referencia da bliblioteca no formato json.
                         val libraryFile = Tools.GLOBAL_GSON.fromJson(
@@ -132,12 +139,11 @@ class LauncherViewModel(
                         // com um arquivo deletar ele e perdir para ele fazer o download novamente
                         deleteDirecoty(File(context.getExternalFilesDir(null), ".minecraft/libraries"))
                         mDownloader.value?.unpackLibraries(librariesZipFile)
-
-                        downloadedOneDotSixteen.value = true
-
-                        // change of loading state here
+                        withContext(Dispatchers.Main) {
+                            downloadedOneDotSixteen.value = true
+                            loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN
+                        }
                     }
-                loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN
                 return
             }
             Loading.SHOW_PLAY_BUTTON -> {
