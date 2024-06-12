@@ -151,12 +151,13 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
         // aqui é basicamento o tipo de carregamento que existe dentro do app
         // These are the progress keys are the key of the progress in the app
         const val UNPACK_RUNTIME = "unpack_runtime"
+        const val EXTRACT_COMPONENTS = "extract_components"
+        const val EXTRACT_SINGLE_FILES = "extract_single_files"
+
         const val DOWNLOAD_MINECRAFT = "download_minecraft"
         const val DOWNLOAD_VERSION_LIST = "download_verlist"
         const val AUTHENTICATE_MICROSOFT = "authenticate_microsoft"
         const val INSTALL_MODPACK = "install_modpack"
-        const val EXTRACT_COMPONENTS = "extract_components"
-        const val EXTRACT_SINGLE_FILES = "extract_single_files"
         const val MOVING_FILES = "moving_files"
         const val DOWNLOAD_MOD_ONE_DOT_TWELVE = "download_mods"
 

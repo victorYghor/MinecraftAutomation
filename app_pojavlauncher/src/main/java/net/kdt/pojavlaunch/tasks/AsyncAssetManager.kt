@@ -52,7 +52,7 @@ object AsyncAssetManager {
     /** Unpack single files, with no regard to version tracking  */
     @JvmStatic
     fun unpackSingleFiles(ctx: Context) {
-        ProgressLayout.setProgress(ProgressLayout.EXTRACT_SINGLE_FILES, 0)
+//        ProgressLayout.setProgress(ProgressLayout.EXTRACT_SINGLE_FILES, 0)
         PojavApplication.sExecutorService.execute {
             try {
                 val controlMap = ctx.assets.open("default.json") .readBytes()
@@ -64,13 +64,13 @@ object AsyncAssetManager {
             } catch (e: IOException) {
                 Log.e("AsyncAssetManager", "Failed to unpack critical components !")
             }
-            ProgressLayout.clearProgress(ProgressLayout.EXTRACT_SINGLE_FILES)
+//            ProgressLayout.clearProgress(ProgressLayout.EXTRACT_SINGLE_FILES)
         }
     }
 
     @JvmStatic
     fun unpackComponents(ctx: Context) {
-        ProgressLayout.setProgress(ProgressLayout.EXTRACT_COMPONENTS, 0)
+//        ProgressLayout.setProgress(ProgressLayout.EXTRACT_COMPONENTS, 0)
         PojavApplication.sExecutorService.execute {
             try {
                 unpackComponent(ctx, "caciocavallo", false)
@@ -84,7 +84,7 @@ object AsyncAssetManager {
             } catch (e: IOException) {
                 Log.e("AsyncAssetManager", "Failed o unpack components !", e)
             }
-            ProgressLayout.clearProgress(ProgressLayout.EXTRACT_COMPONENTS)
+//            ProgressLayout.clearProgress(ProgressLayout.EXTRACT_COMPONENTS)
         }
     }
 

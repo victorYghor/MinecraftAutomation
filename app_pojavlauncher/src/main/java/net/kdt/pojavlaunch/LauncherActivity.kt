@@ -309,7 +309,7 @@ class LauncherActivity : BaseActivity() {
         // progressLayout
         mInstallTracker = ModloaderInstallTracker(this)
         mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_MINECRAFT)
-        mProgressLayout!!.observe(ProgressLayout.UNPACK_RUNTIME)
+//        mProgressLayout!!.observe(ProgressLayout.UNPACK_RUNTIME)
         mProgressLayout!!.observe(ProgressLayout.INSTALL_MODPACK)
         mProgressLayout!!.observe(ProgressLayout.AUTHENTICATE_MICROSOFT)
         mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_VERSION_LIST)
