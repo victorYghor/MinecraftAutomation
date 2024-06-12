@@ -49,6 +49,7 @@ import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
 import pixelmon.PixelmonProfile
 import pixelmon.SocialMedia
 import pixelmon.Tools.DownloadResult
+import pixelmon.Tools.Timberly
 import pixelmon.Tools.informativeAlertDialog
 import timber.log.Timber
 import java.lang.ref.WeakReference
@@ -151,7 +152,7 @@ class LauncherActivity : BaseActivity() {
     private val mLaunchGameListener = ExtraListener { key: String?, value: Boolean? ->
 
         if (mProgressLayout!!.hasProcesses()) {
-            Log.d("LauncherActivity", "tarefas em andamento")
+            Timber.d("tarefas em andamento")
             Toast.makeText(this, R.string.tasks_ongoing, Toast.LENGTH_LONG).show()
             return@ExtraListener false
         }
@@ -212,12 +213,6 @@ class LauncherActivity : BaseActivity() {
         val viewModel by viewModels<LauncherViewModel> {
             LauncherViewModel.provideFactory(this, this)
         }
-
-//        if(true) {
-//            Timber.plant(Timber.DebugTree())
-//        }
-        Timber.d("testando o timber")
-        Timber.i("testando o timber")
         LauncherPreferences.loadPreferences(this)
 
         setContentView(R.layout.pixelmon_main_activity)

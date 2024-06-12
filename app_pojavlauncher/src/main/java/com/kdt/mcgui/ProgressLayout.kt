@@ -2,7 +2,6 @@ package com.kdt.mcgui
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -12,6 +11,8 @@ import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
 import net.kdt.pojavlaunch.progresskeeper.ProgressListener
 import net.kdt.pojavlaunch.progresskeeper.TaskCountListener
+import pixelmon.Tools.Timberly
+import timber.log.Timber
 
 /**
  * This is a custom layout created with pure java code to show the progress of the app
@@ -115,19 +116,18 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
             post {
                 ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, false)
                 visibility = VISIBLE
-                Log.i("ProgressLayout", "onProgressStarted")
+                Timber.tag(Timberly.downloadProblem).d("onProgressStarted")
             }
         }
 
         /**
-         * O textViw é uma palavra ruim para se referenciar ao progresslayout com o um text view
-         * da questão do progresso da barra é colocado aqui, texto da barra de progresso
          *
          * @param progress
          * @param message
          * @param va
          */
         override fun onProgressUpdated(progress: Int, message: String, vararg va: Any) {
+            Timber.tag(Timberly.downloadProblem).d("the progress is $progress with the message $message ")
             post {
                 progressBarPixelmon!!.progress = progress
                 textLoading!!.text = message
@@ -136,7 +136,7 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
 
         override fun onProgressEnded() {
             post {
-                Log.d("ProgressLayout", "onProgressEnded")
+                Timber.tag(Timberly.downloadProblem).d("onProgressEnded")
                 visibility = GONE
                 // call some function or class that trigger change in the layout for another progress or button like button play
                 // I can do this here or inside the ProgressKeeper
@@ -149,7 +149,6 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
 
     companion object {
         // aqui é basicamento o tipo de carregamento que existe dentro do app
-        // Vê se ficar muito complexo essa parte de carregamento o que pode fazer é fazer um carregamento fake
         // These are the progress keys are the key of the progress in the app
         const val UNPACK_RUNTIME = "unpack_runtime"
         const val DOWNLOAD_MINECRAFT = "download_minecraft"
@@ -175,6 +174,7 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
         /**
          * Update the text and progress content
          */
+        @JvmStatic
         fun setProgress(progressKey: String?, progress: Int, message: String?) {
             setProgress(progressKey, progress, message, "")
         }
@@ -189,6 +189,7 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
             messageString: String?,
             vararg message: Any?
         ) {
+            Timber.tag(Timberly.downloadProblem).d("setProgress was called with $progressKey, $progress, $messageString, $message")
             ProgressKeeper.submitProgress(progressKey, progress, messageString, *message)
         }
 
@@ -197,6 +198,7 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
          */
         @JvmStatic
         fun clearProgress(progressKey: String?) {
+            Timber.tag(Timberly.downloadProblem).d("clearing progress")
             setProgress(progressKey, 100, "")
         }
     }
