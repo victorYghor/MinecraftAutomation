@@ -11,12 +11,15 @@ import net.kdt.pojavlaunch.LauncherViewModel
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
 import pixelmon.SocialMedia
+import pixelmon.Tools.Timberly
+import timber.log.Timber
 
 /**
  * Fragment for selecting the atuhentication method.
  */
 class SelectAuthFragment : Fragment(R.layout.fragment_select_auth_method) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         // Hide the bottom UI elements
         (activity as LauncherActivity).setBottomButtonsVisibility(false)
 
@@ -37,6 +40,7 @@ class SelectAuthFragment : Fragment(R.layout.fragment_select_auth_method) {
             )
         }
         mLocalButton.setOnClickListener {
+            Timber.tag(Timberly.downloadProblem).d("go to local login fragment")
             Tools.swapFragment(
                 requireActivity(),
                 LocalLoginFragment::class.java,

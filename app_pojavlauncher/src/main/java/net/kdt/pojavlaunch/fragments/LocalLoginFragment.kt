@@ -14,16 +14,20 @@ import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import org.apache.commons.io.input.SwappedDataInputStream
+import pixelmon.Tools.Timberly
+import timber.log.Timber
 import java.io.File
 
 class LocalLoginFragment : Fragment(R.layout.fragment_pixelmon_local_login) {
     private lateinit var mUsernameEditText: EditText
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         // Hide the bottom UI elements
         (activity as LauncherActivity).setBottomButtonsVisibility(false)
 
         mUsernameEditText = view.findViewById(R.id.login_edit_email)
         view.findViewById<View>(R.id.login_button).setOnClickListener { v: View? ->
+            Timber.tag(Timberly.downloadProblem).d("got to pixelmon menu fragment")
             ExtraCore.setValue(
                 ExtraConstants.MOJANG_LOGIN_TODO, arrayOf(
                     mUsernameEditText.getText().toString(), ""

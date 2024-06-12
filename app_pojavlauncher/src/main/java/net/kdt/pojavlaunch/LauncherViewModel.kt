@@ -22,7 +22,9 @@ import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import pixelmon.Loading
 import pixelmon.MinecraftAssets
 import pixelmon.PixelmonProfile
+import pixelmon.Tools.Timberly
 import pixelmon.download.Downloader
+import timber.log.Timber
 
 class LauncherViewModel(
     private val context: Context,
@@ -64,8 +66,7 @@ class LauncherViewModel(
     fun setLoadingState(loading: Loading) {
         when (loading) {
             Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE -> {
-                Log.d(TAG, "start the download of mods 1.12")
-
+                Timber.tag(Timberly.downloadProblem).d("start the download of mods 1.12")
                 ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE, 0, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE.messageLoading)
                 val downloadScope = CoroutineScope(Dispatchers.IO)
                 downloadScope.launch {
@@ -73,8 +74,7 @@ class LauncherViewModel(
                     // para que a próxima parte do código começe a rodar
                     mDownloader.value?.downloadModsOneDotTwelve()?.join()
                     LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
-
-                    Log.d(TAG, "finish the download of mods 1.12")
+                    Timber.tag("downloadProblem").d("finish the download of mods 1.12")
                     withContext(Dispatchers.Main) {
                         loadingState.value = Loading.DOWNLOAD_TEXTURE
                     }
@@ -83,6 +83,7 @@ class LauncherViewModel(
             }
 
             Loading.MOVING_FILES -> {
+                Timber.tag(Timberly.downloadProblem).d("start the moving of files")
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true)
                     .commit()
 

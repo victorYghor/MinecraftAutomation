@@ -22,6 +22,7 @@ import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.Tools.read
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import pixelmon.Texture
+import pixelmon.Tools.Timberly
 import pixelmon.Tools.checkFileIntegrity
 import pixelmon.mods.Mod
 import pixelmon.mods.ModFile
@@ -157,7 +158,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
     }
 
     private suspend fun downloadMod(mod: Mod, quantity: Int = 0): Deferred<Long> {
-        Timber.d("Try to download mod %s", mod.name)
+        Timber.tag(Timberly.downloadProblem).d("Try to download mod %s", mod.name)
         val title = "Baixando o mod ${mod.name}"
         File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
         return download(
@@ -177,8 +178,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
     }
 
     suspend fun downloadModsOneDotTwelve(exclude: List<String> = listOf()): Job {
-        Timber.d("the mods downloads start")
-
+        Timber.tag(Timberly.downloadProblem).d("the mods downloads start")
             val mods = if (exclude.isNotEmpty()) {
                 modsOneDotSixteen.filter { !exclude.contains(it.name) }
             } else {
@@ -187,6 +187,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
             return CoroutineScope(Dispatchers.Default).launch {
                 for (mod in mods) {
                     if (mod.name == "Pixelmon") {
+                        Timber.tag(Timberly.downloadProblem).d("Chamando a função de instalar mods para baixar o pixelmon")
                         downloadMod(mod).await()
                     } else {
                         downloadMod(mod, mods.size - 1).await()

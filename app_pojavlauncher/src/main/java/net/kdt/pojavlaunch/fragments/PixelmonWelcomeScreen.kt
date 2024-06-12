@@ -14,6 +14,8 @@ import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.databinding.FragmentPixelmonWelcomeScreenBinding
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import pixelmon.Loading
+import pixelmon.Tools.Timberly
+import timber.log.Timber
 
 /**
  * The first that show. When the user open the app
@@ -30,9 +32,10 @@ class PixelmonWelcomeScreen : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        super.onViewCreated(view, savedInstanceState)
         (activity as LauncherActivity).setBottomButtonsVisibility(false)
         b.btnContinue.setOnClickListener {
+            Timber.tag(Timberly.downloadProblem).d("go to select auth fragtment")
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
             Tools.swapFragment(
                 requireActivity(),
@@ -42,7 +45,6 @@ class PixelmonWelcomeScreen : Fragment() {
                 null
             )
         }
-        super.onViewCreated(view, savedInstanceState)
     }
 
     companion object {
