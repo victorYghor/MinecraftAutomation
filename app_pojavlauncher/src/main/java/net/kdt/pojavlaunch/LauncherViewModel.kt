@@ -38,6 +38,7 @@ class LauncherViewModel(
     val loadingState = MutableLiveData<Loading>()
     val bottomButtonsVisible = MutableLiveData<Boolean>()
     val callPixelmonLoading = MutableLiveData(false)
+    val downloadedOneDotSixteen = MutableLiveData(LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN)
 
     val mDownloader by lazy {
         MutableLiveData(Downloader(context, this))
@@ -45,24 +46,13 @@ class LauncherViewModel(
     private val loadingStateObserver = Observer<Loading> { newLoading ->
         this.setLoadingState(newLoading)
     }
+    private val downloadedOneDotSixteenObserver = Observer<Boolean> { downloaded ->
+        LauncherPreferences.loadPreferences(context)
+    }
 
-    companion object {
-        private const val TAG = "LauncherActivityViewModel"
-        fun provideFactory(
-            context: Context,
-            owner: SavedStateRegistryOwner,
-            defaultArgs: Bundle? = null
-        ): AbstractSavedStateViewModelFactory =
-            object : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(
-                    key: String,
-                    modelClass: Class<T>,
-                    handle: SavedStateHandle
-                ): T {
-                    return LauncherViewModel(context, handle) as T
-                }
-            }
+    init {
+        loadingState.observeForever(loadingStateObserver)
+        downloadedOneDotSixteen.observeForever(downloadedOneDotSixteenObserver)
     }
 
     fun setLoadingState(loading: Loading) {
@@ -108,11 +98,12 @@ class LauncherViewModel(
             }
 
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> TODO()
-            Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> TODO()
+            Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> {
+
+            }
             Loading.SHOW_PLAY_BUTTON -> {
                 ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
             }
-
             Loading.DOWNLOAD_TEXTURE -> {
                 CoroutineScope(Dispatchers.Default).launch {
                     mDownloader.value?.downloadTexture()?.await()
@@ -152,13 +143,26 @@ class LauncherViewModel(
         }
     }
 
-    init {
-        loadingState.observeForever(loadingStateObserver)
-    }
-
     override fun onCleared() {
         super.onCleared()
         loadingState.removeObserver(loadingStateObserver)
     }
-
+    companion object {
+        private const val TAG = "LauncherActivityViewModel"
+        fun provideFactory(
+            context: Context,
+            owner: SavedStateRegistryOwner,
+            defaultArgs: Bundle? = null
+        ): AbstractSavedStateViewModelFactory =
+            object : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(
+                    key: String,
+                    modelClass: Class<T>,
+                    handle: SavedStateHandle
+                ): T {
+                    return LauncherViewModel(context, handle) as T
+                }
+            }
+    }
 }
