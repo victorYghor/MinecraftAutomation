@@ -84,7 +84,7 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         viewModel.bottomButtonsVisible.value = true
 
         LauncherPreferences.loadPreferences(requireContext())
-        setupPixelmonLoading(viewModel)
+        viewModel.setupPixelmonLoading()
 
         val installOneDotSixTeenDialog = AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.install_one_dot_sixteen)
@@ -130,19 +130,9 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
                     View.GONE
                 }
         }
-
-
     }
 
-    private fun setupPixelmonLoading(viewModel: LauncherViewModel) {
-        val getOneDotTwelve = LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE
-        Timber.d("the value of getOneDotTwelve is " + getOneDotTwelve)
-        if (getOneDotTwelve) {
-            ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
-        } else {
-            viewModel.loadingState.value = Loading.MOVING_FILES
-        }
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
