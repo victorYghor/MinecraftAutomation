@@ -72,6 +72,7 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         // handle changes between button play and progress bar
         // Handle the first fragment to show
         val viewModel by viewModels<LauncherViewModel> {
@@ -95,11 +96,8 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
             }
             setPositiveButton(R.string.confirm) { dialog, witch ->
                 // isso inicia o download do forge
-                Thread {
-                    Log.i(TAG, "tentar iniciar o download do pixelmon")
-                    // é necessário colocar run para o codigo funcionar
-                    ForgerDownload(requireContext()).run()
-                }.start()
+                // temp
+                LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_sixteen", true).commit()
                 dialog.cancel()
             }
         }
@@ -121,14 +119,18 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         // temp way to create a progress bar
 //        ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.MOVING_FILES)
         b.btnOpenSelectVersion.setOnClickListener {
-            b.radioGroupSelectVersion.visibility =
-                if (b.radioGroupSelectVersion.visibility == View.GONE) {
-                    toggleArrowIcon()
-                    View.VISIBLE
-                } else {
-                    toggleArrowIcon()
-                    View.GONE
-                }
+            if(viewModel.downloadedOneDotSixteen.value == true) {
+                b.radioGroupSelectVersion.visibility =
+                    if (b.radioGroupSelectVersion.visibility == View.GONE) {
+                        toggleArrowIcon()
+                        View.VISIBLE
+                    } else {
+                        toggleArrowIcon()
+                        View.GONE
+                    }
+            } else {
+                installOneDotSixTeenDialog.show()
+            }
         }
     }
 
