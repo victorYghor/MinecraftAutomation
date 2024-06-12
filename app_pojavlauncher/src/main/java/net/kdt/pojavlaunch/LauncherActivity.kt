@@ -50,6 +50,7 @@ import pixelmon.PixelmonProfile
 import pixelmon.SocialMedia
 import pixelmon.Tools.DownloadResult
 import pixelmon.Tools.informativeAlertDialog
+import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class LauncherActivity : BaseActivity() {
@@ -95,19 +96,6 @@ class LauncherActivity : BaseActivity() {
      */
     private val mDialogAlertDownload = ExtraListener { key: String?, value: List<Int> ->
        informativeAlertDialog(this, value[0], value[1])
-        false
-    }
-    private val mOneDotSixTeenDownloadResult = ExtraListener { key: String?, result: DownloadResult ->
-        when(result) {
-            DownloadResult.SUCCESS -> {
-                // precisa mudar o icone ele precisa ficar com uma setinha para cima aqui
-                LauncherPreferences.DEFAULT_PREF.edit()
-                    .putBoolean("download_one_dot_sixteen", true).commit()
-            }
-            DownloadResult.FAIL -> {
-
-            }
-        }
         false
     }
 
@@ -221,9 +209,15 @@ class LauncherActivity : BaseActivity() {
     private var mRequestNotificationPermissionRunnable: WeakReference<Runnable>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModel by viewModels<LauncherViewModel>{
+        val viewModel by viewModels<LauncherViewModel> {
             LauncherViewModel.provideFactory(this, this)
         }
+
+//        if(true) {
+//            Timber.plant(Timber.DebugTree())
+//        }
+        Timber.d("testando o timber")
+        Timber.i("testando o timber")
         LauncherPreferences.loadPreferences(this)
 
         setContentView(R.layout.pixelmon_main_activity)

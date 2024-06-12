@@ -67,6 +67,7 @@ import org.lwjgl.glfw.CallbackBridge;
 import java.io.File;
 import java.io.IOException;
 import pixelmon.MinecraftAssets;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements ControlButtonMenuListener, EditorExitable, ServiceConnection {
     public static volatile ClipboardManager GLOBAL_CLIPBOARD;
@@ -95,6 +96,12 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean showLog = true;
+        if (showLog) {
+            // initialize timber in application class
+
+        }
+//        Timber.d("testando o timber");
         minecraftProfile = LauncherProfiles.getCurrentProfile();
         MCOptionUtils.load(Tools.getGameDirPath(minecraftProfile).getAbsolutePath());
 
