@@ -11,6 +11,7 @@ import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.utils.ZipUtils
 import pixelmon.SupportFile
 import pixelmon.Tools.DownloadsIds
+import timber.log.Timber
 import java.io.File
 import java.util.zip.ZipFile
 
@@ -27,17 +28,6 @@ class ForgerDownload(private val context: Context): Runnable {
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setDestinationInExternalFilesDir(context, null, ".minecraft/libraries.zip")
         return downloadManager.enqueue(request)
-    }
-    fun unpackLibraries(librariesZipFile: File) {
-        Log.i(TAG, "unpack Libraries")
-        ZipUtils.zipExtract(
-            ZipFile(librariesZipFile),
-            "",
-            File(context.getExternalFilesDir(null), ".minecraft")
-            )
-        librariesZipFile.delete()
-        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_sixteen", true).commit()
-        Log.i(TAG, "finish to unpack libraries of forge")
     }
 
     override fun run() {

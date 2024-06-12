@@ -100,7 +100,6 @@ public class LauncherPreferences {
         SELECT_VERSION_IS_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("select_version_is_one_dot_twelve", true);
         DOWNLOAD_ONE_DOT_SIXTEEN = DEFAULT_PREF.getBoolean("download_one_dot_sixteen", false);
         PREF_FIRST_INSTALLATION = DEFAULT_PREF.getBoolean("first_installation", true);
-
 		PREF_MOUSESPEED = ((float)DEFAULT_PREF.getInt("mousespeed",100))/100f;
 		PREF_HIDE_SIDEBAR = DEFAULT_PREF.getBoolean("hideSidebar", false);
 		PREF_IGNORE_NOTCH = DEFAULT_PREF.getBoolean("ignoreNotch", false);
