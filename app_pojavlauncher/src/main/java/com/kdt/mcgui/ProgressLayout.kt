@@ -190,7 +190,6 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
             messageString: String?,
             vararg message: Any?
         ) {
-            Timber.tag(Timberly.downloadProblem).d("setProgress was called with $progressKey, $progress, $messageString, $message")
             ProgressKeeper.submitProgress(progressKey, progress, messageString, *message)
         }
 

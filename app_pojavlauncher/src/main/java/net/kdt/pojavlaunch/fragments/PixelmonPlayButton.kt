@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.databinding.FragmentPixelmonPlayButtonBinding
+import timber.log.Timber
 
 
 /**
@@ -31,7 +32,7 @@ class PixelmonPlayButton : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         b.btnPlay.setOnClickListener {
-            Log.d("PixelmonPlayButton", "Play button clicked")
+            Timber.d("Play button clicked")
         }
     }
 }

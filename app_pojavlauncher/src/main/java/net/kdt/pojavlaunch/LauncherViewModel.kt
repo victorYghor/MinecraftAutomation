@@ -37,6 +37,7 @@ class LauncherViewModel(
      */
     val loadingState = MutableLiveData<Loading>()
     val bottomButtonsVisible = MutableLiveData<Boolean>()
+    val callPixelmonLoading = MutableLiveData(false)
 
     val mDownloader by lazy {
         MutableLiveData(Downloader(context, this))
@@ -63,17 +64,23 @@ class LauncherViewModel(
                 }
             }
     }
+
     fun setLoadingState(loading: Loading) {
         when (loading) {
             Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE -> {
                 Timber.tag(Timberly.downloadProblem).d("start the download of mods 1.12")
-                ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE, 0, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE.messageLoading)
+                ProgressLayout.setProgress(
+                    ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
+                    0,
+                    Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE.messageLoading
+                )
                 val downloadScope = CoroutineScope(Dispatchers.IO)
                 downloadScope.launch {
                     // espera ate que o download dos mods seja completo
                     // para que a próxima parte do código começe a rodar
                     mDownloader.value?.downloadModsOneDotTwelve()?.join()
-                    LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
+                    LauncherPreferences.DEFAULT_PREF.edit()
+                        .putBoolean("download_mod_one_dot_twelve", true).commit()
                     Timber.tag("downloadProblem").d("finish the download of mods 1.12")
                     withContext(Dispatchers.Main) {
                         loadingState.value = Loading.DOWNLOAD_TEXTURE
@@ -99,30 +106,50 @@ class LauncherViewModel(
                 }
                 return
             }
+
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> TODO()
             Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> TODO()
             Loading.SHOW_PLAY_BUTTON -> {
                 ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
             }
+
             Loading.DOWNLOAD_TEXTURE -> {
                 CoroutineScope(Dispatchers.Default).launch {
                     mDownloader.value?.downloadTexture()?.await()
-                    LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_texture", true).commit()
+                    LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_texture", true)
+                        .commit()
                 }
                 return
             }
         }
 
     }
+
     fun changeProfile(ctx: Context, pixelmonProfile: PixelmonProfile) {
         Log.w(TAG, "select the correct option")
         LauncherPreferences.DEFAULT_PREF.edit()
             .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, pixelmonProfile.key)
             .commit()
         LauncherPreferences.loadPreferences(ctx)
-        val profile = LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, "")
+        val profile = LauncherPreferences.DEFAULT_PREF.getString(
+            LauncherPreferences.PREF_KEY_CURRENT_PROFILE,
+            ""
+        )
         Log.w(TAG, "The current profile is $profile")
         LauncherProfiles.load()
+    }
+
+     fun setupPixelmonLoading() {
+        if (callPixelmonLoading.value == false) {
+            val getOneDotTwelve = LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE
+            Timber.d("the value of getOneDotTwelve is " + getOneDotTwelve)
+            if (getOneDotTwelve) {
+                ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
+            } else {
+                this.loadingState.value = Loading.MOVING_FILES
+            }
+            callPixelmonLoading.value = true
+        }
     }
 
     init {
