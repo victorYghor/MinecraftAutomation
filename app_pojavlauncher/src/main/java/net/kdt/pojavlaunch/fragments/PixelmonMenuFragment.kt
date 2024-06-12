@@ -24,7 +24,9 @@ import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.prefs.screens.LauncherPreferenceFragment
+import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
 import pixelmon.Loading
+import pixelmon.PixelmonProfile
 import pixelmon.SocialMedia
 import pixelmon.forge.ForgerDownload
 import timber.log.Timber
@@ -95,18 +97,19 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
                 dialog.cancel()
             }
             setPositiveButton(R.string.confirm) { dialog, witch ->
-                // isso inicia o download do forge
-                // temp
-                LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_sixteen", true).commit()
+                // começar o download das bilbliotecas do minecraft 1.16
+                viewModel.loadingState.value = Loading.DOWNLOAD_ONE_DOT_SIXTEEN
                 dialog.cancel()
             }
         }
         b.radioBtnVersion112.setOnCheckedChangeListener { buttonView, checked ->
             toggleVersionSelectPreference(checked)
+            viewModel.changeProfile(requireContext(), PixelmonProfile.idForgeOneDot12)
             Timber.d("the select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
         }
         b.radioBtnVersion116.setOnCheckedChangeListener { buttonView, checked ->
             toggleVersionSelectPreference(!checked)
+            viewModel.changeProfile(requireContext(), PixelmonProfile.idForgeOneDot16)
             Timber.d("the select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
         }
         b.btnOpenSelectVersion.apply {
@@ -119,17 +122,21 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         // temp way to create a progress bar
 //        ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.MOVING_FILES)
         b.btnOpenSelectVersion.setOnClickListener {
-            if(viewModel.downloadedOneDotSixteen.value == true) {
-                b.radioGroupSelectVersion.visibility =
-                    if (b.radioGroupSelectVersion.visibility == View.GONE) {
-                        toggleArrowIcon()
-                        View.VISIBLE
-                    } else {
-                        toggleArrowIcon()
-                        View.GONE
-                    }
+            if(ProgressKeeper.hasOngoingTasks()) {
+                Toast.makeText(requireContext(), "Existem processo em andamento por favor espere", Toast.LENGTH_LONG).show()
             } else {
-                installOneDotSixTeenDialog.show()
+                if(viewModel.downloadedOneDotSixteen.value == true) {
+                    b.radioGroupSelectVersion.visibility =
+                        if (b.radioGroupSelectVersion.visibility == View.GONE) {
+                            toggleArrowIcon()
+                            View.VISIBLE
+                        } else {
+                            toggleArrowIcon()
+                            View.GONE
+                        }
+                } else {
+                    installOneDotSixTeenDialog.show()
+                }
             }
         }
     }

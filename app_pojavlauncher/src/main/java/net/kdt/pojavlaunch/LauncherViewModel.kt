@@ -15,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.kdt.pojavlaunch.Tools.read
 import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
@@ -22,9 +23,15 @@ import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import pixelmon.Loading
 import pixelmon.MinecraftAssets
 import pixelmon.PixelmonProfile
+import pixelmon.SupportFile
 import pixelmon.Tools.Timberly
+import pixelmon.Tools.checkFileIntegrity
+import pixelmon.Tools.deleteDirecoty
+import pixelmon.Tools.md5
 import pixelmon.download.Downloader
+import pixelmon.forge.ForgerDownload
 import timber.log.Timber
+import java.io.File
 
 class LauncherViewModel(
     private val context: Context,
@@ -38,6 +45,9 @@ class LauncherViewModel(
     val loadingState = MutableLiveData<Loading>()
     val bottomButtonsVisible = MutableLiveData<Boolean>()
     val callPixelmonLoading = MutableLiveData(false)
+    /**
+     * this will be trigger when the app complete download the version 1.16 and then this will possible the user choose the version of forge that want to play
+     */
     val downloadedOneDotSixteen = MutableLiveData(LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN)
 
     val mDownloader by lazy {
@@ -46,7 +56,14 @@ class LauncherViewModel(
     private val loadingStateObserver = Observer<Loading> { newLoading ->
         this.setLoadingState(newLoading)
     }
+
+    /**
+     * Use this for showing if one dot sixteen already was downloaded, don't use the shared preferences
+     * this will update de shared preferences when the value changed
+     */
     private val downloadedOneDotSixteenObserver = Observer<Boolean> { downloaded ->
+        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_sixteen", downloaded)
+            .commit()
         LauncherPreferences.loadPreferences(context)
     }
 
@@ -78,9 +95,7 @@ class LauncherViewModel(
                 }
                 return
             }
-
             Loading.MOVING_FILES -> {
-                Timber.tag(Timberly.downloadProblem).d("start the moving of files")
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true)
                     .commit()
 
@@ -96,13 +111,38 @@ class LauncherViewModel(
                 }
                 return
             }
+            Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
 
-            Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> TODO()
+            }
             Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        mDownloader.value?.downloadOneDotSixteen()?.await()
+                        // tudo isso precisa ser feito quando o download for concluido
+                        // aqui é necessário verificar integridade do download
+                        // se estiver tudo bem com o download ele deve continuar se não um pop up deve aparecer para visar isso ao usuário
+                        val librariesZipFile = File(context.getExternalFilesDir(null), ".minecraft/libraries.zip")
+                        // pegando a referencia da bliblioteca no formato json.
+                        val libraryFile = Tools.GLOBAL_GSON.fromJson(
+                            read(context.assets.open("support-files.json")),
+                            SupportFile::class.java
+                        )
+                        val integrity = checkFileIntegrity(context, librariesZipFile.md5(), libraryFile.md5)
+                        Timber.tag(TAG).d("integrity of the file is " + integrity)
+                        // se o arquivo não tiver intregidade eu preciso avisar para o usuário que houve um problema
+                        // com um arquivo deletar ele e perdir para ele fazer o download novamente
+                        deleteDirecoty(File(context.getExternalFilesDir(null), ".minecraft/libraries"))
+                        mDownloader.value?.unpackLibraries(librariesZipFile)
 
+                        downloadedOneDotSixteen.value = true
+
+                        // change of loading state here
+                    }
+                loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN
+                return
             }
             Loading.SHOW_PLAY_BUTTON -> {
                 ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
+                return
             }
             Loading.DOWNLOAD_TEXTURE -> {
                 CoroutineScope(Dispatchers.Default).launch {
