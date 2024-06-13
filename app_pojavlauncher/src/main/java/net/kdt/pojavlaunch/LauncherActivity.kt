@@ -46,11 +46,11 @@ import net.kdt.pojavlaunch.tasks.MinecraftDownloader
 import net.kdt.pojavlaunch.utils.NotificationUtils
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
-import pixelmon.PixelmonProfile
 import pixelmon.SocialMedia
 import pixelmon.Tools.DownloadResult
 import pixelmon.Tools.Timberly
 import pixelmon.Tools.informativeAlertDialog
+import pixelmon.mods.PixelmonVersion
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
@@ -318,9 +318,11 @@ class LauncherActivity : BaseActivity() {
         LauncherPreferences.loadPreferences(this)
 
         insertProfiles()
-        viewModel.changeProfile(this, PixelmonProfile.idForgeOneDot12)
     }
 
+    /**
+     * Insert the profiles from the assets to the game folder
+     */
     private fun insertProfiles() {
         val profiles = this.assets.open("launcher_profiles.json").readBytes()
         Tools.write(

@@ -1,34 +1,22 @@
 package net.kdt.pojavlaunch.fragments
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.kdt.mcgui.ProgressLayout
 import net.kdt.pojavlaunch.LauncherActivity
 import net.kdt.pojavlaunch.LauncherViewModel
 import net.kdt.pojavlaunch.R
-import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.databinding.PixelmonHomeBinding
-import net.kdt.pojavlaunch.extra.ExtraConstants
-import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
-import net.kdt.pojavlaunch.prefs.screens.LauncherPreferenceFragment
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
 import pixelmon.Loading
-import pixelmon.PixelmonProfile
-import pixelmon.SocialMedia
-import pixelmon.forge.ForgerDownload
+import pixelmon.mods.PixelmonVersion
 import timber.log.Timber
 
 class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
@@ -104,19 +92,23 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         }
         b.radioBtnVersion112.setOnCheckedChangeListener { buttonView, checked ->
             toggleVersionSelectPreference(checked)
-            viewModel.changeProfile(requireContext(), PixelmonProfile.idForgeOneDot12)
+            viewModel.changeProfile(requireContext(), PixelmonVersion.OneDotTwelve)
             Timber.d("the select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
         }
         b.radioBtnVersion116.setOnCheckedChangeListener { buttonView, checked ->
             toggleVersionSelectPreference(!checked)
-            viewModel.changeProfile(requireContext(), PixelmonProfile.idForgeOneDot16)
+            viewModel.changeProfile(requireContext(), PixelmonVersion.OneDotTwelve)
             Timber.d("the select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
         }
         b.btnOpenSelectVersion.apply {
-            text =
+            // primeiro irei verificar se ele já terminou de baixar tudo que é necessário ai eu aplico essa logica o botão
+            text = if(viewModel.downloadModOneDotSixteen.value == true) {
                 if (LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE) getString(R.string.pixelmon_1_12_2) else getString(
                     R.string.pixelmon_1_16_5
                 )
+            } else {
+                context.getString(R.string.baixar_a_vers_o_1_16)
+            }
         }
 
         // temp way to create a progress bar
@@ -125,7 +117,7 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
             if(ProgressKeeper.hasOngoingTasks()) {
                 Toast.makeText(requireContext(), "Existem processo em andamento por favor espere", Toast.LENGTH_LONG).show()
             } else {
-                if(viewModel.downloadedOneDotSixteen.value == true) {
+                if(viewModel.downloadOneDotSixteen.value == true) {
                     b.radioGroupSelectVersion.visibility =
                         if (b.radioGroupSelectVersion.visibility == View.GONE) {
                             toggleArrowIcon()
