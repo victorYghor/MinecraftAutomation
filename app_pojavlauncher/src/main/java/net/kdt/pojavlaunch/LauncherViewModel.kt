@@ -22,14 +22,13 @@ import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import pixelmon.Loading
 import pixelmon.MinecraftAssets
-import pixelmon.PixelmonProfile
 import pixelmon.SupportFile
 import pixelmon.Tools.Timberly
 import pixelmon.Tools.checkFileIntegrity
 import pixelmon.Tools.deleteDirecoty
 import pixelmon.Tools.md5
 import pixelmon.download.Downloader
-import pixelmon.forge.ForgerDownload
+import pixelmon.mods.PixelmonVersion
 import timber.log.Timber
 import java.io.File
 
@@ -45,33 +44,38 @@ class LauncherViewModel(
     val loadingState = MutableLiveData<Loading>()
     val bottomButtonsVisible = MutableLiveData<Boolean>()
     val callPixelmonLoading = MutableLiveData(false)
+    val selectedPixelmonVersion = MutableLiveData(PixelmonVersion.OneDotTwelve)
     /**
      * this will be trigger when the app complete download the version 1.16 and then this will
      * possible the user choose the version of forge that want to play
      * this value need to be change insider the Discpatchers.Main
      */
-    val downloadedOneDotSixteen = MutableLiveData(LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN)
-
+    val downloadOneDotSixteen = MutableLiveData(LauncherPreferences.DOWNLOAD_ONE_DOT_SIXTEEN)
+    val downloadModOneDotSixteen = MutableLiveData(LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_SIXTEEN)
     val mDownloader by lazy {
         MutableLiveData(Downloader(context, this))
     }
     private val loadingStateObserver = Observer<Loading> { newLoading ->
         this.setLoadingState(newLoading)
     }
-
     /**
      * Use this for showing if one dot sixteen already was downloaded, don't use the shared preferences
      * this will update de shared preferences when the value changed
      */
-    private val downloadedOneDotSixteenObserver = Observer<Boolean> { downloaded ->
+    private val downloadOneDotSixteenObserver = Observer<Boolean> { downloaded ->
         LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_sixteen", downloaded)
             .commit()
+        LauncherPreferences.loadPreferences(context)
+    }
+    private val downloadModOneDotSixteenObserver = Observer<Boolean> { downloaded ->
+        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_sixteen", downloaded).commit()
         LauncherPreferences.loadPreferences(context)
     }
 
     init {
         loadingState.observeForever(loadingStateObserver)
-        downloadedOneDotSixteen.observeForever(downloadedOneDotSixteenObserver)
+        downloadOneDotSixteen.observeForever(downloadOneDotSixteenObserver)
+        downloadModOneDotSixteen.observeForever(downloadModOneDotSixteenObserver)
     }
 
     fun setLoadingState(loading: Loading) {
@@ -100,7 +104,6 @@ class LauncherViewModel(
             Loading.MOVING_FILES -> {
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true)
                     .commit()
-
                 ProgressLayout.setProgress(
                     ProgressLayout.MOVING_FILES,
                     0,
@@ -114,12 +117,14 @@ class LauncherViewModel(
                 return
             }
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
-//                CoroutineScope(Dispatchers.IO).launch {
-//                    mDownloader.value?.downloadOneDotSixteen()?.await()
-//                    LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_sixteen", true).commit()
-//
-//                }
-
+                CoroutineScope(Dispatchers.IO).launch {
+                    mDownloader.value?.downloadModsOneDotSixteen()?.join()
+                    withContext(Dispatchers.Main) {
+                        downloadModOneDotSixteen.value = true
+                        loadingState.value = Loading.SHOW_PLAY_BUTTON
+                    }
+                }
+                return
             }
             Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> {
                     CoroutineScope(Dispatchers.IO).launch {
@@ -134,13 +139,13 @@ class LauncherViewModel(
                             SupportFile::class.java
                         )
                         val integrity = checkFileIntegrity(context, librariesZipFile.md5(), libraryFile.md5)
-                        Timber.tag(TAG).d("integrity of the file is " + integrity)
+                        Timber.d("integrity of the file is " + integrity)
                         // se o arquivo não tiver intregidade eu preciso avisar para o usuário que houve um problema
                         // com um arquivo deletar ele e perdir para ele fazer o download novamente
                         deleteDirecoty(File(context.getExternalFilesDir(null), ".minecraft/libraries"))
                         mDownloader.value?.unpackLibraries(librariesZipFile)
                         withContext(Dispatchers.Main) {
-                            downloadedOneDotSixteen.value = true
+                            downloadOneDotSixteen.value = true
                             loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN
                         }
                     }
@@ -162,18 +167,21 @@ class LauncherViewModel(
 
     }
 
-    fun changeProfile(ctx: Context, pixelmonProfile: PixelmonProfile) {
-        Log.w(TAG, "select the correct option")
+    fun changeProfile(ctx: Context, pixelmonVersion: PixelmonVersion) {
+        Timber.w("select the correct option")
         LauncherPreferences.DEFAULT_PREF.edit()
-            .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, pixelmonProfile.key)
+            .putString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, pixelmonVersion.key)
             .commit()
         LauncherPreferences.loadPreferences(ctx)
         val profile = LauncherPreferences.DEFAULT_PREF.getString(
             LauncherPreferences.PREF_KEY_CURRENT_PROFILE,
             ""
         )
-        Log.w(TAG, "The current profile is $profile")
+        Timber.w("The current profile is " + profile)
         LauncherProfiles.load()
+    }
+    fun renameModsFiles(ctx: Context, modVersion: PixelmonVersion) {
+
     }
 
      fun setupPixelmonLoading() {
@@ -194,7 +202,6 @@ class LauncherViewModel(
         loadingState.removeObserver(loadingStateObserver)
     }
     companion object {
-        private const val TAG = "LauncherActivityViewModel"
         fun provideFactory(
             context: Context,
             owner: SavedStateRegistryOwner,

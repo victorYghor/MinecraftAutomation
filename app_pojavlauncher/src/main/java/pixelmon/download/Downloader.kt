@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toUri
 import com.kdt.mcgui.ProgressLayout
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +17,6 @@ import kotlinx.coroutines.launch
 import net.kdt.pojavlaunch.LauncherViewModel
 import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.Tools.read
-import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.utils.ZipUtils
 import pixelmon.SupportFile
 import pixelmon.Texture
@@ -26,7 +24,7 @@ import pixelmon.Tools.Timberly
 import pixelmon.Tools.checkFileIntegrity
 import pixelmon.mods.Mod
 import pixelmon.mods.ModFile
-import pixelmon.mods.ModVersion
+import pixelmon.mods.PixelmonVersion
 import timber.log.Timber
 import java.io.File
 import java.util.zip.ZipFile
@@ -51,16 +49,13 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
     val modsOneDotSixteen = Tools.GLOBAL_GSON.fromJson(
         read(context.assets.open("mods-1.16.json")), ModFile::class.java
     ).mods
-    private val pixelmonTexture = Texture(
-        url = "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/files/resourcepacks/Texturas.zip",
-        fileName = "Texturas.zip",
-        name = "Textura do pixelmon Brasil"
+    private val pixelmonTexture = Tools.GLOBAL_GSON.fromJson(
+        read(context.assets.open("texture.json")), Texture::class.java
     )
     private val libraries = Tools.GLOBAL_GSON.fromJson(
         read(context.assets.open("support-files.json")),
         SupportFile::class.java
     )
-
 
     /** Indicate that we would like to update download progress */
     private val UPDATE_DOWNLOAD_PROGRESS = 1
@@ -72,7 +67,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
      *
      */
     @SuppressLint("Range")
-    suspend fun download(
+    suspend fun download (
         uri: Uri,
         title: String,
         quantity: Int = 0,
@@ -164,6 +159,22 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
         }
         id
     }
+    private suspend fun downloadMod(
+        mod: Mod,
+        quantity: Int = 0,
+        modVersion: PixelmonVersion
+    ): Deferred<Long> {
+        Timber.tag(Timberly.downloadProblem).d("Try to download mod %s", mod.name)
+        val title = "Baixando o mod ${mod.name}"
+        val fileName = mod.artifact.fileName
+        return download(
+            uri = mod.artifact.url.toUri(),
+            title = title,
+            quantity = quantity,
+            subPath = (if(modVersion == PixelmonVersion.OneDotSixteen) modVersion.path else ".minecraft/mods") + "/" + fileName
+        )
+    }
+
     suspend fun downloadOneDotSixteen(): Deferred<Long> {
         val title = "Instalando arquivos necessários para a 1.16"
         return download(
@@ -173,30 +184,19 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
             quantity = 0
         )
     }
-    private suspend fun downloadMod(mod: Mod, quantity: Int = 0): Deferred<Long> {
-        Timber.tag(Timberly.downloadProblem).d("Try to download mod %s", mod.name)
-        val title = "Baixando o mod ${mod.name}"
-        File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
-        val fileName = mod.artifact.fileName
-        return download(
-            uri = mod.artifact.url.toUri(),
-            title = title,
-            quantity = quantity,
-            subPath = ".minecraft/mods/$fileName"
-        )
-    }
+
     suspend fun downloadTexture(): Deferred<Long> {
         val texture = pixelmonTexture
         Timber.d("Straing downloading texture " + texture.name)
         val title = "Baixando ${texture.name}"
         File(context.getExternalFilesDir(null), ".minecraft/resourcepacks").mkdirs()
-        val fileName = texture.fileName
         return download(
             uri = texture.url.toUri(),
             title = title,
-            subPath = ".minecraft/mods/$fileName"
+            subPath = ".minecraft/mods/${texture.fileName}"
         )
     }
+
     suspend fun downloadModsOneDotTwelve(exclude: List<String> = listOf()): Job {
         val mods = if (exclude.isNotEmpty()) {
             modsOneDotSixteen.filter { !exclude.contains(it.name) }
@@ -206,34 +206,39 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
         return CoroutineScope(Dispatchers.Default).launch {
             for (mod in mods) {
                 if (mod.name == "Pixelmon") {
-                    Timber.tag(Timberly.downloadProblem).d("Chamando a função de instalar mods para baixar o pixelmon")
-                    downloadMod(mod).await()
+                    Timber.tag(Timberly.downloadProblem)
+                        .d("Chamando a função de instalar mods para baixar o pixelmon")
+                    downloadMod(mod, modVersion = PixelmonVersion.OneDotTwelve).await()
                 } else {
-                    downloadMod(mod, mods.size - 1).await()
+                    downloadMod(mod, mods.size - 1, modVersion = PixelmonVersion.OneDotTwelve).await()
                 }
             }
-            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true)
-                .commit()
         }
 //        Log.i(TAG, "The value of checkFilesIntegrity is ${checkModsIntegrity(ModVersion.OneDotTwelve)}")
     }
-    suspend fun downloadModOneDotSixteen() {
-        Log.i(TAG, "the mods 1.16 will strat")
-//        Log.i(TAG, "The value of checkFilesInregrity is ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
-        if (!LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_SIXTEEN) {
-            val essentialMods = listOf("MultiplayerMode", "lazydfu", "pixelmon")
-            val mods = modsOneDotSixteen.filter { essentialMods.contains(it.name) }
-            mods.forEach { downloadMod(it) }
-            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_sixteen", true)
-                .commit()
+
+    suspend fun downloadModsOneDotSixteen(): Job {
+        File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.path).mkdirs()
+        val essentialMods = listOf("MultiplayerMode", "lazydfu", "pixelmon")
+        val mods = modsOneDotSixteen.filter { essentialMods.contains(it.name) }
+        return CoroutineScope(Dispatchers.Default).launch {
+            for (mod in mods) {
+                    if (mod.name == "Pixelmon") {
+                        downloadMod(mod, modVersion = PixelmonVersion.OneDotSixteen).await()
+                    } else {
+                        downloadMod(mod, mods.size - 1, modVersion = PixelmonVersion.OneDotSixteen).await()
+                    }
+            }
         }
 //        Log.i(TAG, "checkFilesIntegrity = ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
     }
-    private fun checkModsIntegrity(modVersion: ModVersion): Boolean {
+
+    private fun checkModsIntegrity(modVersion: PixelmonVersion): Boolean {
+        // this need to be fixed will use different path for mods
         val mods = File(context.getExternalFilesDir(null), "./minecraft/mods")
         for (file in mods.list()) {
             val path = "./minecraft/mods/$file"
-            val mod = if (modVersion == ModVersion.OneDotSixteen) {
+            val mod = if (modVersion == PixelmonVersion.OneDotSixteen) {
                 modsOneDotSixteen.find { it.artifact.fileName == file }
             } else {
                 modsOneDotSixteen.find { it.artifact.fileName == file }
@@ -242,6 +247,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
         }
         return true
     }
+
     fun unpackLibraries(librariesZipFile: File) {
         Timber.tag(TAG).i("unpack Libraries")
         ZipUtils.zipExtract(
