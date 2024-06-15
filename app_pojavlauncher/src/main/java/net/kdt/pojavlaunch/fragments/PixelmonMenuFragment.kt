@@ -85,17 +85,31 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         }
 
         b.radioBtnVersion112.setOnCheckedChangeListener { buttonView, checked ->
-            viewModel.selectedPixelmonVersion.value = PixelmonVersion.OneDotTwelve
-            b.btnOpenSelectVersion.text = getString(R.string.pixelmon_1_12_2)
-            Timber.d("one dot twelve select select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
+            if(checked) {
+                viewModel.selectedPixelmonVersion.value = PixelmonVersion.OneDotTwelve
+                b.btnOpenSelectVersion.text = getString(R.string.pixelmon_1_12_2)
+                Timber.d("one dot twelve select select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
+            }
         }
         b.radioBtnVersion116.setOnCheckedChangeListener { buttonView, checked ->
-            viewModel.selectedPixelmonVersion.value = PixelmonVersion.OneDotSixteen
-            b.btnOpenSelectVersion.text = getString(R.string.pixelmon_1_16_5)
-            Timber.d("one dot sixteen select select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
+            if(checked) {
+                viewModel.selectedPixelmonVersion.value = PixelmonVersion.OneDotSixteen
+                b.btnOpenSelectVersion.text = getString(R.string.pixelmon_1_16_5)
+                Timber.d("one dot sixteen select select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
+            }
         }
         if (viewModel.downloadModOneDotSixteen.value == false) {
             b.btnOpenSelectVersion.text = context?.getString(R.string.baixar_a_vers_o_1_16)
+        } else {
+            when(viewModel.selectedPixelmonVersion.value) {
+                PixelmonVersion.OneDotTwelve -> {
+                    b.btnOpenSelectVersion.text = getString(R.string.pixelmon_1_12_2)
+                }
+                PixelmonVersion.OneDotSixteen -> {
+                    b.btnOpenSelectVersion.text = getString(R.string.pixelmon_1_16_5)
+                }
+                else -> {}
+            }
         }
 
         // temp way to create a progress bar
