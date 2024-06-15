@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
+import android.widget.ProgressBar
 import androidx.core.net.toUri
 import com.kdt.mcgui.ProgressLayout
 import kotlinx.coroutines.CoroutineScope
@@ -67,7 +68,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
      *
      */
     @SuppressLint("Range")
-    suspend fun download (
+    suspend fun download(
         uri: Uri,
         title: String,
         quantity: Int = 0,
@@ -121,11 +122,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                             if (quantity == 0) {
                                 currentProgress = 100.0
                                 isDownloadFinished = true
-                                ProgressLayout.setProgress(
-                                    ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
-                                    currentProgress.toCeilInt(),
-                                    title
-                                )
+                                ProgressLayout.clearProgress(ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE)
                                 currentProgress = 0.0
                             } else {
                                 if (currentProgress == 0.0) {
@@ -146,11 +143,9 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                                 }
                             }
                         }
-
                         DownloadManager.STATUS_PAUSED, DownloadManager.STATUS_PENDING -> {}
                         DownloadManager.STATUS_FAILED -> {
                             isDownloadFinished = true
-                            Timber
                             //todo avisar que o download falhou e pedir para o usuário começar de novo o processo de carregamento
                         }
                     }
@@ -159,6 +154,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
         }
         id
     }
+
     private suspend fun downloadMod(
         mod: Mod,
         quantity: Int = 0,
@@ -171,7 +167,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
             uri = mod.artifact.url.toUri(),
             title = title,
             quantity = quantity,
-            subPath = (if(modVersion == PixelmonVersion.OneDotSixteen) modVersion.path else ".minecraft/mods") + "/" + fileName
+            subPath = (if (modVersion == PixelmonVersion.OneDotSixteen) modVersion.path else ".minecraft/mods") + "/" + fileName
         )
     }
 
@@ -206,11 +202,13 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
         return CoroutineScope(Dispatchers.Default).launch {
             for (mod in mods) {
                 if (mod.name == "Pixelmon") {
-                    Timber.tag(Timberly.downloadProblem)
-                        .d("Chamando a função de instalar mods para baixar o pixelmon")
                     downloadMod(mod, modVersion = PixelmonVersion.OneDotTwelve).await()
                 } else {
-                    downloadMod(mod, mods.size - 1, modVersion = PixelmonVersion.OneDotTwelve).await()
+                    downloadMod(
+                        mod,
+                        mods.size - 1,
+                        modVersion = PixelmonVersion.OneDotTwelve
+                    ).await()
                 }
             }
         }
@@ -219,15 +217,25 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
 
     suspend fun downloadModsOneDotSixteen(): Job {
         File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.path).mkdirs()
-        val essentialMods = listOf("MultiplayerMode", "lazydfu", "pixelmon")
+        val essentialMods = listOf("MultiplayerMode", "lazydfu", "Pixelmon")
         val mods = modsOneDotSixteen.filter { essentialMods.contains(it.name) }
         return CoroutineScope(Dispatchers.Default).launch {
             for (mod in mods) {
-                    if (mod.name == "Pixelmon") {
-                        downloadMod(mod, modVersion = PixelmonVersion.OneDotSixteen).await()
-                    } else {
-                        downloadMod(mod, mods.size - 1, modVersion = PixelmonVersion.OneDotSixteen).await()
-                    }
+                if (mod.name == "Pixelmon") {
+                    downloadMod(mod, modVersion = PixelmonVersion.OneDotSixteen).await()
+                } else {
+                    val title = "Baixando o mod ${mod.name}"
+                    ProgressLayout.setProgress(
+                        ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
+                        0,
+                        title
+                    )
+                    downloadMod(
+                        mod,
+                        mods.size - 1,
+                        modVersion = PixelmonVersion.OneDotSixteen
+                    ).await()
+                }
             }
         }
 //        Log.i(TAG, "checkFilesIntegrity = ${checkModsIntegrity(ModVersion.OneDotSixteen)}")
@@ -259,4 +267,44 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
         Timber.tag(TAG).i("finish to unpack libraries of forge")
     }
 
+    /**
+     * this will copy texture in the mods folder and put in the modsOneDotSixteen folder
+     * this function only can be called when you already download the pixelmon texture
+     */
+     fun putTextureInOneDotSixteen(): Job {
+        val textureFile =
+            File(context.getExternalFilesDir(null), ".minecraft/mods/${pixelmonTexture.fileName}")
+        // criar a pasta modsOneDotSixteen
+        val modsOneDotSixteenDir =
+            File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.path)
+        modsOneDotSixteenDir.mkdirs()
+
+        // cria o arquivo onde ira o a textura
+        val outFile = File(
+            context.getExternalFilesDir(null),
+            "${PixelmonVersion.OneDotSixteen.path}/${pixelmonTexture.fileName}"
+        )
+        val inputFile = textureFile.inputStream()
+        return CoroutineScope(Dispatchers.IO).launch(start = CoroutineStart.LAZY) {
+            ProgressLayout.setProgress(
+                ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
+                0,
+                "copiando a textura"
+            )
+            inputFile.use { input ->
+                Timber.d("the size of the texture is input = ${input.readBytes().size}")
+                val quanityOfBytes = inputFile.readBytes().size
+                var count = 0.0
+                for(byte in input.readBytes()) {
+                    val progress = (++count / quanityOfBytes.toDouble() * 100).toCeilInt()
+                    ProgressLayout.setProgress(
+                        ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
+                        progress,
+                        "copiando a textura"
+                    )
+                    outFile.appendBytes(byteArrayOf(byte))
+                }
+            }
+        }
+    }
 }

@@ -19,6 +19,7 @@ import pixelmon.Loading
 import pixelmon.mods.PixelmonVersion
 import timber.log.Timber
 
+@Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
 class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
     companion object {
         const val TAG = "PixelmonMenuFragment"
@@ -27,9 +28,7 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
     var _binding: PixelmonHomeBinding? = null
     val b get() = _binding!!
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = PixelmonHomeBinding.inflate(layoutInflater, container, false)
         return b.root
@@ -53,12 +52,6 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         }
     }
 
-    fun toggleVersionSelectPreference(checked: Boolean) {
-        LauncherPreferences.DEFAULT_PREF.edit().putBoolean(
-            "select_version_is_one_dot_twelve",
-            checked
-        ).commit()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -90,34 +83,32 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
                 dialog.cancel()
             }
         }
+
         b.radioBtnVersion112.setOnCheckedChangeListener { buttonView, checked ->
-            toggleVersionSelectPreference(checked)
-            viewModel.changeProfile(requireContext(), PixelmonVersion.OneDotTwelve)
-            Timber.d("the select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
+            viewModel.selectedPixelmonVersion.value = PixelmonVersion.OneDotTwelve
+            b.btnOpenSelectVersion.text = getString(R.string.pixelmon_1_12_2)
+            Timber.d("one dot twelve select select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
         }
         b.radioBtnVersion116.setOnCheckedChangeListener { buttonView, checked ->
-            toggleVersionSelectPreference(!checked)
-            viewModel.changeProfile(requireContext(), PixelmonVersion.OneDotTwelve)
-            Timber.d("the select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
+            viewModel.selectedPixelmonVersion.value = PixelmonVersion.OneDotSixteen
+            b.btnOpenSelectVersion.text = getString(R.string.pixelmon_1_16_5)
+            Timber.d("one dot sixteen select select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
         }
-        b.btnOpenSelectVersion.apply {
-            // primeiro irei verificar se ele já terminou de baixar tudo que é necessário ai eu aplico essa logica o botão
-            text = if(viewModel.downloadModOneDotSixteen.value == true) {
-                if (LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE) getString(R.string.pixelmon_1_12_2) else getString(
-                    R.string.pixelmon_1_16_5
-                )
-            } else {
-                context.getString(R.string.baixar_a_vers_o_1_16)
-            }
+        if (viewModel.downloadModOneDotSixteen.value == false) {
+            b.btnOpenSelectVersion.text = context?.getString(R.string.baixar_a_vers_o_1_16)
         }
 
         // temp way to create a progress bar
 //        ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, LoadingType.MOVING_FILES)
         b.btnOpenSelectVersion.setOnClickListener {
-            if(ProgressKeeper.hasOngoingTasks()) {
-                Toast.makeText(requireContext(), "Existem processo em andamento por favor espere", Toast.LENGTH_LONG).show()
+            if (ProgressKeeper.hasOngoingTasks()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Existem processo em andamento por favor espere",
+                    Toast.LENGTH_LONG
+                ).show()
             } else {
-                if(viewModel.downloadOneDotSixteen.value == true) {
+                if (viewModel.downloadOneDotSixteen.value == true) {
                     b.radioGroupSelectVersion.visibility =
                         if (b.radioGroupSelectVersion.visibility == View.GONE) {
                             toggleArrowIcon()
@@ -132,7 +123,6 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
             }
         }
     }
-
 
 
     override fun onDestroyView() {

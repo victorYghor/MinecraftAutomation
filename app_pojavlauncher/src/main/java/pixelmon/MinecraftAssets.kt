@@ -57,9 +57,9 @@ class MinecraftAssets(val context: Context, val viewModel: LauncherViewModel) {
         // set the progress when moving files
         val progress = (filesCount.size * 100) / 2928
         ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, progress, Loading.MOVING_FILES.messageLoading)
-        val copiedFile = assets.open(name)
-        outFile.writeBytes(copiedFile.readBytes())
-        copiedFile.close()
+        assets.open(name).use { copiedFile ->
+            outFile.writeBytes(copiedFile.readBytes())
+        }
     }
 //    fun checkFileIntegrity(directory: String): Boolean {
 //        val rootDirectory = File(context.getExternalFilesDir(null), directory)

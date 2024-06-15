@@ -2,7 +2,6 @@ package net.kdt.pojavlaunch
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -25,7 +24,6 @@ import pixelmon.MinecraftAssets
 import pixelmon.SupportFile
 import pixelmon.Tools.Timberly
 import pixelmon.Tools.checkFileIntegrity
-import pixelmon.Tools.deleteDirecoty
 import pixelmon.Tools.md5
 import pixelmon.download.Downloader
 import pixelmon.mods.PixelmonVersion
@@ -44,7 +42,7 @@ class LauncherViewModel(
     val loadingState = MutableLiveData<Loading>()
     val bottomButtonsVisible = MutableLiveData<Boolean>()
     val callPixelmonLoading = MutableLiveData(false)
-    val selectedPixelmonVersion = MutableLiveData(PixelmonVersion.OneDotTwelve)
+    val selectedPixelmonVersion = MutableLiveData<PixelmonVersion>()
     /**
      * this will be trigger when the app complete download the version 1.16 and then this will
      * possible the user choose the version of forge that want to play
@@ -71,11 +69,32 @@ class LauncherViewModel(
         LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_sixteen", downloaded).commit()
         LauncherPreferences.loadPreferences(context)
     }
-
+    /**
+     * This observer need change of profile and change the dir name and update the preferences
+     */
+    val selectVersionObserver = Observer<PixelmonVersion> {
+        updatePreferencesPixelmonVersion(it)
+        changeProfile(context, it)
+        if(downloadModOneDotSixteen.value == true) {
+            renameModsFiles(context, it)
+        }
+    }
     init {
         loadingState.observeForever(loadingStateObserver)
         downloadOneDotSixteen.observeForever(downloadOneDotSixteenObserver)
         downloadModOneDotSixteen.observeForever(downloadModOneDotSixteenObserver)
+        selectedPixelmonVersion.observeForever(selectVersionObserver)
+
+        if(downloadModOneDotSixteen.value == false) {
+            selectedPixelmonVersion.value = PixelmonVersion.OneDotTwelve
+        } else {
+            // serach in the preferences what is the current version
+            selectedPixelmonVersion.value = if(LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE){
+                PixelmonVersion.OneDotTwelve
+            } else {
+                PixelmonVersion.OneDotSixteen
+            }
+        }
     }
 
     fun setLoadingState(loading: Loading) {
@@ -121,7 +140,6 @@ class LauncherViewModel(
                     mDownloader.value?.downloadModsOneDotSixteen()?.join()
                     withContext(Dispatchers.Main) {
                         downloadModOneDotSixteen.value = true
-                        loadingState.value = Loading.SHOW_PLAY_BUTTON
                     }
                 }
                 return
@@ -142,7 +160,7 @@ class LauncherViewModel(
                         Timber.d("integrity of the file is " + integrity)
                         // se o arquivo não tiver intregidade eu preciso avisar para o usuário que houve um problema
                         // com um arquivo deletar ele e perdir para ele fazer o download novamente
-                        deleteDirecoty(File(context.getExternalFilesDir(null), ".minecraft/libraries"))
+//                        deleteDirecoty(File(context.getExternalFilesDir(null), ".minecraft/libraries"))
                         mDownloader.value?.unpackLibraries(librariesZipFile)
                         withContext(Dispatchers.Main) {
                             downloadOneDotSixteen.value = true
@@ -164,7 +182,6 @@ class LauncherViewModel(
                 return
             }
         }
-
     }
 
     fun changeProfile(ctx: Context, pixelmonVersion: PixelmonVersion) {
@@ -180,10 +197,29 @@ class LauncherViewModel(
         Timber.w("The current profile is " + profile)
         LauncherProfiles.load()
     }
-    fun renameModsFiles(ctx: Context, modVersion: PixelmonVersion) {
+    private fun renameModsFiles(ctx: Context, modVersion: PixelmonVersion) {
+        val oneDotSixteenDir = File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.path)
+        val oneDotTwelveDir = File(context.getExternalFilesDir(null), PixelmonVersion.OneDotTwelve.path)
+        val modsDir = File(context.getExternalFilesDir(null), ".minecraft/mods")
 
+        when(modVersion) {
+            PixelmonVersion.OneDotTwelve -> {
+                modsDir.renameTo(oneDotSixteenDir)
+                oneDotTwelveDir.renameTo(modsDir)
+            }
+            PixelmonVersion.OneDotSixteen -> {
+                modsDir.renameTo(oneDotTwelveDir)
+                oneDotSixteenDir.renameTo(modsDir)
+            }
+        }
     }
-
+    private fun updatePreferencesPixelmonVersion(pixelmonVersion: PixelmonVersion) {
+        val isOneDotTwelve = pixelmonVersion == PixelmonVersion.OneDotTwelve
+        LauncherPreferences.DEFAULT_PREF.edit().putBoolean(
+            "select_version_is_one_dot_twelve", isOneDotTwelve
+        ).commit()
+        LauncherPreferences.loadPreferences(context)
+    }
      fun setupPixelmonLoading() {
         if (callPixelmonLoading.value == false) {
             val getOneDotTwelve = LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE
