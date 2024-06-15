@@ -7,7 +7,6 @@ import net.kdt.pojavlaunch.extra.ExtraConstants
 import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
-import pixelmon.forge.ForgerDownload
 
 class Pixelmon(
     private val context: Context,
@@ -36,7 +35,7 @@ class Pixelmon(
 //        val modDownloader = Downloader(context)
 //        modDownloader.downloadModOneDotSixteen()
 //        modDownloader.downloadModsOneDotTwelve(exclude = listOf("Pixelmon"))
-        val forgerDownload = ForgerDownload(context)
-        forgerDownload.run()
+//        val forgerDownload = ForgerDownload(context)
+//        forgerDownload.run()
     }
 }

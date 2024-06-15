@@ -40,7 +40,6 @@ class SelectAuthFragment : Fragment(R.layout.fragment_select_auth_method) {
             )
         }
         mLocalButton.setOnClickListener {
-            Timber.tag(Timberly.downloadProblem).d("go to local login fragment")
             Tools.swapFragment(
                 requireActivity(),
                 LocalLoginFragment::class.java,

@@ -116,7 +116,7 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
             post {
                 ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, false)
                 visibility = VISIBLE
-                Timber.tag(Timberly.downloadProblem).d("onProgressStarted")
+//                Timber.tag(Timberly.downloadProblem).d("onProgressStarted")
             }
         }
 
@@ -127,7 +127,7 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
          * @param va
          */
         override fun onProgressUpdated(progress: Int, message: String, vararg va: Any) {
-            Timber.tag(Timberly.downloadProblem).d("the progress is $progress with the message $message ")
+//            Timber.tag(Timberly.downloadProblem).d("the progress is $progress with the message $message ")
             post {
                 progressBarPixelmon!!.progress = progress
                 textLoading!!.text = message
@@ -136,7 +136,7 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
 
         override fun onProgressEnded() {
             post {
-                Timber.tag(Timberly.downloadProblem).d("onProgressEnded")
+//                Timber.tag(Timberly.downloadProblem).d("onProgressEnded")
                 visibility = GONE
                 // call some function or class that trigger change in the layout for another progress or button like button play
                 // I can do this here or inside the ProgressKeeper
@@ -201,7 +201,7 @@ class ProgressLayout : ConstraintLayout, TaskCountListener {
          */
         @JvmStatic
         fun clearProgress(progressKey: String?) {
-            Timber.tag(Timberly.downloadProblem).d("clearing progress")
+//            Timber.tag(Timberly.downloadProblem).d("clearing progress")
             setProgress(progressKey, 100, "")
         }
     }

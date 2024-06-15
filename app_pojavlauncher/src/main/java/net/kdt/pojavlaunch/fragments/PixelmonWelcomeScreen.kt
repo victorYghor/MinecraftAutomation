@@ -35,7 +35,6 @@ class PixelmonWelcomeScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as LauncherActivity).setBottomButtonsVisibility(false)
         b.btnContinue.setOnClickListener {
-            Timber.tag(Timberly.downloadProblem).d("go to select auth fragtment")
             LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
             Tools.swapFragment(
                 requireActivity(),

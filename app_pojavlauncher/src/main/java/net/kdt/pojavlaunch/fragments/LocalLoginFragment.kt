@@ -27,7 +27,6 @@ class LocalLoginFragment : Fragment(R.layout.fragment_pixelmon_local_login) {
 
         mUsernameEditText = view.findViewById(R.id.login_edit_email)
         view.findViewById<View>(R.id.login_button).setOnClickListener { v: View? ->
-            Timber.tag(Timberly.downloadProblem).d("got to pixelmon menu fragment")
             ExtraCore.setValue(
                 ExtraConstants.MOJANG_LOGIN_TODO, arrayOf(
                     mUsernameEditText.getText().toString(), ""
