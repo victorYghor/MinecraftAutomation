@@ -273,17 +273,14 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
      */
      fun putTextureInOneDotSixteen(): Job {
         val textureFile =
-            File(context.getExternalFilesDir(null), ".minecraft/mods/${pixelmonTexture.fileName}")
-        // criar a pasta modsOneDotSixteen
-        val modsOneDotSixteenDir =
-            File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.path)
-        modsOneDotSixteenDir.mkdirs()
+            File(context.getExternalFilesDir(null), ".minecraft/mods/texture.zip")
 
         // cria o arquivo onde ira o a textura
         val outFile = File(
             context.getExternalFilesDir(null),
             "${PixelmonVersion.OneDotSixteen.path}/${pixelmonTexture.fileName}"
         )
+        outFile.createNewFile()
         val inputFile = textureFile.inputStream()
         return CoroutineScope(Dispatchers.IO).launch(start = CoroutineStart.LAZY) {
             ProgressLayout.setProgress(

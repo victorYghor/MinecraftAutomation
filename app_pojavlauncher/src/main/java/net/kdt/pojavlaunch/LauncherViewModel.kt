@@ -176,10 +176,15 @@ class LauncherViewModel(
             Loading.DOWNLOAD_TEXTURE -> {
                 CoroutineScope(Dispatchers.Default).launch {
                     mDownloader.value?.downloadTexture()?.await()
+                    // here I will call a function to put the texture in the correct place
                     LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_texture", true)
                         .commit()
                 }
                 return
+            }
+
+            Loading.MOVING_TEXTURE -> {
+
             }
         }
     }
