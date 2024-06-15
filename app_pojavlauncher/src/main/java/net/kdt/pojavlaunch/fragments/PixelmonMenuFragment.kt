@@ -101,6 +101,7 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         if (viewModel.downloadModOneDotSixteen.value == false) {
             b.btnOpenSelectVersion.text = context?.getString(R.string.baixar_a_vers_o_1_16)
         } else {
+            toggleArrowIcon()
             when(viewModel.selectedPixelmonVersion.value) {
                 PixelmonVersion.OneDotTwelve -> {
                     b.btnOpenSelectVersion.text = getString(R.string.pixelmon_1_12_2)
