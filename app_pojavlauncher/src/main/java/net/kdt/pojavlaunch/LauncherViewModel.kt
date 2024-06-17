@@ -138,6 +138,7 @@ class LauncherViewModel(
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
                 CoroutineScope(Dispatchers.IO).launch {
                     mDownloader.value?.downloadModsOneDotSixteen()?.join()
+                    mDownloader.value?.putTextureInOneDotSixteen()?.join()
                     withContext(Dispatchers.Main) {
                         downloadModOneDotSixteen.value = true
                     }
