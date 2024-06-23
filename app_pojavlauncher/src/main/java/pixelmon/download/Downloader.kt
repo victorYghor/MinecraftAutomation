@@ -217,8 +217,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
 
     suspend fun downloadModsOneDotSixteen(): Job {
         File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.path).mkdirs()
-        val essentialMods = listOf("MultiplayerMode", "lazydfu", "Pixelmon")
-        val mods = modsOneDotSixteen.filter { essentialMods.contains(it.name) }
+        val mods = modsOneDotSixteen
         return CoroutineScope(Dispatchers.Default).launch {
             for (mod in mods) {
                 if (mod.name == "Pixelmon") {
@@ -280,27 +279,10 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
             context.getExternalFilesDir(null),
             "${PixelmonVersion.OneDotSixteen.path}/${pixelmonTexture.fileName}"
         )
-        outFile.createNewFile()
         val inputFile = textureFile.inputStream()
         return CoroutineScope(Dispatchers.IO).launch(start = CoroutineStart.LAZY) {
-            ProgressLayout.setProgress(
-                ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
-                0,
-                "copiando a textura"
-            )
             inputFile.use { input ->
-                Timber.d("the size of the texture is input = ${input.readBytes().size}")
-                val quanityOfBytes = inputFile.readBytes().size
-                var count = 0.0
-                for(byte in input.readBytes()) {
-                    val progress = (++count / quanityOfBytes.toDouble() * 100).toCeilInt()
-                    ProgressLayout.setProgress(
-                        ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
-                        progress,
-                        "copiando a textura"
-                    )
-                    outFile.appendBytes(byteArrayOf(byte))
-                }
+                outFile.appendBytes(input.readBytes())
             }
         }
     }
