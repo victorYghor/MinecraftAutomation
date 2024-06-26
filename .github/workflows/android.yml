@@ -76,17 +76,17 @@ jobs:
           # Build the launcher
           gradle :app_pojavlauncher:assembleDebug
           mv app_pojavlauncher/build/outputs/apk/debug/app_pojavlauncher-debug.apk out/app-debug.apk
-          
+
       - name: Gen md5sums
         run: |
           md5sum out/app-debug.apk > out/app-debug.md5
-          
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
           path: out/app-debug.*
-      
+
       - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
