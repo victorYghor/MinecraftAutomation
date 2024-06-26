@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
-import android.widget.ProgressBar
 import androidx.core.net.toUri
 import com.kdt.mcgui.ProgressLayout
 import kotlinx.coroutines.CoroutineScope
@@ -167,7 +166,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
             uri = mod.artifact.url.toUri(),
             title = title,
             quantity = quantity,
-            subPath = (if (modVersion == PixelmonVersion.OneDotSixteen) modVersion.path else ".minecraft/mods") + "/" + fileName
+            subPath = (if (modVersion == PixelmonVersion.OneDotSixteen) modVersion.pathMods else ".minecraft/mods") + "/" + fileName
         )
     }
 
@@ -216,7 +215,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
     }
 
     suspend fun downloadModsOneDotSixteen(): Job {
-        File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.path).mkdirs()
+        File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.pathMods).mkdirs()
         val mods = modsOneDotSixteen
         return CoroutineScope(Dispatchers.Default).launch {
             for (mod in mods) {
@@ -277,12 +276,12 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
         // cria o arquivo onde ira o a textura
         val outFile = File(
             context.getExternalFilesDir(null),
-            "${PixelmonVersion.OneDotSixteen.path}/${pixelmonTexture.fileName}"
+            ".minecraft/modsOneDotSixteen/texture.zip"
         )
         val inputFile = textureFile.inputStream()
-        return CoroutineScope(Dispatchers.IO).launch(start = CoroutineStart.LAZY) {
+        return CoroutineScope(Dispatchers.Default).launch(start = CoroutineStart.LAZY) {
             inputFile.use { input ->
-                outFile.appendBytes(input.readBytes())
+                outFile.writeBytes(input.readBytes())
             }
         }
     }

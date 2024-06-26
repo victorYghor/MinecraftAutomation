@@ -1,6 +1,9 @@
 package pixelmon.mods
 
-enum class PixelmonVersion(val path: String, val key: String) {
+enum class PixelmonVersion(
+    val pathMods: String,
+    val key: String
+) {
     OneDotTwelve(
         ".minecraft/modsOneDotTwelve",
         "57d83435-348c-4965-bbd0-e0e6469fd8fb"
