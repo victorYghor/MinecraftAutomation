@@ -217,21 +217,14 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
 
     suspend fun downloadModsOneDotSixteen(): Job {
         File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.pathMods).mkdirs()
-        val mods = modsOneDotSixteen
         return CoroutineScope(Dispatchers.Default).launch {
-            for (mod in mods) {
+            for (mod in modsOneDotSixteen) {
                 if (mod.name == "Pixelmon") {
                     downloadMod(mod, modVersion = PixelmonVersion.OneDotSixteen).await()
                 } else {
-                    val title = "Baixando o mod ${mod.name}"
-                    ProgressLayout.setProgress(
-                        ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
-                        0,
-                        title
-                    )
                     downloadMod(
                         mod,
-                        mods.size - 1,
+                        modsOneDotSixteen.size - 1,
                         modVersion = PixelmonVersion.OneDotSixteen
                     ).await()
                 }
