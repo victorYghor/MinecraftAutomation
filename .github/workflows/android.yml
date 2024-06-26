@@ -69,7 +69,6 @@ jobs:
       - name: Gen md5sums
         run: |
           md5sum out/app-debug.apk > out/app-debug.md5
-          md5sum out/app-debug-noruntime.apk > out/app-debug-noruntime.md5
           
       - name: Upload APK
         uses: actions/upload-artifact@v3
