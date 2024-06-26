@@ -1,17 +1,6 @@
 {
   "mods": [
     {
-      "id": "malte0811.ferritecore:ferritecore:2.1.1@jar",
-      "name": "FerriteCore",
-      "type": "ForgeMod",
-      "artifact": {
-        "fileName" : "ferritecore-2.1.1-forge.jar",
-        "size": 108557,
-        "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/forgemods/optionalon/ferritecore-2.1.1-forge.jar",
-        "MD5": "6a96a36de00e5d8e9bf2e87634d13125"
-      }
-    },
-    {
       "id": "com.pixelmonmod:pixelmon:9.1.11@jar",
       "name": "Pixelmon",
       "type": "ForgeMod",
@@ -23,12 +12,23 @@
       }
     },
     {
+      "id": "malte0811.ferritecore:ferritecore:2.1.1@jar",
+      "name": "FerriteCore",
+      "type": "ForgeMod",
+      "artifact": {
+        "fileName": "ferritecore-2.1.1-forge.jar",
+        "size": 108557,
+        "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/forgemods/optionalon/ferritecore-2.1.1-forge.jar",
+        "MD5": "6a96a36de00e5d8e9bf2e87634d13125"
+      }
+    },
+    {
       "id": "lazydfu@jar",
       "name": "lazydfu",
       "type": "ForgeMod",
       "artifact": {
-        "fileName" : "lazydfu.jar",
-        "size": 15258 ,
+        "fileName": "lazydfu.jar",
+        "size": 15258,
         "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/files/mods/lazydfu.jar",
         "MD5": "fce7920ba6329d631da4025e9322e5e0"
       }
@@ -38,7 +38,7 @@
       "name": "MultiplayerMode",
       "type": "ForgeMod",
       "artifact": {
-        "fileName" : "MultiplayerMode.jar",
+        "fileName": "MultiplayerMode.jar",
         "size": 3961,
         "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.16.5/files/mods/MultiplayerMode.jar",
         "MD5": "c4eb970a74e8274f65f168c5a1e9cd73"

@@ -3,7 +3,6 @@ package net.kdt.pojavlaunch.tasks
 import android.content.Context
 import android.content.res.AssetManager
 import android.util.Log
-import com.kdt.mcgui.ProgressLayout
 import net.kdt.pojavlaunch.Architecture
 import net.kdt.pojavlaunch.PojavApplication
 import net.kdt.pojavlaunch.Tools
@@ -56,7 +55,11 @@ object AsyncAssetManager {
         PojavApplication.sExecutorService.execute {
             try {
                 val controlMap = ctx.assets.open("default.json") .readBytes()
-                Tools.copyAssetFile(ctx, "options.txt", Tools.DIR_GAME_NEW, false)
+                Tools.copyAssetFile(ctx, "minecraft/options.txt", Tools.DIR_GAME_NEW, false)
+                Tools.copyAssetFile(ctx, "minecraft/optionsof.txt", Tools.DIR_GAME_NEW, false)
+                Tools.copyAssetFile(ctx, "minecraft/optionsOneDotSixteen.txt", Tools.DIR_GAME_NEW, false)
+                Tools.copyAssetFile(ctx, "minecraft/optionsofOneDotSixteen.txt", Tools.DIR_GAME_NEW, false)
+
                 Tools.copyAssetFile(ctx, "default.json", Tools.CTRLMAP_PATH, true)
                 Tools.write(Tools.CTRLMAP_PATH, controlMap)
 //                Tools.copyAssetFile(ctx, "resolv.conf", Tools.DIR_DATA, false)
