@@ -64,6 +64,7 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         val bottomButtonsVisibilityObserver = Observer<Boolean> { visible: Boolean ->
             (activity as LauncherActivity).setBottomButtonsVisibility(visible)
         }
+        // tentar mostrar
         viewModel.bottomButtonsVisible.observe(requireActivity(), bottomButtonsVisibilityObserver)
         viewModel.bottomButtonsVisible.value = true
 
@@ -98,7 +99,8 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
                 Timber.d("one dot sixteen select select_version_is_one_dot_twelve preference is " + LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE)
             }
         }
-        if (viewModel.downloadModOneDotSixteen.value == false) {
+
+        if (viewModel.downloadOneDotSixteen.value == false) {
             b.btnOpenSelectVersion.text = context?.getString(R.string.baixar_a_vers_o_1_16)
         } else {
             toggleArrowIcon()

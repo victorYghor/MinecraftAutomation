@@ -43,6 +43,7 @@ class LauncherViewModel(
     val bottomButtonsVisible = MutableLiveData<Boolean>()
     val callPixelmonLoading = MutableLiveData(false)
     val selectedPixelmonVersion = MutableLiveData<PixelmonVersion>()
+
     /**
      * this will be trigger when the app complete download the version 1.16 and then this will
      * possible the user choose the version of forge that want to play
@@ -56,6 +57,7 @@ class LauncherViewModel(
     private val loadingStateObserver = Observer<Loading> { newLoading ->
         this.setLoadingState(newLoading)
     }
+
     /**
      * Use this for showing if one dot sixteen already was downloaded, don't use the shared preferences
      * this will update de shared preferences when the value changed
@@ -66,9 +68,11 @@ class LauncherViewModel(
         LauncherPreferences.loadPreferences(context)
     }
     private val downloadModOneDotSixteenObserver = Observer<Boolean> { downloaded ->
-        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_sixteen", downloaded).commit()
+        LauncherPreferences.DEFAULT_PREF.edit()
+            .putBoolean("download_mod_one_dot_sixteen", downloaded).commit()
         LauncherPreferences.loadPreferences(context)
     }
+
     /**
      * This observer need change of profile and change the dir name and update the preferences
      */
@@ -76,26 +80,28 @@ class LauncherViewModel(
         updatePreferencesPixelmonVersion(it)
         changeProfile(context, it)
         // todo se ele não conseguir terminar de fazer o que precisa isso daqui não vai ser chamado na troca de versão
-        if(downloadModOneDotSixteen.value == true) {
+        if (downloadModOneDotSixteen.value == true) {
             renameModsFiles(context, it)
             renameConfigurationsFiles(context, it)
         }
     }
+
     init {
         loadingState.observeForever(loadingStateObserver)
         downloadOneDotSixteen.observeForever(downloadOneDotSixteenObserver)
         downloadModOneDotSixteen.observeForever(downloadModOneDotSixteenObserver)
         selectedPixelmonVersion.observeForever(selectVersionObserver)
 
-        if(downloadModOneDotSixteen.value == false) {
+        if (downloadModOneDotSixteen.value == false) {
             selectedPixelmonVersion.value = PixelmonVersion.OneDotTwelve
         } else {
             // serach in the preferences what is the current version
-            selectedPixelmonVersion.value = if(LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE){
-                PixelmonVersion.OneDotTwelve
-            } else {
-                PixelmonVersion.OneDotSixteen
-            }
+            selectedPixelmonVersion.value =
+                if (LauncherPreferences.SELECT_VERSION_IS_ONE_DOT_TWELVE) {
+                    PixelmonVersion.OneDotTwelve
+                } else {
+                    PixelmonVersion.OneDotSixteen
+                }
         }
     }
 
@@ -122,6 +128,7 @@ class LauncherViewModel(
                 }
                 return
             }
+
             Loading.MOVING_FILES -> {
                 LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true)
                     .commit()
@@ -137,48 +144,60 @@ class LauncherViewModel(
                 }
                 return
             }
+
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
                 CoroutineScope(Dispatchers.IO).launch {
                     mDownloader.value?.downloadModsOneDotSixteen()?.join()
-                    mDownloader.value?.putTextureInOneDotSixteen()?.join()
                     withContext(Dispatchers.Main) {
                         downloadModOneDotSixteen.value = true
+                        loadingState.value = Loading.DOWNLOAD_TEXTURE
                     }
                 }
                 return
             }
+
             Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        mDownloader.value?.downloadOneDotSixteen()?.await()
-                        // tudo isso precisa ser feito quando o download for concluido
-                        // aqui é necessário verificar integridade do download
-                        // se estiver tudo bem com o download ele deve continuar se não um pop up deve aparecer para avisar isso ao usuário
-                        val librariesZipFile = File(context.getExternalFilesDir(null), ".minecraft/libraries.zip")
-                        // pegando a referencia da bliblioteca no formato json.
-                        val libraryFile = Tools.GLOBAL_GSON.fromJson(
-                            read(context.assets.open("support-files.json")),
-                            SupportFile::class.java
-                        )
-                        val integrity = checkFileIntegrity(context, librariesZipFile.md5(), libraryFile.md5)
-                        Timber.d("integrity of the file is " + integrity)
-                        // se o arquivo não tiver intregidade eu preciso avisar para o usuário que houve um problema
-                        // com um arquivo deletar ele e perdir para ele fazer o download novamente
+                CoroutineScope(Dispatchers.IO).launch {
+                    mDownloader.value?.downloadOneDotSixteen()?.await()
+                    // tudo isso precisa ser feito quando o download for concluido
+                    // aqui é necessário verificar integridade do download
+                    // se estiver tudo bem com o download ele deve continuar se não um pop up deve aparecer para avisar isso ao usuário
+                    val librariesZipFile =
+                        File(context.getExternalFilesDir(null), ".minecraft/libraries.zip")
+                    // pegando a referencia da bliblioteca no formato json.
+                    val libraryFile = Tools.GLOBAL_GSON.fromJson(
+                        read(context.assets.open("support-files.json")),
+                        SupportFile::class.java
+                    )
+                    val integrity =
+                        checkFileIntegrity(context, librariesZipFile.md5(), libraryFile.md5)
+                    Timber.d("integrity of the file is " + integrity)
+                    // se o arquivo não tiver intregidade eu preciso avisar para o usuário que houve um problema
+                    // com um arquivo deletar ele e perdir para ele fazer o download novamente
 //                        deleteDirecoty(File(context.getExternalFilesDir(null), ".minecraft/libraries"))
-                        mDownloader.value?.unpackLibraries(librariesZipFile)
-                        withContext(Dispatchers.Main) {
-                            downloadOneDotSixteen.value = true
-                            loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN
-                        }
+                    mDownloader.value?.unpackLibraries(librariesZipFile)
+                    withContext(Dispatchers.Main) {
+                        downloadOneDotSixteen.value = true
+                        loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN
                     }
+                }
                 return
             }
+
             Loading.SHOW_PLAY_BUTTON -> {
                 ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
                 return
             }
+
             Loading.DOWNLOAD_TEXTURE -> {
                 CoroutineScope(Dispatchers.Default).launch {
-                    mDownloader.value?.downloadTexture()?.await()
+                    val pixelmonVersion =
+                        if (downloadOneDotSixteen.value == true) {
+                            PixelmonVersion.OneDotSixteen
+                        } else {
+                            PixelmonVersion.OneDotTwelve
+                        }
+                    mDownloader.value?.downloadTexture(pixelmonVersion)?.await()
                     // here I will call a function to put the texture in the correct place
                     LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_texture", true)
                         .commit()
@@ -205,22 +224,27 @@ class LauncherViewModel(
         Timber.w("The current profile is " + profile)
         LauncherProfiles.load()
     }
+
     private fun renameModsFiles(ctx: Context, modVersion: PixelmonVersion) {
-        val oneDotSixteenDir = File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.pathMods)
-        val oneDotTwelveDir = File(context.getExternalFilesDir(null), PixelmonVersion.OneDotTwelve.pathMods)
+        val oneDotSixteenDir =
+            File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.pathMods)
+        val oneDotTwelveDir =
+            File(context.getExternalFilesDir(null), PixelmonVersion.OneDotTwelve.pathMods)
         val modsDir = File(context.getExternalFilesDir(null), ".minecraft/mods")
 
-        when(modVersion) {
+        when (modVersion) {
             PixelmonVersion.OneDotTwelve -> {
                 modsDir.renameTo(oneDotSixteenDir)
                 oneDotTwelveDir.renameTo(modsDir)
             }
+
             PixelmonVersion.OneDotSixteen -> {
                 modsDir.renameTo(oneDotTwelveDir)
                 oneDotSixteenDir.renameTo(modsDir)
             }
         }
     }
+
     private fun renameConfigurationsFiles(ctx: Context, modVersion: PixelmonVersion) {
         val problemWithMapKeys = Exception("The keys for the files should have the same name")
         val oneDotTwelve = mapOf(
@@ -254,7 +278,7 @@ class LauncherViewModel(
             )
         )
         try {
-            when(modVersion) {
+            when (modVersion) {
                 PixelmonVersion.OneDotTwelve -> {
                     default.forEach {
                         it.value.renameTo(oneDotSixteen[it.key] ?: throw problemWithMapKeys)
@@ -263,20 +287,22 @@ class LauncherViewModel(
                         it.value.renameTo(default[it.key] ?: throw problemWithMapKeys)
                     }
                 }
+
                 PixelmonVersion.OneDotSixteen -> {
                     default.forEach {
                         it.value.renameTo(oneDotTwelve[it.key] ?: throw problemWithMapKeys)
                     }
-                    oneDotSixteen.forEach{
+                    oneDotSixteen.forEach {
                         it.value.renameTo(default[it.key] ?: throw problemWithMapKeys)
                     }
                 }
             }
-        } catch(e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             Timber.d(e.message)
         }
     }
+
     private fun updatePreferencesPixelmonVersion(pixelmonVersion: PixelmonVersion) {
         val isOneDotTwelve = pixelmonVersion == PixelmonVersion.OneDotTwelve
         LauncherPreferences.DEFAULT_PREF.edit().putBoolean(
@@ -284,7 +310,8 @@ class LauncherViewModel(
         ).commit()
         LauncherPreferences.loadPreferences(context)
     }
-     fun setupPixelmonLoading() {
+
+    fun setupPixelmonLoading() {
         if (callPixelmonLoading.value == false) {
             val getOneDotTwelve = LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE
             Timber.d("the value of getOneDotTwelve is " + getOneDotTwelve)
@@ -301,6 +328,7 @@ class LauncherViewModel(
         super.onCleared()
         loadingState.removeObserver(loadingStateObserver)
     }
+
     companion object {
         fun provideFactory(
             context: Context,

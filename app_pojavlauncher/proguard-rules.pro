@@ -17,20 +17,11 @@
 #}
 
 # We use Reflection on the builder to avoid creating too many objects
- -keep class net.objecthunter.exp4j.ExpressionBuilder**
- -keepclassmembers class net.objecthunter.exp4j.ExpressionBuilder** {
+-keep class net.objecthunter.exp4j.ExpressionBuilder**
+-keepclassmembers class net.objecthunter.exp4j.ExpressionBuilder** {
     *;
- }
+}
 
--keep class com**
--keep class dalvik.annotation.optimization**
--keep class net.kdt.pojavlaunch**
--keep class org.lwjgl.glfw**
--keep class jni**
--keep class jniLibs**
--keep class arc_dns_injector**
--keep class forge_installer**
--keep class jre_lwjgl3glfw**
 # Option screens
 -keep class net.kdt.pojavlaunch.prefs.screens** {*;}
 # Keep the class names of your activities and fragments

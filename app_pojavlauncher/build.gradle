@@ -143,8 +143,8 @@ android {
         }
         proguard {
             initWith debug
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
         }
 
         release {

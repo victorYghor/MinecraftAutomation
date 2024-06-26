@@ -181,7 +181,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
         )
     }
 
-    suspend fun downloadTexture(): Deferred<Long> {
+    suspend fun downloadTexture(pixelmonVersion: PixelmonVersion): Deferred<Long> {
         val texture = pixelmonTexture
         Timber.d("Straing downloading texture " + texture.name)
         val title = "Baixando ${texture.name}"
@@ -189,7 +189,11 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
         return download(
             uri = texture.url.toUri(),
             title = title,
-            subPath = ".minecraft/mods/${texture.fileName}"
+            subPath =
+            if (pixelmonVersion == PixelmonVersion.OneDotTwelve)
+                ".minecraft/mods/${texture.fileName}"
+            else
+                ".minecraft/modsOneDotSixteen/${texture.fileName}"
         )
     }
 
