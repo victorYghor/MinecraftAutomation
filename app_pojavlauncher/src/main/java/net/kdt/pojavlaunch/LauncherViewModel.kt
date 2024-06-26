@@ -75,8 +75,10 @@ class LauncherViewModel(
     val selectVersionObserver = Observer<PixelmonVersion> {
         updatePreferencesPixelmonVersion(it)
         changeProfile(context, it)
+        // todo se ele não conseguir terminar de fazer o que precisa isso daqui não vai ser chamado na troca de versão
         if(downloadModOneDotSixteen.value == true) {
             renameModsFiles(context, it)
+            renameConfigurationsFiles(context, it)
         }
     }
     init {
@@ -138,7 +140,7 @@ class LauncherViewModel(
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
                 CoroutineScope(Dispatchers.IO).launch {
                     mDownloader.value?.downloadModsOneDotSixteen()?.join()
-                    mDownloader.value?.putTextureInOneDotSixteen()?.join()
+//                    mDownloader.value?.putTextureInOneDotSixteen()?.join()
                     withContext(Dispatchers.Main) {
                         downloadModOneDotSixteen.value = true
                     }
@@ -204,8 +206,8 @@ class LauncherViewModel(
         LauncherProfiles.load()
     }
     private fun renameModsFiles(ctx: Context, modVersion: PixelmonVersion) {
-        val oneDotSixteenDir = File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.path)
-        val oneDotTwelveDir = File(context.getExternalFilesDir(null), PixelmonVersion.OneDotTwelve.path)
+        val oneDotSixteenDir = File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.pathMods)
+        val oneDotTwelveDir = File(context.getExternalFilesDir(null), PixelmonVersion.OneDotTwelve.pathMods)
         val modsDir = File(context.getExternalFilesDir(null), ".minecraft/mods")
 
         when(modVersion) {
@@ -217,6 +219,62 @@ class LauncherViewModel(
                 modsDir.renameTo(oneDotTwelveDir)
                 oneDotSixteenDir.renameTo(modsDir)
             }
+        }
+    }
+    private fun renameConfigurationsFiles(ctx: Context, modVersion: PixelmonVersion) {
+        val problemWithMapKeys = Exception("The keys for the files should have the same name")
+        val oneDotTwelve = mapOf(
+            "options" to File(
+                context.getExternalFilesDir(null),
+                ".minecraft/optionsOneDotTwelve.txt"
+            ),
+            "optionsof" to File(
+                context.getExternalFilesDir(null),
+                ".minecraft/optionsofOneDotTwelve.txt"
+            )
+        )
+        val oneDotSixteen = mapOf(
+            "options" to File(
+                context.getExternalFilesDir(null),
+                ".minecraft/optionsOneDotSixteen.txt"
+            ),
+            "optionsof" to File(
+                context.getExternalFilesDir(null),
+                ".minecraft/optionsofOneDotSixteen.txt"
+            )
+        )
+        val default = mapOf(
+            "options" to File(
+                context.getExternalFilesDir(null),
+                ".minecraft/options.txt"
+            ),
+            "optionsof" to File(
+                context.getExternalFilesDir(null),
+                ".minecraft/optionsof.txt"
+            )
+        )
+        try {
+            when(modVersion) {
+                PixelmonVersion.OneDotTwelve -> {
+                    default.forEach {
+                        it.value.renameTo(oneDotSixteen[it.key] ?: throw problemWithMapKeys)
+                    }
+                    oneDotTwelve.forEach {
+                        it.value.renameTo(default[it.key] ?: throw problemWithMapKeys)
+                    }
+                }
+                PixelmonVersion.OneDotSixteen -> {
+                    default.forEach {
+                        it.value.renameTo(oneDotTwelve[it.key] ?: throw problemWithMapKeys)
+                    }
+                    oneDotSixteen.forEach{
+                        it.value.renameTo(default[it.key] ?: throw problemWithMapKeys)
+                    }
+                }
+            }
+        } catch(e: Exception){
+            e.printStackTrace()
+            Timber.d(e.message)
         }
     }
     private fun updatePreferencesPixelmonVersion(pixelmonVersion: PixelmonVersion) {

@@ -23,5 +23,13 @@
  }
 # Option screens
  -keep class net.kdt.pojavlaunch.prefs.screens** {*;}
+# Keep the class names of your activities and fragments
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Fragment
 
+# Keep the class names of your custom views
+-keep public class * extends android.view.View
 
+# Keep class members annotated with @Keep
+-keep @interface androidx.annotation.Keep
+-keep @androidx.annotation.Keep class * { *; }
