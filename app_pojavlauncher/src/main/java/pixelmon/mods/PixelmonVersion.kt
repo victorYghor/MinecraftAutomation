@@ -11,5 +11,5 @@ enum class PixelmonVersion(
     OneDotSixteen(
         ".minecraft/modsOneDotSixteen",
         "86897a29-ed15-4397-94e2-8b22e76ac300"
-    )
+    );
 }

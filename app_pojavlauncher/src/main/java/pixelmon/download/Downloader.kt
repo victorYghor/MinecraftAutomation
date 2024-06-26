@@ -142,6 +142,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                                 }
                             }
                         }
+
                         DownloadManager.STATUS_PAUSED, DownloadManager.STATUS_PENDING -> {}
                         DownloadManager.STATUS_FAILED -> {
                             isDownloadFinished = true
@@ -269,20 +270,44 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
      * this will copy texture in the mods folder and put in the modsOneDotSixteen folder
      * this function only can be called when you already download the pixelmon texture
      */
-     fun putTextureInOneDotSixteen(): Job {
-        val textureFile =
-            File(context.getExternalFilesDir(null), ".minecraft/mods/texture.zip")
+    fun putTextureInOneDotSixteen() =
+        CoroutineScope(Dispatchers.IO).launch(start = CoroutineStart.LAZY) {
+            val textureFile =
+                File(
+                    context.getExternalFilesDir(null),
+                    ".minecraft/mods/${pixelmonTexture.fileName}"
+                )
+            // criar a pasta modsOneDotSixteen
+            val modsOneDotSixteenDir =
+                File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.pathMods)
+            modsOneDotSixteenDir.mkdirs()
 
-        // cria o arquivo onde ira o a textura
-        val outFile = File(
-            context.getExternalFilesDir(null),
-            ".minecraft/modsOneDotSixteen/texture.zip"
-        )
-        val inputFile = textureFile.inputStream()
-        return CoroutineScope(Dispatchers.Default).launch(start = CoroutineStart.LAZY) {
+            // cria o arquivo onde ira o a textura
+            val outFile = File(
+                context.getExternalFilesDir(null),
+                "${PixelmonVersion.OneDotSixteen.pathMods}/${pixelmonTexture.fileName}"
+            )
+            val inputFile = textureFile.inputStream()
+
+            ProgressLayout.setProgress(
+                ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
+                0,
+                "copiando a textura"
+            )
             inputFile.use { input ->
-                outFile.writeBytes(input.readBytes())
+                Timber.d("the size of the texture is input = ${input.readBytes().size}")
+                val quanityOfBytes = inputFile.readBytes().size
+                var count = 0.0
+                for (byte in input.readBytes()) {
+                    val progress = (++count / quanityOfBytes.toDouble() * 100).toCeilInt()
+                    ProgressLayout.setProgress(
+                        ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
+                        progress,
+                        "copiando a textura"
+                    )
+                    outFile.appendBytes(byteArrayOf(byte))
+                }
             }
         }
-    }
+
 }
