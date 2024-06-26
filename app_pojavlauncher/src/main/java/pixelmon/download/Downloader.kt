@@ -270,10 +270,6 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                     context.getExternalFilesDir(null),
                     ".minecraft/mods/${pixelmonTexture.fileName}"
                 )
-            // criar a pasta modsOneDotSixteen
-            val modsOneDotSixteenDir =
-                File(context.getExternalFilesDir(null), PixelmonVersion.OneDotSixteen.pathMods)
-            modsOneDotSixteenDir.mkdirs()
 
             // cria o arquivo onde ira o a textura
             val outFile = File(
