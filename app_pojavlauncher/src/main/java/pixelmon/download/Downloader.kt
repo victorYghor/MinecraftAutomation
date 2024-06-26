@@ -268,34 +268,17 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
             val textureFile =
                 File(
                     context.getExternalFilesDir(null),
-                    ".minecraft/mods/${pixelmonTexture.fileName}"
+                    ".minecraft/mods/texture.zip"
                 )
-
             // cria o arquivo onde ira o a textura
             val outFile = File(
                 context.getExternalFilesDir(null),
-                "${PixelmonVersion.OneDotSixteen.pathMods}/${pixelmonTexture.fileName}"
+                ".minecraft/modsOneDotSixteen/texture.zip"
             )
             val inputFile = textureFile.inputStream()
 
-            ProgressLayout.setProgress(
-                ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
-                0,
-                "copiando a textura"
-            )
-            inputFile.use { input ->
-                Timber.d("the size of the texture is input = ${input.readBytes().size}")
-                val quanityOfBytes = inputFile.readBytes().size
-                var count = 0.0
-                for (byte in input.readBytes()) {
-                    val progress = (++count / quanityOfBytes.toDouble() * 100).toCeilInt()
-                    ProgressLayout.setProgress(
-                        ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
-                        progress,
-                        "copiando a textura"
-                    )
-                    outFile.appendBytes(byteArrayOf(byte))
-                }
+            inputFile.use {
+                outFile.writeBytes(it.readBytes())
             }
         }
 

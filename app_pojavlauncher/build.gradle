@@ -133,7 +133,7 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix '.debug'
-            minifyEnabled false
+            minifyEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.customDebug
@@ -149,7 +149,7 @@ android {
 
         release {
             // Don't set to true or java.awt will be a.a or something similar.
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             // defaultConfig already set
             // multiDexEnabled = true

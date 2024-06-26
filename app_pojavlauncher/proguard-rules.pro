@@ -22,9 +22,9 @@
     *;
  }
 
--keep class net.kdt.pojavlaunch**
 -keep class com**
 -keep class dalvik.annotation.optimization**
+-keep class net.kdt.pojavlaunch**
 -keep class org.lwjgl.glfw**
 -keep class jni**
 -keep class jniLibs**
