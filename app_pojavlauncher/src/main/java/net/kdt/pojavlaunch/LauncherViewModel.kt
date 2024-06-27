@@ -143,7 +143,7 @@ class LauncherViewModel(
 //                    mDownloader.value?.putTextureInOneDotSixteen()?.join()
                     withContext(Dispatchers.Main) {
                         downloadModOneDotSixteen.value = true
-                        loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN
+                        loadingState.value = Loading.DOWNLOAD_TEXTURE
                     }
                 }
                 return
