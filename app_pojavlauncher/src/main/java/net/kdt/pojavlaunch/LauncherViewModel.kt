@@ -78,7 +78,7 @@ class LauncherViewModel(
         // todo se ele não conseguir terminar de fazer o que precisa isso daqui não vai ser chamado na troca de versão
         if(downloadModOneDotSixteen.value == true) {
             renameModsFiles(context, it)
-//            renameConfigurationsFiles(context, it)
+            renameConfigurationsFiles(context, it)
         }
     }
     init {
@@ -257,18 +257,12 @@ class LauncherViewModel(
             when(modVersion) {
                 PixelmonVersion.OneDotTwelve -> {
                     default.forEach {
-                        it.value.renameTo(oneDotSixteen[it.key] ?: throw problemWithMapKeys)
-                    }
-                    oneDotTwelve.forEach {
-                        it.value.renameTo(default[it.key] ?: throw problemWithMapKeys)
+                        it.value.writeBytes(oneDotTwelve[it.key]?.readBytes() ?: throw problemWithMapKeys)
                     }
                 }
                 PixelmonVersion.OneDotSixteen -> {
                     default.forEach {
-                        it.value.renameTo(oneDotTwelve[it.key] ?: throw problemWithMapKeys)
-                    }
-                    oneDotSixteen.forEach{
-                        it.value.renameTo(default[it.key] ?: throw problemWithMapKeys)
+                        it.value.writeBytes(oneDotSixteen[it.key]?.readBytes() ?: throw problemWithMapKeys)
                     }
                 }
             }
