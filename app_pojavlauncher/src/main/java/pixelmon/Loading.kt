@@ -8,5 +8,4 @@ enum class Loading(val messageLoading: String) {
     DOWNLOAD_ONE_DOT_SIXTEEN(messageLoading = "Baixando Minecraft 1.16"),
     SHOW_PLAY_BUTTON(messageLoading = "Mostrando o botão de jogar"),
     DOWNLOAD_TEXTURE(messageLoading = "Baixando a textura do Pixelmon"),
-    MOVING_TEXTURE(messageLoading = "Movendo arquivos de textura")
 }
