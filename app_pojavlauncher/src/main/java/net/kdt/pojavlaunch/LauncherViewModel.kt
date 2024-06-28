@@ -78,7 +78,7 @@ class LauncherViewModel(
         // todo se ele não conseguir terminar de fazer o que precisa isso daqui não vai ser chamado na troca de versão
         if(downloadModOneDotSixteen.value == true) {
             renameModsFiles(context, it)
-            renameConfigurationsFiles(context, it)
+//            renameConfigurationsFiles(context, it)
         }
     }
     init {

@@ -32,7 +32,7 @@ public class PojavApplication extends Application {
 	@Override
 	public void onCreate() {
 		ContextExecutor.setApplication(this);
-		Timberly.hideLogs(false);
+		Timberly.hideLogs(true);
 
 		Thread.setDefaultUncaughtExceptionHandler((thread, th) -> {
 			boolean storagePermAllowed = (Build.VERSION.SDK_INT < 23 || Build.VERSION.SDK_INT >= 29 ||
