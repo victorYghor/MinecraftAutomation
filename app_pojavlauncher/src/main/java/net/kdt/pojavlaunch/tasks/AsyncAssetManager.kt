@@ -56,8 +56,14 @@ object AsyncAssetManager {
             try {
                 val controlMap = ctx.assets.open("default.json") .readBytes()
                 Tools.copyAssetFile(ctx, "default.json", Tools.CTRLMAP_PATH, true)
+
                 Tools.copyAssetFile(ctx, "options.txt", Tools.DIR_GAME_NEW, false)
                 Tools.copyAssetFile(ctx, "optionsof.txt", Tools.DIR_GAME_NEW, false)
+
+                Tools.copyAssetFile(ctx, "optionsOneDotTwelve.txt", Tools.DIR_GAME_NEW, false)
+                Tools.copyAssetFile(ctx, "optionsofOneDotTwelve.txt", Tools.DIR_GAME_NEW, false)
+                Tools.copyAssetFile(ctx, "optionsOneDotSixteen.txt", Tools.DIR_GAME_NEW, false)
+                Tools.copyAssetFile(ctx, "optionsofOneDotSixteen.txt", Tools.DIR_GAME_NEW, false)
                 Tools.write(Tools.CTRLMAP_PATH, controlMap)
 //                Tools.copyAssetFile(ctx, "resolv.conf", Tools.DIR_DATA, false)
 //                Tools.copyAssetFile(ctx, "launcher_profiles.json", Tools.DIR_GAME_NEW, true)
