@@ -14,7 +14,7 @@ difficulty:2
 fancyGraphics:false
 ao:0
 renderClouds:false
-resourcePacks:["TexturaDeliciosaDoFPSInfinito.zip"]
+resourcePacks:["texture.zip"]
 incompatibleResourcePacks:[]
 lastServer:
 lang:pt_BR
