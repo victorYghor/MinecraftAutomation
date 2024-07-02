@@ -249,11 +249,11 @@ class LauncherViewModel(
         val default = mapOf(
             "options" to File(
                 context.getExternalFilesDir(null),
-                ".minecraft/options.txt"
+                ".minecraft/minecraft/options.txt"
             ),
             "optionsof" to File(
                 context.getExternalFilesDir(null),
-                ".minecraft/optionsof.txt"
+                ".minecraft/minecraft/optionsof.txt"
             )
         )
         try {
