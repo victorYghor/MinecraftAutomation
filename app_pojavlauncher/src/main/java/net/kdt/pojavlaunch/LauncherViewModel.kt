@@ -229,21 +229,21 @@ class LauncherViewModel(
         val oneDotTwelve = mapOf(
             "options" to File(
                 context.getExternalFilesDir(null),
-                ".minecraft/optionsOneDotTwelve.txt"
+                ".minecraft/configurationfile/optionsOneDotTwelve.txt"
             ),
             "optionsof" to File(
                 context.getExternalFilesDir(null),
-                ".minecraft/optionsofOneDotTwelve.txt"
+                ".minecraft/configurationfile/optionsofOneDotTwelve.txt"
             )
         )
         val oneDotSixteen = mapOf(
             "options" to File(
                 context.getExternalFilesDir(null),
-                ".minecraft/optionsOneDotSixteen.txt"
+                ".minecraft/configurationfile/optionsOneDotSixteen.txt"
             ),
             "optionsof" to File(
                 context.getExternalFilesDir(null),
-                ".minecraft/optionsofOneDotSixteen.txt"
+                ".minecraft/configurationfile/optionsofOneDotSixteen.txt"
             )
         )
         val default = mapOf(
