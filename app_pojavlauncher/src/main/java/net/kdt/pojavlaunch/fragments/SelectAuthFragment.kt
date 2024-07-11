@@ -5,14 +5,10 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import net.kdt.pojavlaunch.LauncherActivity
-import net.kdt.pojavlaunch.LauncherViewModel
 import net.kdt.pojavlaunch.R
 import net.kdt.pojavlaunch.Tools
 import pixelmon.SocialMedia
-import pixelmon.Tools.Timberly
-import timber.log.Timber
 
 /**
  * Fragment for selecting the atuhentication method.
