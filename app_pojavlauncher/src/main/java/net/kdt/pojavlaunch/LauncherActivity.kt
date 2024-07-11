@@ -47,10 +47,7 @@ import net.kdt.pojavlaunch.utils.NotificationUtils
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
 import pixelmon.SocialMedia
-import pixelmon.Tools.DownloadResult
-import pixelmon.Tools.Timberly
 import pixelmon.Tools.informativeAlertDialog
-import pixelmon.mods.PixelmonVersion
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
