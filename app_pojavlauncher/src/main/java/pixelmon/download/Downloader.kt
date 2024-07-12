@@ -49,8 +49,11 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
     val modsOneDotSixteen = Tools.GLOBAL_GSON.fromJson(
         read(context.assets.open("mods-1.16.json")), ModFile::class.java
     ).mods
-    private val pixelmonTexture = Tools.GLOBAL_GSON.fromJson(
-        read(context.assets.open("texture.json")), Texture::class.java
+    private val pixelmonTextureOneDotTwelve = Tools.GLOBAL_GSON.fromJson(
+        read(context.assets.open("textureOneDotTwelve.json")), Texture::class.java
+    )
+    private val pixelmonTextureOneDotSixteen = Tools.GLOBAL_GSON.fromJson(
+        read(context.assets.open("textureOneDotSixteen.json")), Texture::class.java
     )
     private val libraries = Tools.GLOBAL_GSON.fromJson(
         read(context.assets.open("support-files.json")),
@@ -181,7 +184,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
     }
 
     suspend fun downloadTexture(pixelmonVersion: PixelmonVersion): Deferred<Long> {
-        val texture = pixelmonTexture
+        val texture = pixelmonTextureOneDotTwelve
         Timber.d("starting downloading texture " + texture.name)
         val title = "Baixando ${texture.name}"
         File(context.getExternalFilesDir(null), ".minecraft/resourcepacks").mkdirs()
@@ -190,9 +193,9 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
             title = title,
             subPath =
             if (pixelmonVersion == PixelmonVersion.OneDotTwelve)
-                ".minecraft/mods/${texture.fileName}"
+                ".minecraft/texturas/${texture.fileName}"
             else
-                ".minecraft/modsOneDotSixteen/${texture.fileName}"
+                ".minecraft/texturas/${texture.fileName}"
         )
     }
 
@@ -271,7 +274,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
             val textureFile =
                 File(
                     context.getExternalFilesDir(null),
-                    ".minecraft/mods/${pixelmonTexture.fileName}"
+                    ".minecraft/mods/${pixelmonTextureOneDotTwelve.fileName}"
                 )
             // criar a pasta modsOneDotSixteen
             val modsOneDotSixteenDir =
@@ -281,7 +284,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
             // cria o arquivo onde ira o a textura
             val outFile = File(
                 context.getExternalFilesDir(null),
-                "${PixelmonVersion.OneDotSixteen.pathMods}/${pixelmonTexture.fileName}"
+                "${PixelmonVersion.OneDotSixteen.pathMods}/${pixelmonTextureOneDotTwelve.fileName}"
             )
             val inputFile = textureFile.inputStream()
 

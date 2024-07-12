@@ -13,7 +13,6 @@ import com.kdt.mcgui.ProgressLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import net.kdt.pojavlaunch.Tools.read
 import net.kdt.pojavlaunch.extra.ExtraConstants
@@ -30,7 +29,6 @@ import pixelmon.download.Downloader
 import pixelmon.mods.PixelmonVersion
 import timber.log.Timber
 import java.io.File
-import kotlin.coroutines.CoroutineContext
 
 class LauncherViewModel(
     private val context: Context,
@@ -103,7 +101,8 @@ class LauncherViewModel(
         // todo se ele não conseguir terminar de fazer o que precisa isso daqui não vai ser chamado na troca de versão
         if (downloadModOneDotSixteen.value == true) {
             renameModsFiles(context, it)
-            renameConfigurationsFiles(context, it)
+            overrideConfigurationsFiles(context, it)
+            overrideTexture(context, it)
         }
     }
 
@@ -221,25 +220,24 @@ class LauncherViewModel(
                 ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
                 return
             }
-            Loading.DOWNLOAD_TEXTURE -> {
-                if (downloadTexture.value == false) {
-                    CoroutineScope(Dispatchers.Default).launch {
-                        val pixelmonVersion =
-                            if (downloadOneDotSixteen.value == true) {
-                                downloadTexture.value = true
-                                PixelmonVersion.OneDotSixteen
-                            } else {
-                                PixelmonVersion.OneDotTwelve
-                            }
-                        mDownloader.value?.downloadTexture(pixelmonVersion)?.await()
-                        // here I will call a function to put the texture in the correct place
-                    }
-                }
 
+            Loading.DOWNLOAD_TEXTURE -> {
+                CoroutineScope(Dispatchers.Default).launch {
+                    val pixelmonVersion =
+                        if (downloadOneDotSixteen.value == true) {
+                            downloadTexture.value = true
+                            PixelmonVersion.OneDotSixteen
+                        } else {
+                            PixelmonVersion.OneDotTwelve
+                        }
+                    mDownloader.value?.downloadTexture(pixelmonVersion)?.await()
+                    // here I will call a function to put the texture in the correct place
+                }
                 return
             }
         }
     }
+
     fun changeProfile(ctx: Context, pixelmonVersion: PixelmonVersion) {
         Timber.w("select the correct option")
         LauncherPreferences.DEFAULT_PREF.edit()
@@ -274,35 +272,64 @@ class LauncherViewModel(
         }
     }
 
-    private fun renameConfigurationsFiles(ctx: Context, modVersion: PixelmonVersion) {
+    private fun overrideTexture(ctx: Context, textureVersion: PixelmonVersion) {
+        val textureOneDotTwelve = File(
+            ctx.getExternalFilesDir(null),
+            ".minecraft/texturas/textureOneDotTwelve.zip"
+        )
+        val textureOneDotSixteen = File(
+            ctx.getExternalFilesDir(null),
+            ".minecraft/texturas/textureOneDotSixteen.zip"
+        )
+        val texture = File(
+            ctx.getExternalFilesDir(null),
+            ".minecraft/resourcepacks/texture.zip"
+        )
+
+        try {
+            when(textureVersion) {
+                PixelmonVersion.OneDotTwelve -> {
+                    texture.writeBytes(textureOneDotTwelve.readBytes())
+                }
+                PixelmonVersion.OneDotSixteen -> {
+                    texture.writeBytes(textureOneDotSixteen.readBytes())
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Timber.d(e.message)
+        }
+    }
+
+    private fun overrideConfigurationsFiles(ctx: Context, modVersion: PixelmonVersion) {
         val problemWithMapKeys = Exception("The keys for the files should have the same name")
         val oneDotTwelve = mapOf(
             "options" to File(
-                context.getExternalFilesDir(null),
+                ctx.getExternalFilesDir(null),
                 ".minecraft/configurationfile/optionsOneDotTwelve.txt"
             ),
             "optionsof" to File(
-                context.getExternalFilesDir(null),
+                ctx.getExternalFilesDir(null),
                 ".minecraft/configurationfile/optionsofOneDotTwelve.txt"
             )
         )
         val oneDotSixteen = mapOf(
             "options" to File(
-                context.getExternalFilesDir(null),
+                ctx.getExternalFilesDir(null),
                 ".minecraft/configurationfile/optionsOneDotSixteen.txt"
             ),
             "optionsof" to File(
-                context.getExternalFilesDir(null),
+                ctx.getExternalFilesDir(null),
                 ".minecraft/configurationfile/optionsofOneDotSixteen.txt"
             )
         )
         val default = mapOf(
             "options" to File(
-                context.getExternalFilesDir(null),
+                ctx.getExternalFilesDir(null),
                 ".minecraft/minecraft/options.txt"
             ),
             "optionsof" to File(
-                context.getExternalFilesDir(null),
+                ctx.getExternalFilesDir(null),
                 ".minecraft/minecraft/optionsof.txt"
             )
         )
