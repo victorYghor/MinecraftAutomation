@@ -68,29 +68,29 @@ class LauncherViewModel(
      * Use this for showing if one dot sixteen already was downloaded, don't use the shared preferences
      * this will update de shared preferences when the value changed
      */
-    private val downloadOneDotSixteenObserver = Observer<Boolean> { downloaded ->
-        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_one_dot_sixteen", downloaded)
-            .commit()
-        LauncherPreferences.loadPreferences(context)
-    }
-    private val downloadModOneDotSixteenObserver = Observer<Boolean> { downloaded ->
+    private val downloadOneDotSixteenObserver = Observer<Boolean> {
         LauncherPreferences.DEFAULT_PREF.edit()
-            .putBoolean("download_mod_one_dot_sixteen", downloaded).commit()
+            .putBoolean("download_one_dot_sixteen", it).commit()
         LauncherPreferences.loadPreferences(context)
     }
-    private val getOneDotTwelveObserver = Observer<Boolean> { downloaded ->
-        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", downloaded)
-            .commit()
-        LauncherPreferences.loadPreferences(context)
-    }
-    private val downloadModOneDotTwelveObserver = Observer<Boolean> { downloaded ->
+    private val downloadModOneDotSixteenObserver = Observer<Boolean> {
         LauncherPreferences.DEFAULT_PREF.edit()
-            .putBoolean("download_mod_one_dot_twelve", downloaded).commit()
+            .putBoolean("download_mod_one_dot_sixteen", it).commit()
+        LauncherPreferences.loadPreferences(context)
+    }
+    private val getOneDotTwelveObserver = Observer<Boolean> { it ->
+        LauncherPreferences.DEFAULT_PREF.edit()
+            .putBoolean("get_one_dot_twelve", it).commit()
+        LauncherPreferences.loadPreferences(context)
+    }
+    private val downloadModOneDotTwelveObserver = Observer<Boolean> {
+        LauncherPreferences.DEFAULT_PREF.edit()
+            .putBoolean("download_mod_one_dot_twelve", it).commit()
         LauncherPreferences.loadPreferences(context)
     }
     private val downloadTextureObserver = Observer<Boolean> {
-        LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_texture", true)
-            .commit()
+        LauncherPreferences.DEFAULT_PREF.edit()
+            .putBoolean("download_texture", it).commit()
         LauncherPreferences.loadPreferences(context)
     }
 
@@ -142,12 +142,12 @@ class LauncherViewModel(
                     viewModelScope.launch {
                         withContext(Dispatchers.Default) {
                             MinecraftAssets(context, this@LauncherViewModel).moveImportantAssets()
-                                .await()
+                                .join()
                             withContext(Dispatchers.Main) {
+                                getOneDotTwelve.value = true
                                 loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE
                             }
                         }
-                        getOneDotTwelve.value = true
                     }
                 }
                 return
@@ -161,13 +161,13 @@ class LauncherViewModel(
                         0,
                         Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE.messageLoading
                     )
-                    runBlocking {
+                    viewModelScope.launch {
                         // espera ate que o download dos mods seja completo
                         // para que a próxima parte do código começe a rodar
                         mDownloader.value?.downloadModsOneDotTwelve()?.join()
-                        downloadModOneDotTwelve.value = true
                         Timber.tag("downloadProblem").d("finish the download of mods 1.12")
                         withContext(Dispatchers.Main) {
+                            downloadModOneDotTwelve.value = true
                             loadingState.value = Loading.DOWNLOAD_TEXTURE
                         }
                     }
@@ -177,7 +177,7 @@ class LauncherViewModel(
 
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
                 if (downloadOneDotSixteen.value == false) {
-                    CoroutineScope(Dispatchers.IO).launch {
+                    viewModelScope.launch {
                         mDownloader.value?.downloadModsOneDotSixteen()?.join()
 //                    mDownloader.value?.putTextureInOneDotSixteen()?.join()
                         withContext(Dispatchers.Main) {
@@ -208,9 +208,10 @@ class LauncherViewModel(
 //                        deleteDirecoty(File(context.getExternalFilesDir(null), ".minecraft/libraries"))
                         mDownloader.value?.unpackLibraries(librariesZipFile)
                         withContext(Dispatchers.Main) {
-                            downloadOneDotSixteen.value = true
+
                             loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN
                         }
+                        downloadOneDotSixteen.value = true
                     }
                 }
                 return
@@ -339,9 +340,8 @@ class LauncherViewModel(
 
     fun setupPixelmonLoading() {
         if (callPixelmonLoading.value == false) {
-            val getOneDotTwelve = LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE
             Timber.d("the value of getOneDotTwelve is " + getOneDotTwelve)
-            if (getOneDotTwelve) {
+            if (getOneDotTwelve.value == true) {
                 ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
             } else {
                 this.loadingState.value = Loading.MOVING_FILES

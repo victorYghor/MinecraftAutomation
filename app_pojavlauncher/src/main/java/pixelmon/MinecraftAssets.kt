@@ -6,6 +6,7 @@ import android.content.res.AssetManager
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.kdt.mcgui.ProgressLayout
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -68,7 +69,7 @@ class MinecraftAssets(val context: Context, val viewModel: LauncherViewModel) {
 //        }
 //    }
 
-    fun moveImportantAssets() {
+    fun moveImportantAssets() = CoroutineScope(Dispatchers.IO).launch {
         try {
             if(directoryTreeFile.exists() && directoryTreeFile.readBytes()
                     .contentEquals(context.assets.open("directoryTree.txt").readBytes())) {
@@ -77,11 +78,6 @@ class MinecraftAssets(val context: Context, val viewModel: LauncherViewModel) {
                 directoryTreeFile.writeText("")
                 File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
                 moveFiles("minecraft")
-                viewModel.viewModelScope.launch {
-                    withContext(Dispatchers.Main) {
-                        viewModel.loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE
-                    }
-                }
             }
 //            Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
         } catch(e: Exception) {
