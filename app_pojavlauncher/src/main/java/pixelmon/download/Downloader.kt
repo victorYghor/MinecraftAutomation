@@ -99,7 +99,6 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
                                 // It is just a bigger download
                                 if (quantity == 0) {
                                     currentProgress = (downloadedBytes * 100.0 / totalBytes)
-                                    Timber.d("the progress download is " + currentProgress)
                                     ProgressLayout.setProgress(
                                         ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE,
                                         currentProgress.toCeilInt(),
@@ -183,7 +182,7 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
 
     suspend fun downloadTexture(pixelmonVersion: PixelmonVersion): Deferred<Long> {
         val texture = pixelmonTexture
-        Timber.d("Straing downloading texture " + texture.name)
+        Timber.d("starting downloading texture " + texture.name)
         val title = "Baixando ${texture.name}"
         File(context.getExternalFilesDir(null), ".minecraft/resourcepacks").mkdirs()
         return download(
