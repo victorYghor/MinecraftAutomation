@@ -54,6 +54,7 @@ class LauncherViewModel(
     val downloadModOneDotTwelve = MutableLiveData(LauncherPreferences.DOWNLOAD_MOD_ONE_DOT_TWELVE)
     val getOneDotTwelve = MutableLiveData(LauncherPreferences.GET_ONE_DOT_TWELVE)
     val downloadTexture = MutableLiveData(LauncherPreferences.DOWNLOAD_TEXTURE)
+    val dialogDownloadOneSixteenIsShowing = MutableLiveData(false)
 
     val mDownloader by lazy {
         MutableLiveData(Downloader(context, this))
@@ -175,13 +176,12 @@ class LauncherViewModel(
             }
 
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
-                if (downloadOneDotSixteen.value == false) {
-                    viewModelScope.launch {
+                if (downloadModOneDotSixteen.value == false) {
+                    CoroutineScope(Dispatchers.Default).launch {
                         mDownloader.value?.downloadModsOneDotSixteen()?.join()
-//                    mDownloader.value?.putTextureInOneDotSixteen()?.join()
                         withContext(Dispatchers.Main) {
-                            downloadModOneDotSixteen.value = true
                             loadingState.value = Loading.DOWNLOAD_TEXTURE
+                            downloadModOneDotSixteen.value = true
                         }
                     }
                 }
@@ -207,10 +207,9 @@ class LauncherViewModel(
 //                        deleteDirecoty(File(context.getExternalFilesDir(null), ".minecraft/libraries"))
                         mDownloader.value?.unpackLibraries(librariesZipFile)
                         withContext(Dispatchers.Main) {
-
                             loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN
+                            downloadOneDotSixteen.value = true
                         }
-                        downloadOneDotSixteen.value = true
                     }
                 }
                 return
@@ -287,10 +286,11 @@ class LauncherViewModel(
         )
 
         try {
-            when(textureVersion) {
+            when (textureVersion) {
                 PixelmonVersion.OneDotTwelve -> {
                     texture.writeBytes(textureOneDotTwelve.readBytes())
                 }
+
                 PixelmonVersion.OneDotSixteen -> {
                     texture.writeBytes(textureOneDotSixteen.readBytes())
                 }

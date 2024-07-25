@@ -13,17 +13,6 @@
     }
   },
   {
-    "id": "noppes.npcs:customnpcs:1.12@jar",
-    "name": "CustomNPCs",
-    "type": "ForgeMod",
-    "artifact": {
-      "fileName": "CustomNPCs_1.12.2-05Jun21snapshot.jar",
-      "size": 9924337,
-      "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/CustomNPCs_1.12.2-05Jun21snapshot.jar",
-      "MD5": "0fef5f8d294cc33e24f963ba27b7167a"
-    }
-  },
-  {
     "id": "net.optifine:optifine:1.12.2_HD_U_F5@jar",
     "name": "OptiFine 1.12.2_HD_U_F5",
     "type": "ForgeMod",
@@ -65,17 +54,6 @@
       "size": 1049836,
       "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/fancymenu_forge_2.13.2_MC_1.12-1.12.2.jar",
       "MD5": "a61ff5cac56305113eb44c33321b8161"
-    }
-  },
-  {
-    "id": "me.modmuss50.mms:mainmenuscale:1.3.2@jar",
-    "name": "Main Menu Scale",
-    "type": "ForgeMod",
-    "artifact": {
-      "fileName": "MainMenuScale-1.3.2.jar",
-      "size": 4174,
-      "url": "https://download.pixelmonbrasil.com.br/nebula/servers/PixelmonBrasil-1.12.2/forgemods/optionalon/MainMenuScale-1.3.2.jar",
-      "MD5": "851ffaf71aad9d7977be26dce6d2f595"
     }
   },
   {
