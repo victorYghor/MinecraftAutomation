@@ -133,7 +133,10 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
                             View.GONE
                         }
                 } else {
-                    installOneDotSixTeenDialog.show()
+                    if(viewModel.dialogDownloadOneSixteenIsShowing.value == false) {
+                        installOneDotSixTeenDialog.show()
+                        viewModel.dialogDownloadOneSixteenIsShowing.value = true
+                    }
                 }
             }
         }
