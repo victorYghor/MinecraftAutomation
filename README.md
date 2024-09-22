@@ -1,6 +1,14 @@
 # PixelmonBrasil Launcher
-Este projeto é uma adaptação do Pojav Launcher para a comunidade PixelmonBrasil. O objetivo é oferecer uma experiência personalizada para os fãs de Pixelmon, com a funcionalidade de baixar e alternar automaticamente entre versões de mods e bibliotecas necessárias para jogar Minecraft.
+Este projeto é uma adaptação do Pojav Launcher para a comunidade PixelmonBrasil. O objetivo é oferecer uma experiência personalizada para os fãs de Pixelmon, com a funcionalidade de baixar e alternar automaticamente entre versões de mods e bibliotecas necessárias para jogar Minecraft. Sem esse app o usuário para ser conectar ao servidor do pixelmon precisa:
+<li>Selecionar a versão do forge</li>
+<li>Entrar dentro da interfaze CLI clicar em continuar</li>
+<li>Ir no site de todos os mods e baixar cada um deles individualmente</li>
+<li>Colocar cada um dos mods dentro da mods do minecraft</li>
+<li>Baixar a textura e colocar na pasta correta</li>
+<li>baixar o controle personalizado do pixelmon e colcoar na pasta correta</li>
+<li>E para trocar entre versões vai precisa ficar refazendo esse processo várias vezes</li>
 
+O aplicativo que criei faz isso automaticamente ele faz todo o processo de baixar e colocar nas pastas corretas.
 # Funcionalidades Principais
 ## Download Automático do Forge e Mods
 O aplicativo baixa automaticamente as versões necessárias do Forge, mods do Minecraft, texturas e bibliotecas compatíveis.
