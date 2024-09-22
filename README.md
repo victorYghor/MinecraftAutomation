@@ -1,6 +1,8 @@
 # PixelmonBrasil Launcher
 Antes:
-file:///home/vitor-yghor/Documents/pixelmon/github-assets/pojav-launcher.mp4
+
+https://github.com/user-attachments/assets/c51dd66e-b97c-4c9a-83b7-5a8ba28e0d92
+
 
 Depois:
 
