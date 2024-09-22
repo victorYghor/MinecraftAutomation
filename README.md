@@ -2,10 +2,14 @@
 Este projeto é uma adaptação do Pojav Launcher para a comunidade PixelmonBrasil. O objetivo é oferecer uma experiência personalizada para os fãs de Pixelmon, com a funcionalidade de baixar e alternar automaticamente entre versões de mods e bibliotecas necessárias para jogar Minecraft.
 
 # Funcionalidades Principais
-Download Automático do Forge e Mods: O aplicativo baixa automaticamente as versões necessárias do Forge, mods do Minecraft, texturas e bibliotecas compatíveis.
-Suporte a Múltiplas Versões: O app permite alternar entre as versões do Forge 1.12 e 1.16, permitindo que o usuário escolha a versão que deseja jogar, com a possibilidade de alternar entre elas dentro da interface.
-Interface Personalizada: A interface gráfica foi completamente modificada para refletir o estilo visual do PixelmonBrasil, oferecendo uma experiência imersiva e customizada.
-Login no Minecraft: O usuário pode fazer login no Minecraft diretamente pelo aplicativo, simplificando o acesso ao jogo.
+## Download Automático do Forge e Mods
+O aplicativo baixa automaticamente as versões necessárias do Forge, mods do Minecraft, texturas e bibliotecas compatíveis.
+## Suporte a Múltiplas Versões
+O app permite alternar entre as versões do Forge 1.12 e 1.16, permitindo que o usuário escolha a versão que deseja jogar, com a possibilidade de alternar entre elas dentro da interface.
+## Interface Personalizada 
+A interface gráfica foi completamente modificada para refletir o estilo visual do PixelmonBrasil, oferecendo uma experiência imersiva e customizada.
+## Login no Minecraft
+O usuário pode fazer login no Minecraft diretamente pelo aplicativo, simplificando o acesso ao jogo.
 
 # Estrutura do Projeto
 Este projeto é desenvolvido utilizando Kotlin e Java. O aplicativo original foi escrito em Java e C, e precisei passar várias horas estudando o código existente para compreendê-lo e adaptá-lo para atender às novas funcionalidades que implementei.
