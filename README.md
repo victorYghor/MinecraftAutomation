@@ -37,6 +37,11 @@ Durante o desenvolvimento, dediquei bastante tempo à leitura e compreensão do 
 
 # Tecnologias Utilizadas
 Kotlin
+Coroutines
+SharedPreferences
+ViewModel
+gradle
+
 Java
 C (parcial, do código original)
 Minecraft Forge
