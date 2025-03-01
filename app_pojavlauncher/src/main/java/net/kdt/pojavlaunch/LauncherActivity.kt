@@ -3,7 +3,6 @@ package net.kdt.pojavlaunch
 import android.Manifest
 import android.app.NotificationManager
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -15,11 +14,13 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.Observer
 import com.kdt.mcgui.ProgressLayout
 import com.kdt.mcgui.mcAccountSpinner
 import net.kdt.pojavlaunch.contracts.OpenDocumentWithExtension
@@ -28,6 +29,7 @@ import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.extra.ExtraListener
 import net.kdt.pojavlaunch.fragments.MicrosoftLoginFragment
 import net.kdt.pojavlaunch.fragments.PixelmonMenuFragment
+import net.kdt.pojavlaunch.fragments.PixelmonWelcomeScreen
 import net.kdt.pojavlaunch.fragments.SelectAuthFragment
 import net.kdt.pojavlaunch.lifecycle.ContextAwareDoneListener
 import net.kdt.pojavlaunch.lifecycle.ContextExecutor
@@ -44,12 +46,9 @@ import net.kdt.pojavlaunch.tasks.MinecraftDownloader
 import net.kdt.pojavlaunch.utils.NotificationUtils
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftLauncherProfiles
-import pixelmon.Loading
-import pixelmon.MinecraftAssets
 import pixelmon.SocialMedia
-import pixelmon.Tools.DownloadResult
 import pixelmon.Tools.informativeAlertDialog
-import pixelmon.mods.Downloader
+import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class LauncherActivity : BaseActivity() {
@@ -61,7 +60,6 @@ class LauncherActivity : BaseActivity() {
                 data
             )
         }
-    private lateinit var mDownloader: Downloader
     private var mAccountSpinner: mcAccountSpinner? = null
     private var mFragmentView: FragmentContainerView? = null
     private var mProgressLayout: ProgressLayout? = null
@@ -74,46 +72,17 @@ class LauncherActivity : BaseActivity() {
     private var btnSettings: ImageButton? = null
     private lateinit var btnPlay: Button
 
+
     //Pixelmon stuff
     private val mShowPlayButtonListener = ExtraListener { key: String?, value: Boolean ->
-        if(value) {
-            btnPlay.visibility = View.VISIBLE
-        } else {
-            btnPlay.visibility = View.GONE
-        }
-        false
-    }
-    private val mLoadingInternalListener = ExtraListener { key: String?, value: Loading ->
-        when(value) {
-            Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE ->  {
-
-                // começar o download dos mods da 1.12
-                Log.d(TAG, "start the download of mods 1.12")
-                mDownloader.downloadModsOneDotTwelve()
-                // caso ideal
-                LauncherPreferences.DEFAULT_PREF.edit().putBoolean("download_mod_one_dot_twelve", true).commit()
-                return@ExtraListener false
-            }
-            Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
-
-            }
-            Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> {
-
-            }
-            Loading.MOVING_FILES -> {
-                LauncherPreferences.DEFAULT_PREF.edit().putBoolean("get_one_dot_twelve", true).commit()
-                Thread {
-                    ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, 0, Loading.MOVING_FILES.messageLoading);
-                    MinecraftAssets(this).run()
-                }.start()
-                ExtraCore.setValue(ExtraConstants.LOADING_INTERNAL, Loading.DOWNLOAD_MOD_ONE_DOT_TWELVE)
-                return@ExtraListener false
-            }
-            Loading.SHOW_PLAY_BUTTON -> {
-                ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, true)
-            }
-            Loading.DOWNLOAD_TEXTURE -> {
-
+        // verificar qual o fragment atual na tela se não for PixelmonMenuFragment não mostrar o botão
+        val pixelmonMenuFragment: PixelmonMenuFragment? =
+            supportFragmentManager.findFragmentByTag("PixelmonMenuFragment") as PixelmonMenuFragment?
+        if (pixelmonMenuFragment != null && pixelmonMenuFragment.isVisible()) {
+            if(value) {
+                btnPlay.visibility = View.VISIBLE
+            } else {
+                btnPlay.visibility = View.GONE
             }
         }
         false
@@ -125,19 +94,6 @@ class LauncherActivity : BaseActivity() {
      */
     private val mDialogAlertDownload = ExtraListener { key: String?, value: List<Int> ->
        informativeAlertDialog(this, value[0], value[1])
-        false
-    }
-    private val mOneDotSixTeenDownloadResult = ExtraListener { key: String?, result: DownloadResult ->
-        when(result) {
-            DownloadResult.SUCCESS -> {
-                // precisa mudar o icone ele precisa ficar com uma setinha para cima aqui
-                LauncherPreferences.DEFAULT_PREF.edit()
-                    .putBoolean("download_one_dot_sixteen", true).commit()
-            }
-            DownloadResult.FAIL -> {
-
-            }
-        }
         false
     }
 
@@ -191,11 +147,13 @@ class LauncherActivity : BaseActivity() {
      * see for problems then start the minecraft game
      */
     private val mLaunchGameListener = ExtraListener { key: String?, value: Boolean? ->
-        // logs para avisar que algo de errado esta acontecenod
+
         if (mProgressLayout!!.hasProcesses()) {
+            Timber.d("tarefas em andamento")
             Toast.makeText(this, R.string.tasks_ongoing, Toast.LENGTH_LONG).show()
             return@ExtraListener false
         }
+        // o profile é como se fosse a versão do minecraft ou do forge que vai ser instalada aqui
         val selectedProfile = LauncherPreferences.DEFAULT_PREF.getString(
             LauncherPreferences.PREF_KEY_CURRENT_PROFILE,
             ""
@@ -221,7 +179,7 @@ class LauncherActivity : BaseActivity() {
             return@ExtraListener false
         }
 
-        if (mAccountSpinner!!.selectedAccount == null) {
+        if (mAccountSpinner?.selectedAccount == null) {
             Toast.makeText(this, R.string.no_saved_accounts, Toast.LENGTH_LONG).show()
             ExtraCore.setValue(ExtraConstants.SELECT_AUTH_METHOD, true)
             return@ExtraListener false
@@ -249,23 +207,11 @@ class LauncherActivity : BaseActivity() {
     private var mRequestNotificationPermissionRunnable: WeakReference<Runnable>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        LauncherPreferences.loadPreferences(this)
-        val firsInstallation = LauncherPreferences.PREF_FIRST_INSTALLATION
-        Log.d(PixelmonMenuFragment.TAG, "the first installation is $firsInstallation")
-        if (firsInstallation) {
-            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
-            val startLaunch = Intent(this, WelcomePixelmonActivity::class.java)
-            startActivity(startLaunch)
-        } else {
-            Tools.swapFragment(
-                this,
-                PixelmonMenuFragment::class.java,
-                PixelmonMenuFragment.TAG,
-                false,
-                null
-            )
+        val viewModel by viewModels<LauncherViewModel> {
+            LauncherViewModel.provideFactory(this, this)
         }
-        mDownloader = Downloader(this)
+        LauncherPreferences.loadPreferences(this)
+
         setContentView(R.layout.pixelmon_main_activity)
         IconCacheJanitor.runJanitor()
 
@@ -278,8 +224,38 @@ class LauncherActivity : BaseActivity() {
             }
         }
         window.setBackgroundDrawable(null)
-        bindViews()
 
+        // here you start the views stuff
+        bindViews()
+        val firsInstallation = LauncherPreferences.PREF_FIRST_INSTALLATION
+        Log.d(PixelmonMenuFragment.TAG, "the first installation is $firsInstallation")
+        if (firsInstallation) {
+            LauncherPreferences.DEFAULT_PREF.edit().putBoolean("first_installation", false).commit()
+            // Aqui entra dentro da tela de boas vindas
+            setBottomButtonsVisibility(false)
+            Tools.swapFragment(
+                this,
+                PixelmonWelcomeScreen::class.java,
+                PixelmonWelcomeScreen.TAG,
+                false,
+                null
+            )
+        } else {
+            Tools.swapFragment(
+                this,
+                PixelmonMenuFragment::class.java,
+                PixelmonMenuFragment.TAG,
+                false,
+                null
+            )
+        }
+
+        // change the visibility of the buttons
+        val bottomButtonsVisibilityObserver = Observer<Boolean> { visible: Boolean ->
+            setBottomButtonsVisibility(visible)
+        }
+        viewModel.bottomButtonsVisible.observe(this, bottomButtonsVisibilityObserver)
+//        viewModel.bottomButtonsVisibility.value = true
 
 
         // pixelmon buttons
@@ -301,6 +277,9 @@ class LauncherActivity : BaseActivity() {
                 null
             )
         }
+        btnPlay.setOnClickListener {
+            ExtraCore.setValue(ExtraConstants.LAUNCH_GAME, true)
+        }
 
         checkNotificationPermission()
         // place for putting extra listener
@@ -311,9 +290,8 @@ class LauncherActivity : BaseActivity() {
         })
         ProgressKeeper.addTaskCountListener(mProgressLayout)
 
-        //Pixelmon sttuf
+        //Pixelmon stuff
         ExtraCore.addExtraListener(ExtraConstants.ALERT_DIALOG_DOWNLOAD, mDialogAlertDownload)
-        ExtraCore.addExtraListener(ExtraConstants.LOADING_INTERNAL, mLoadingInternalListener)
         ExtraCore.addExtraListener(ExtraConstants.SHOW_PLAY_BUTTON, mShowPlayButtonListener)
 
         ExtraCore.addExtraListener(ExtraConstants.BACK_PREFERENCE, mBackPreferenceListener)
@@ -325,21 +303,24 @@ class LauncherActivity : BaseActivity() {
                 versions
             )
         }, false)
-        // progress layotu
+        // progressLayout
         mInstallTracker = ModloaderInstallTracker(this)
         mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_MINECRAFT)
-        mProgressLayout!!.observe(ProgressLayout.UNPACK_RUNTIME)
+//        mProgressLayout!!.observe(ProgressLayout.UNPACK_RUNTIME)
         mProgressLayout!!.observe(ProgressLayout.INSTALL_MODPACK)
         mProgressLayout!!.observe(ProgressLayout.AUTHENTICATE_MICROSOFT)
         mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_VERSION_LIST)
         mProgressLayout!!.observe(ProgressLayout.MOVING_FILES)
-
+        mProgressLayout!!.observe(ProgressLayout.DOWNLOAD_MOD_ONE_DOT_TWELVE)
         LauncherPreferences.loadPreferences(this)
 
         insertProfiles()
     }
 
-    fun insertProfiles() {
+    /**
+     * Insert the profiles from the assets to the game folder
+     */
+    private fun insertProfiles() {
         val profiles = this.assets.open("launcher_profiles.json").readBytes()
         Tools.write(
             Tools.DIR_GAME_NEW + "/" + "launcher_profiles.json", profiles
@@ -480,7 +461,21 @@ class LauncherActivity : BaseActivity() {
         btnOfficialSite = findViewById(R.id.btn_official_site)
         btnPlay = findViewById(R.id.btn_play)
     }
-
+    fun setBottomButtonsVisibility(visible: Boolean) {
+        // The btnPlay and the ProgressLayout is set automatically
+        if(visible) {
+            btnDiscord?.visibility = View.VISIBLE
+            btnSettings?.visibility = View.VISIBLE
+            btnTiktok?.visibility = View.VISIBLE
+            btnOfficialSite?.visibility = View.VISIBLE
+        } else {
+            ExtraCore.setValue(ExtraConstants.SHOW_PLAY_BUTTON, false)
+            btnDiscord?.visibility = View.GONE
+            btnSettings?.visibility = View.GONE
+            btnTiktok?.visibility = View.GONE
+            btnOfficialSite?.visibility = View.GONE
+        }
+    }
 
     companion object {
         const val SETTING_FRAGMENT_TAG = "SETTINGS_FRAGMENT"

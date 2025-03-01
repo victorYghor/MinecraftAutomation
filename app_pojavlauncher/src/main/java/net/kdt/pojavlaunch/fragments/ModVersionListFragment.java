@@ -24,6 +24,8 @@ import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
 import java.io.File;
 import java.io.IOException;
 
+import timber.log.Timber;
+
 /**
  * Pop up for showing the forge versions
  * @param <T>

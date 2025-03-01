@@ -1,13 +1,19 @@
 package pixelmon
 
 import android.content.Context
+
 import android.content.res.AssetManager
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.kdt.mcgui.ProgressLayout
-import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import net.kdt.pojavlaunch.LauncherViewModel
 import java.io.File
 
-class MinecraftAssets(val context: Context): Runnable {
+class MinecraftAssets(val context: Context, val viewModel: LauncherViewModel) {
     private val directoryTreeFile = File(context.getExternalFilesDir(null), "directoryTree.txt")
     companion object {
         val TAG = "MinecraftAssets.kt"
@@ -52,9 +58,9 @@ class MinecraftAssets(val context: Context): Runnable {
         // set the progress when moving files
         val progress = (filesCount.size * 100) / 2928
         ProgressLayout.setProgress(ProgressLayout.MOVING_FILES, progress, Loading.MOVING_FILES.messageLoading)
-        val copiedFile = assets.open(name)
-        outFile.writeBytes(copiedFile.readBytes())
-        copiedFile.close()
+        assets.open(name).use { copiedFile ->
+            outFile.writeBytes(copiedFile.readBytes())
+        }
     }
 //    fun checkFileIntegrity(directory: String): Boolean {
 //        val rootDirectory = File(context.getExternalFilesDir(null), directory)
@@ -63,21 +69,19 @@ class MinecraftAssets(val context: Context): Runnable {
 //        }
 //    }
 
-    override fun run() {
+    fun moveImportantAssets() = CoroutineScope(Dispatchers.IO).launch {
         try {
             if(directoryTreeFile.exists() && directoryTreeFile.readBytes()
                     .contentEquals(context.assets.open("directoryTree.txt").readBytes())) {
 //                Log.i(TAG, "All files was transferred")
             } else {
                 directoryTreeFile.writeText("")
-                // Por garantia muda o estado para dizer que ele vai mover os assets
-                Pixelmon.state = State.MOVING_FILES
                 File(context.getExternalFilesDir(null), ".minecraft/mods").mkdirs()
                 moveFiles("minecraft")
             }
-            Pixelmon.state = State.PLAY
 //            Log.i(TAG, "the quantity of files copied is " + MinecraftAssets.filesCount.size.toString())
         } catch(e: Exception) {
+            Log.e(TAG, e.message.toString())
             e.printStackTrace()
         }
     }

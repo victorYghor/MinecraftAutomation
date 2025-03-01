@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application' version '7.4.2' apply true
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 static def getDate() { return new Date().format('yyyyMMdd') }
@@ -113,6 +115,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
         applicationId "net.kdt.pojavlaunch"
         minSdkVersion 23
@@ -150,6 +157,7 @@ android {
             resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder'
             resValue 'string', 'application_package', 'net.kdt.pojavlaunch'
         }
+
         gplay {
             initWith release
             signingConfig signingConfigs.googlePlayBuild
@@ -190,13 +198,18 @@ android {
     buildToolsVersion = '33.0.2'
 }
 
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
+}
 dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
     //for use kotlin
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.20"
-    // coroutine
-//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+
+//     coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
     implementation 'commons-codec:commons-codec:1.15'
@@ -224,9 +237,17 @@ dependencies {
     implementation 'com.github.PojavLauncherTeam:exp4j:60eaec6f78'
     implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.6.1'
     implementation 'com.bytedance:bytehook:1.0.9'
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
 
+    // Timber
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
     // implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.7.0'
 
+    def lifecycle_version = "2.4.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }

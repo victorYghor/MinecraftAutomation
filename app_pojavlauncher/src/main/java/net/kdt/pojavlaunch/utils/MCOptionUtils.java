@@ -40,7 +40,7 @@ public class MCOptionUtils {
     }
 
     public static void load(@NonNull String folderPath) {
-        File optionFile = new File(folderPath + "/options.txt");
+        File optionFile = new File(folderPath + "/minecraft/options.txt");
         if(!optionFile.exists()) {
             try { // Needed for new instances I guess  :think:
                 optionFile.createNewFile();
@@ -109,7 +109,7 @@ public class MCOptionUtils {
 
         try {
             sFileObserver.stopWatching();
-            Tools.write(sOptionFolderPath + "/options.txt", result.toString());
+            Tools.write(sOptionFolderPath + "/minecraft/options.txt", result.toString());
             sFileObserver.startWatching();
         } catch (IOException e) {
             Log.w(Tools.APP_NAME, "Could not save options.txt", e);
@@ -133,7 +133,7 @@ public class MCOptionUtils {
      * Listeners get notified of the change */
     private static void setupFileObserver(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-            sFileObserver = new FileObserver(new File(sOptionFolderPath + "/options.txt"), FileObserver.MODIFY) {
+            sFileObserver = new FileObserver(new File(sOptionFolderPath + "/minecraft/options.txt"), FileObserver.MODIFY) {
                 @Override
                 public void onEvent(int i, @Nullable String s) {
                     MCOptionUtils.load();
@@ -141,7 +141,7 @@ public class MCOptionUtils {
                 }
             };
         }else{
-            sFileObserver = new FileObserver(sOptionFolderPath + "/options.txt", FileObserver.MODIFY) {
+            sFileObserver = new FileObserver(sOptionFolderPath + "/minecraft/options.txt", FileObserver.MODIFY) {
                 @Override
                 public void onEvent(int i, @Nullable String s) {
                     MCOptionUtils.load();

@@ -141,14 +141,7 @@
             android:process=":game" />
 
         <receiver
-            android:name="pixelmon.mods.DownloadReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="pixelmon.forge.ForgeDownloadReceiver"
+            android:name="pixelmon.download.DownloadReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />

@@ -6,18 +6,26 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
 
-
+    <com.kdt.mcgui.mcAccountSpinner
+        android:visibility="gone"
+        android:id="@+id/account_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_52sdp"
+        android:dropDownWidth="@dimen/_250sdp"
+        android:dropDownVerticalOffset="@dimen/_52sdp"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Holding most of the dynamic content -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_fragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-
+        android:layout_height="match_parent"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_tiktok"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <Button
         android:visibility="gone"
@@ -44,6 +52,7 @@
         />
 
     <ImageButton
+        android:elevation="3dp"
         android:id="@+id/btn_official_site"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,6 +65,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
+        android:elevation="3dp"
         android:id="@+id/btn_discord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,6 +78,7 @@
         app:layout_constraintStart_toEndOf="@+id/btn_official_site" />
 
     <ImageButton
+        android:elevation="3dp"
         android:id="@+id/btn_tiktok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,6 +91,7 @@
         app:layout_constraintStart_toEndOf="@+id/btn_discord" />
 
     <ImageButton
+        android:elevation="3dp"
         android:id="@+id/btn_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

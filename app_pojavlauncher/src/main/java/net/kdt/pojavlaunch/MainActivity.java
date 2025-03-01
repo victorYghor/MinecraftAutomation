@@ -67,6 +67,8 @@ import org.lwjgl.glfw.CallbackBridge;
 import java.io.File;
 import java.io.IOException;
 import pixelmon.MinecraftAssets;
+import pixelmon.Tools.Timberly;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements ControlButtonMenuListener, EditorExitable, ServiceConnection {
     public static volatile ClipboardManager GLOBAL_CLIPBOARD;

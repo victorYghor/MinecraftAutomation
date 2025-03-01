@@ -26,6 +26,7 @@ public class LauncherPreferences {
     // pixelmon preferences
     public static boolean GET_ONE_DOT_TWELVE;
     public static boolean DOWNLOAD_MOD_ONE_DOT_TWELVE;
+    public static boolean DOWNLOAD_TEXTURE;
     public static boolean DOWNLOAD_MOD_ONE_DOT_SIXTEEN;
     public static boolean DOWNLOAD_ONE_DOT_SIXTEEN;
     /**
@@ -33,6 +34,7 @@ public class LauncherPreferences {
      * else is the value is false version of pixelmon is 1.16
      */
     public static boolean SELECT_VERSION_IS_ONE_DOT_TWELVE = true;
+
     public static String PREF_RENDERER = "opengles2";
     public static boolean PREF_FIRST_INSTALLATION = true;
 	public static boolean PREF_VERTYPE_RELEASE = true;
@@ -91,13 +93,15 @@ public class LauncherPreferences {
         PREF_BUTTONSIZE = DEFAULT_PREF.getInt("buttonscale", 100);
         PREF_MOUSESCALE = DEFAULT_PREF.getInt("mousescale", 100);
         //pixelmon preferences
+        // boa parte dessas preferencias precisa ser atualizadas dentro do viewmodel
+        // com o respectivo LiveData
         GET_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("get_one_dot_twelve", false);
         DOWNLOAD_MOD_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("download_mod_one_dot_twelve", false);
-        DOWNLOAD_MOD_ONE_DOT_SIXTEEN = DEFAULT_PREF.getBoolean("download_one_dot_sixteen", false);
+        DOWNLOAD_TEXTURE = DEFAULT_PREF.getBoolean("download_texture", false);
+        DOWNLOAD_MOD_ONE_DOT_SIXTEEN = DEFAULT_PREF.getBoolean("download_mod_one_dot_sixteen", false);
         SELECT_VERSION_IS_ONE_DOT_TWELVE = DEFAULT_PREF.getBoolean("select_version_is_one_dot_twelve", true);
-        DOWNLOAD_ONE_DOT_SIXTEEN = DEFAULT_PREF.getBoolean("", false);
+        DOWNLOAD_ONE_DOT_SIXTEEN = DEFAULT_PREF.getBoolean("download_one_dot_sixteen", false);
         PREF_FIRST_INSTALLATION = DEFAULT_PREF.getBoolean("first_installation", true);
-
 		PREF_MOUSESPEED = ((float)DEFAULT_PREF.getInt("mousespeed",100))/100f;
 		PREF_HIDE_SIDEBAR = DEFAULT_PREF.getBoolean("hideSidebar", false);
 		PREF_IGNORE_NOTCH = DEFAULT_PREF.getBoolean("ignoreNotch", false);

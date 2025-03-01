@@ -81,7 +81,7 @@ public class MultiRTUtils {
         uncompressTarXZ(runtimeInputStream,dest);
         runtimeInputStream.close();
         unpack200(nativeLibDir,RUNTIME_FOLDER + "/" + name);
-        ProgressLayout.clearProgress(ProgressLayout.UNPACK_RUNTIME);
+//        ProgressLayout.clearProgress(ProgressLayout.UNPACK_RUNTIME);
         read(name);
     }
 
@@ -101,6 +101,14 @@ public class MultiRTUtils {
         copyDummyNativeLib("libawt_xawt.so", dest, libFolder);
     }
 
+    /**
+     * O que seria binpack ?
+     * @param universalFileInputStream
+     * @param platformBinsInputStream
+     * @param name
+     * @param binpackVersion
+     * @throws IOException
+     */
     public static void installRuntimeNamedBinpack(InputStream universalFileInputStream, InputStream platformBinsInputStream, String name, String binpackVersion) throws IOException {
         File dest = new File(RUNTIME_FOLDER,"/"+name);
         if(dest.exists()) FileUtils.deleteDirectory(dest);
@@ -114,7 +122,7 @@ public class MultiRTUtils {
         fos.write(binpackVersion.getBytes());
         fos.close();
 
-        ProgressLayout.clearProgress(ProgressLayout.UNPACK_RUNTIME);
+//        ProgressLayout.clearProgress(ProgressLayout.UNPACK_RUNTIME);
 
         forceReread(name);
     }
@@ -235,7 +243,8 @@ public class MultiRTUtils {
 
             final String tarEntryName = tarEntry.getName();
             // publishProgress(null, "Unpacking " + tarEntry.getName());
-            ProgressLayout.setProgress(ProgressLayout.UNPACK_RUNTIME, 100, R.string.global_unpacking, tarEntryName);
+            // disable temporarily
+//            ProgressLayout.setProgress(ProgressLayout.UNPACK_RUNTIME, 100, "Descompactando %s", tarEntryName);
 
             File destPath = new File(dest, tarEntry.getName());
             net.kdt.pojavlaunch.utils.FileUtils.ensureParentDirectory(destPath);

@@ -22,6 +22,7 @@
     <string name="error_no_version">Nenhuma versão!</string>
     <string name="error_show_more">Mostrar mais</string>
     <string name="error_show_less">Mostrar menos</string>
+    <string name="error_username">Tem algum problema com o seu nome de usuário</string>
     <!-- Toast messages -->
     <string name="toast_permission_denied">É necessário conceder permissão para ler/modificar armazenamento!</string>
     <string name="toast_optifine_success">Instalação concluída</string>
@@ -352,4 +353,5 @@
     <string name="baixando_o_minecraft_1_16">baixando o minecraft 1.16...</string>
     <string name="mostrando_o_bot_o_de_jogar">mostrando o botão de jogar...</string>
     <string name="baixando_a_textura_do_pixelmon">baixando a textura do pixelmon...</string>
+    <string name="baixar_a_vers_o_1_16">Baixar a versão 1.16</string>
 </resources>

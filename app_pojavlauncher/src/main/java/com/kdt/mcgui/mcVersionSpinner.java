@@ -83,8 +83,6 @@ public class mcVersionSpinner extends ExtendedTextView {
                         mProfileAdapter.getItem(position).toString())
                 .apply();
         final MinecraftProfile profile = LauncherProfiles.getCurrentProfile();
-        Log.i(TAG, "the current profile is: \n" + profile.toString());
-        Log.i(TAG, "Change the current profile the new position is " + position);
     }
 
     // this function in called when you change of profile
