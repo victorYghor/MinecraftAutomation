@@ -1,6 +1,8 @@
 package net.kdt.pojavlaunch.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,7 @@ import net.kdt.pojavlaunch.databinding.PixelmonHomeBinding
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
 import pixelmon.Loading
+import pixelmon.Tools.Timberly
 import pixelmon.mods.PixelmonVersion
 import timber.log.Timber
 
@@ -66,7 +69,7 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         }
         viewModel.bottomButtonsVisible.observe(requireActivity(), bottomButtonsVisibilityObserver)
         viewModel.bottomButtonsVisible.value = true
-
+        b.imgPixelmonHome.layoutParams.height = (requireContext().resources.displayMetrics.heightPixels - requireContext().toPx(240)).toInt()
         LauncherPreferences.loadPreferences(requireContext())
         viewModel.setupPixelmonLoading()
 
@@ -147,6 +150,8 @@ class PixelmonMenuFragment() : Fragment(R.layout.pixelmon_home) {
         super.onDestroyView()
         _binding = null
     }
-
-
+    fun Context.toPx(dp: Int): Float = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        dp.toFloat(),
+        resources.displayMetrics)
 }

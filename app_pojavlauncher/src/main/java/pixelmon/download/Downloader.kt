@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 import net.kdt.pojavlaunch.LauncherViewModel
 import net.kdt.pojavlaunch.Tools
 import net.kdt.pojavlaunch.Tools.read
-import net.kdt.pojavlaunch.utils.ZipUtils
 import pixelmon.SupportFile
 import pixelmon.Texture
 import pixelmon.Tools.Timberly
@@ -26,9 +25,10 @@ import pixelmon.mods.Mod
 import pixelmon.mods.ModFile
 import pixelmon.mods.PixelmonVersion
 import timber.log.Timber
-import java.io.File
-import java.util.zip.ZipFile
 import kotlin.math.ceil
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import java.io.File
 
 class Downloader(private val context: Context, val viewModel: LauncherViewModel) {
     private val downloadManager = context.getSystemService(DownloadManager::class.java)
@@ -256,12 +256,19 @@ class Downloader(private val context: Context, val viewModel: LauncherViewModel)
 
     fun unpackLibraries(librariesZipFile: File) {
         Timber.tag(TAG).i("unpack Libraries")
-        ZipUtils.zipExtract(
-            ZipFile(librariesZipFile),
-            "",
-            File(context.getExternalFilesDir(null), ".minecraft")
-        )
-        librariesZipFile.delete()
+        val outputDir = File(context.getExternalFilesDir(null), ".minecraft")
+        try {
+            val zip = ZipFile(librariesZipFile)
+            zip.extractAll(outputDir.absolutePath)
+            // Excluir o arquivo ZIP original
+            if (librariesZipFile.delete()) {
+                Timber.tag(TAG).i("Arquivo zip deletado com sucesso.")
+            } else {
+                println("Falha excluindo o arquivo zip.")
+            }
+        } catch (e: ZipException) {
+            System.err.println("Erro ao extrair o ZIP: ")
+        }
         Timber.tag(TAG).i("finish to unpack libraries of forge")
     }
 
