@@ -9,6 +9,7 @@
     <color name="background_bottom_bar">#000000</color>
     <color name="black_pixelmon">#000000</color>
     <color name="white">#ffffff</color>
+    <color name="white_transparent">#4DFFFFFF</color>
     <color name="primary_text">#efefef</color>
     <color name="secondary_text">#B2B2B2</color>
     <color name="red_test">#ff0000</color>

@@ -205,11 +205,11 @@ class LauncherViewModel(
                         // se o arquivo não tiver intregidade eu preciso avisar para o usuário que houve um problema
                         // com um arquivo deletar ele e perdir para ele fazer o download novamente
 //                        deleteDirecoty(File(context.getExternalFilesDir(null), ".minecraft/libraries"))
-                        mDownloader.value?.unpackLibraries(librariesZipFile)
-                        withContext(Dispatchers.Main) {
-                            loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN
-                            downloadOneDotSixteen.value = true
-                        }
+//                        mDownloader.value?.unpackLibraries(librariesZipFile)
+//                        withContext(Dispatchers.Main) {
+//                            loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN
+//                            downloadOneDotSixteen.value = true
+//                        }
                     }
                 }
                 return
