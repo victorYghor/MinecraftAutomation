@@ -179,7 +179,7 @@ class LauncherViewModel(
 
             Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN -> {
                 if (downloadModOneDotSixteen.value == false) {
-                    CoroutineScope(Dispatchers.Default).launch {
+                    CoroutineScope(Dispatchers.IO).launch {
                         mDownloader.value?.downloadModsOneDotSixteen()?.join()
                         withContext(Dispatchers.Main) {
                             loadingState.value = Loading.DOWNLOAD_TEXTURE
@@ -192,7 +192,7 @@ class LauncherViewModel(
 
             Loading.DOWNLOAD_ONE_DOT_SIXTEEN -> {
                 if (downloadOneDotSixteen.value == false) {
-                    CoroutineScope(Dispatchers.IO).launch {
+                    viewModelScope.launch {
                         mDownloader.value?.downloadOneDotSixteen()?.await()
                         val librariesZipFile =
                             File(context.getExternalFilesDir(null), ".minecraft/libraries.zip")
@@ -201,9 +201,6 @@ class LauncherViewModel(
                             read(context.assets.open("support-files.json")),
                             SupportFile::class.java
                         )
-                        val integrity =
-                            checkFileIntegrity(context, librariesZipFile.md5(), libraryFile.md5)
-                        Timber.d("integrity of the file is " + integrity)
                         // Se o arquivo não tiver intregidade eu preciso avisar para o usuário que houve um problema
                         // com um arquivo deletar ele e perdir para ele fazer o download novamente
                         deleteDirecoty(File(context.getExternalFilesDir(null), ".minecraft/libraries"))
@@ -223,7 +220,7 @@ class LauncherViewModel(
             }
 
             Loading.DOWNLOAD_TEXTURE -> {
-                CoroutineScope(Dispatchers.Default).launch {
+                viewModelScope.launch {
                     val pixelmonVersion =
                         if (downloadOneDotSixteen.value == true) {
                             downloadTexture.value = true
