@@ -135,6 +135,7 @@ class LauncherViewModel(
         when (loading) {
             Loading.MOVING_FILES -> {
                 if (getOneDotTwelve.value == false) {
+                    // verificar se o arquivo que eu vou mover já existem se já existirem não vai precisar mover eles novamente
                     ProgressLayout.setProgress(
                         ProgressLayout.MOVING_FILES,
                         0,

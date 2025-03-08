@@ -15,6 +15,9 @@ import java.io.File
 
 class MinecraftAssets(val context: Context, val viewModel: LauncherViewModel) {
     private val directoryTreeFile = File(context.getExternalFilesDir(null), "directoryTree.txt")
+    init {
+        directoryTreeFile.createNewFile()
+    }
     companion object {
         val TAG = "MinecraftAssets.kt"
         val filesCount = mutableListOf<Boolean>()

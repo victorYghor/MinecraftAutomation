@@ -114,7 +114,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|keyboard|navigation|uiMode"
             android:launchMode="standard"
             android:process=":game"
-            android:screenOrientation="sensorLandscape"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <activity
             android:name=".WelcomePixelmonActivity"
