@@ -24,6 +24,7 @@ import pixelmon.MinecraftAssets
 import pixelmon.SupportFile
 import pixelmon.Tools.Timberly
 import pixelmon.Tools.checkFileIntegrity
+import pixelmon.Tools.deleteDirecoty
 import pixelmon.Tools.md5
 import pixelmon.download.Downloader
 import pixelmon.mods.PixelmonVersion
@@ -202,14 +203,14 @@ class LauncherViewModel(
                         val integrity =
                             checkFileIntegrity(context, librariesZipFile.md5(), libraryFile.md5)
                         Timber.d("integrity of the file is " + integrity)
-                        // se o arquivo não tiver intregidade eu preciso avisar para o usuário que houve um problema
+                        // Se o arquivo não tiver intregidade eu preciso avisar para o usuário que houve um problema
                         // com um arquivo deletar ele e perdir para ele fazer o download novamente
-//                        deleteDirecoty(File(context.getExternalFilesDir(null), ".minecraft/libraries"))
-//                        mDownloader.value?.unpackLibraries(librariesZipFile)
-//                        withContext(Dispatchers.Main) {
-//                            loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN
-//                            downloadOneDotSixteen.value = true
-//                        }
+                        deleteDirecoty(File(context.getExternalFilesDir(null), ".minecraft/libraries"))
+                        mDownloader.value?.unpackLibraries(librariesZipFile)
+                        withContext(Dispatchers.Main) {
+                            loadingState.value = Loading.DOWNLOAD_MOD_ONE_DOT_SIXTEEN
+                            downloadOneDotSixteen.value = true
+                        }
                     }
                 }
                 return
